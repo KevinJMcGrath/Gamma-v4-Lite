@@ -1,0 +1,26 @@
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+# Archived Files
+archive
+
+# Secrets
+credentials
+secrets.json
+.env
+
+# Temp junk
+*.bak
+*.bak2
+
+# VSCode
+*.code-workspace

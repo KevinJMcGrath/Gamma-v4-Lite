@@ -1,0 +1,111 @@
+{
+  "status": {
+    "guid": ""
+  },
+  "email": {
+    "email_address": "stanz@ghostbusters.net",
+    "is_verified": "false"
+  },
+  "user": {
+    "firstname": "Kevin",
+    "lastname": "McGrath",
+    "phone": "215-828-6986"
+  },
+  "company": {
+    "name": "Ghostbusters, Inc.",
+    "industry": "Consumer-Services"
+  },
+  "service": {
+    "seats": 10,
+    "vanity_name": "My Company",
+    "promo_code": "GAMMA-2018"
+  },
+  "legal": {
+    "terms_accepted": true
+  },
+  "billing": {
+    "payment_type": "card",
+    "address1": "14 North Moore Street",
+    "address2": "Tribeca",
+    "city": "New York",
+    "billing_state": "NY",
+    "zip_code": "10013",
+    "country": "USA",
+    "stripe_token": {
+      "id": "tok_1CJNMpBovuDSxGMeQruaMGfz",
+      "object": "token",
+      "card": {
+        "id": "card_1CJNMpBovuDSxGMe77f6MqWj",
+        "object": "card",
+        "address_city": null,
+        "address_country": null,
+        "address_line1": null,
+        "address_line1_check": null,
+        "address_line2": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_zip_check": null,
+        "brand": "Visa",
+        "country": "US",
+        "cvc_check": "unchecked",
+        "dynamic_last4": null,
+        "exp_month": 1,
+        "exp_year": 2020,
+        "funding": "credit",
+        "last4": "4242",
+        "metadata": {
+          
+        },
+        "name": null,
+        "tokenization_method": null
+      },
+      "client_ip": "69.253.229.9",
+      "created": 1524323471,
+      "livemode": false,
+      "type": "card",
+      "used": false
+    }
+  },
+  "pricing": {
+    "onetime_fees": 500,
+    "pupm": 20,
+    "minimum_seats": 25
+  },
+  "page_state": [
+    {
+      "index": 0,
+      "name": "contact",
+      "completed": false
+    },
+    {
+      "index": 1,
+      "name": "company",
+      "completed": false
+    },
+    {
+      "index": 2,
+      "name": "service",
+      "completed": false
+    },
+    {
+      "index": 3,
+      "name": "legal",
+      "completed": true
+    },
+    {
+      "index": 4,
+      "name": "billing",
+      "completed": true
+    },
+    {
+      "index": 5,
+      "name": "summary",
+      "completed": false
+    },
+    {
+      "index": 6,
+      "name": "thank",
+      "completed": false
+    }
+  ]
+}

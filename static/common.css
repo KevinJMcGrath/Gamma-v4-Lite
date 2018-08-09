@@ -1,0 +1,119 @@
+/*Icons - http://www.iconarchive.com/show/100-flat-icons-by-graphicloads.1.html*/
+@font-face {
+    font-family: "MrRoboto";
+    src: url('/Roboto-Regular.ttf');
+}
+body {
+
+    font-family: "MrRoboto";
+}
+
+.sym-layout {
+    border: 1px solid #d7dde4;
+    background: #f5f7f9;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 50px;
+}
+
+.layoutClass {
+    background-image: url('../assets/images/apps-bots-on-symphony.png') !important;
+    background-position: bottom right !important; 
+    background-repeat: no-repeat !important;    
+}
+
+.layoutClassStationary {
+    background-image: url('../assets/images/apps-bots-on-symphony.png') !important;
+    background-position: top 200px right !important; 
+    background-repeat: no-repeat !important;    
+}
+
+.layoutClassEmail {
+    background-image: url('../assets/images/business-solutions-transp.png') !important;
+    background-position: top right !important; 
+    background-repeat: no-repeat !important;    
+}
+
+.whiteWithShadow {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+.invisibleLayout {
+    background-color: transparent !important;
+}
+
+.headerClass {
+    background-color: #F5F7F9 !important;
+    background-image: url('../assets/images/symphony-logo-nav-light.svg') !important;
+    background-size: auto 40px !important;
+    background-position: bottom 10px left 10px !important; 
+    background-repeat: no-repeat !important;  
+
+}
+
+.header-bg-fix {
+    background: #F5F7F9;
+}
+
+.contentClass {
+    min-height: 600px;
+    background-color:transparent;
+}
+
+.logoRow {
+	height: 75px;
+}
+
+.alertRow {
+    margin-top: 10px;
+}
+
+.standardRow {
+	margin-top: 20px;
+}
+
+.buttonRow {
+	margin-top: 30px;
+}
+
+.backButtonCol {
+    text-align: right;
+    margin-right: 10px;
+}
+
+.nextButtonCol {
+    text-align: left;
+    margin-left: 10px;
+}
+
+.p1 {
+    font-size: 2.8em;
+    text-align: center;
+}
+
+.p2 {
+    font-size: 2.2em;
+    text-align: center;
+}
+
+.p3 {
+    margin-top:10px;
+    font-size:1.6em;
+    text-align:center;
+}
+
+.p4 {
+    margin-top:10px;
+    font-size:1.2em;
+    text-align:center;
+}
+
+.sidebarClass {
+    background: white !important;
+    border-radius: 10px !important;
+    margin:0 10px !important;
+    padding-top:15px !important;
+    padding-left:5px !important;
+}
