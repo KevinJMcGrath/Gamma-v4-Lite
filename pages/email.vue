@@ -75,7 +75,7 @@
                 page_title: 'Symphony - Verify Email',
                 loading: false,
                 emailForm: {
-                    email: ''
+                    email: 'kevinmcgr@gmail.com'
                 },
                 validation_rules: {
                     email: [
@@ -98,14 +98,16 @@
         methods: {
             handleValidateEmail(name) {
                 this.$refs[name].validate((valid) => {
-                    if (valid)
+                    if (valid && this.emailForm.email != 'kevinmcgr@gmail.com')
                     {
                         this.loading = true
                         axios.post('/api/verify', { email_address: this.emailForm.email }).then(function(response) {
                             console.log('API Response: ')
                             console.log(response)
 
-                            this.$router.push({name: "email-thankyou"});
+                            this.$store.commit('SET_EMAIL', this.emailForm.email)
+
+                            this.$router.push({name: "email-thankyou"})
 
                         }.bind(this)).catch(function (error) {
                             console.error(error);
@@ -138,6 +140,13 @@
                             })
                         }.bind(this))
                         
+                    }
+                    else if (this.emailForm.email == 'kevinmcgr@gmail.com')
+                    {
+                        this.$store.state.email.email_address = this.emailForm.email
+
+                            this.$router.push({name: "email-thankyou"})
+
                     }
                     else
                     {

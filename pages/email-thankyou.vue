@@ -1,49 +1,51 @@
 <template>
-    <div class="sym-layout">
-        <Layout>
-            <Header class="headerClass"></Header>
-            <Layout class="layoutClassEmail">
-                <Content class="contentClass">
-                    <Row type="flex" justify="center" class="logoRow">
-                        <i-col span=2 >
-                            <img src="../assets/images/SymphonyLogo.png" height=75/>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col :xs=24 :sm=18 :md=10 :lg=8>
-                            <p class="p1">Thank you!</p>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col :xs=18 :sm=16 :md=14 :lg=10>
-                            <p class="p3">
-                                You will receive an email from Symphony shortly with your verification link. 
-                                <br/><br/>
-                                If you do not receive this email, please check your spam folder or re-send the verification. 
-                            </p>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <!--<i-col span=3 > 
-                            <Button type="primary" size="large" @click="handleResendEmail()">Re-Send Verification</Button>
-                        </i-col>-->
-                        <i-col span=2 > <!--style="border:1px solid green;"-->
-                            <Button type="primary" size="large" @click="handleChangeEmail()">Start Over</Button>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col :xs=18 :sm=18 :md=12 :lg=12>
-                            <Alert show-icon>
-                                You may need to add symphony.com to your list of spam filter exceptions.
-                            </Alert>
-                        </i-col>
-                    </Row>
-                </Content>
-            </Layout>
-            <Footer>
+    <div class="lite-layout">
+        <div class="lite-header">
+            <div class="lite-header-logo"></div>
+        </div>
+        <div class="lite-banner">
+            <p>Sign up</p>
+        </div>
 
-            </Footer>
-        </Layout>
+        <div class="lite-body">
+            <Row>
+                <i-col span=4></i-col>
+                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+                    <Row>
+                        
+                        <i-col span=6>
+                            <img src="../assets/images/big-green-check.png" height="60px" />
+                        </i-col>
+                        <i-col span=16>
+                            <p style="color: #006caf;">Please check your inbox for next steps.</p>
+                            <div class="lite-container-row">
+                                We sent a confirmation email to: <b>{{ $store.state.email.email_address }}</b>
+                            </div>
+                            <div class="lite-container-row">
+                                <a class="lite-link-button" @click="handleResendEmail()">Resend email</a>
+                                <br/><br/>
+                                <a class="lite-link-button" @click="handleChangeEmail()">Enter new email address</a>
+                            </div>
+                        </i-col>
+                    
+                    
+                    </Row>
+
+                </i-col>
+                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                    <p>The Symphony Edge</p>
+                    <ul>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/lock.svg" height="20px"/></div>Lock-tight information security</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/check.svg" height="17px" /></div>Complies with global regulations</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/chat.svg" height="17px" /></div>Robust text, voice and video chat</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/refresh.svg" height="20px" /></div>Syncs with other productivity apps</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/mobile.svg" height="20px" /></div>Ideal for desktop and mobile users</li>
+                    </ul>
+
+                </i-col>
+                <i-col span=2></i-col>
+            </Row>
+        </div>
         
     </div>
 </template>
@@ -78,6 +80,7 @@
                });
             },
             handleChangeEmail() {
+                this.$store.commit('SET_EMAIL', '')
                 this.$router.push({ name: "email" });
             },
             handleStartInterview() {

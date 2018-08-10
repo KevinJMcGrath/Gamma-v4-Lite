@@ -102,6 +102,10 @@ body {
     border: none;
 }
 
+.lite-link-button {
+    color: #0395a1;
+}
+
 .sym-layout {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
