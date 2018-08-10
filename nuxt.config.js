@@ -10,6 +10,7 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://unpkg.com/iview@2.11.0/dist/styles/iview.css'},
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto'},
       { rel: 'stylesheet', href: '/common.css'}
     ],
     script: [

@@ -4,8 +4,102 @@
     src: url('/Roboto-Regular.ttf');
 }
 body {
+    font-family: Lato;
+   
+}
 
-    font-family: "MrRoboto";
+.lite-layout {
+    color: #333333;
+    width: 100%;
+    height: 600px;
+}
+
+.lite-header {
+    width: 100%;
+    height: 55px;
+    /*the fuck? Why does this change the whole thing?*/
+    /*border: 1px solid white; */
+}
+
+.lite-header-logo {
+    height: 30px;
+    width: 200px;
+    background-image: url("../assets/images/symphony-logo-nav-blue.svg");
+    background-repeat: no-repeat;  
+    background-size: 95%;
+    margin-top: 10px;
+}
+
+.lite-banner {
+    width: 100%;
+    height: 200px;
+    color: white;
+    background-image: url('../assets/images/fractal-bg.png');
+    background-repeat: no-repeat;
+    background-position-y: -20px;
+    display: inline-block;
+    /*border-top: 1px solid white;*/
+    /*border: 1px solid white; And this one too. Figure this out.*/
+}
+
+.lite-banner p {
+    width: 160px;
+    height: 60px;
+    margin-left: 120px;
+    margin-top: 100px;
+    font-size: 3.5em;
+}
+
+.lite-body {
+    padding-top: 20px;
+    padding-left: 15%;
+    height: 200px;
+    font-size: 14px;
+}
+
+.lite-col {
+    padding: 10px 20px;
+}
+
+.lite-col p {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+.lite-col ul {
+    list-style: none;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+.lite-col li {
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.sym-list-bullet {
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-right: 7px;
+
+}
+
+.lite-container-row {
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+}
+
+.lite-container-row input {
+    border: 2px solid #0395a1;
+}
+
+.button-style-1 {
+    border-radius: 4px;
+    background-color: #0395a1;
+    color: white;
+    border: none;
 }
 
 .sym-layout {

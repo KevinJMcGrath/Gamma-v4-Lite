@@ -12,6 +12,7 @@ dist
 
 # Archived Files
 archive
+*.old.vue
 
 # Secrets
 credentials

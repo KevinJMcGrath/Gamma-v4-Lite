@@ -1,53 +1,49 @@
 <template>
-    <div class="sym-layout">
-        <Layout>
-            <Header class="header-bg-fix"></Header>
-            <Layout class="layoutClassEmail">
-                <Content class="contentClass">
-                    <Row type="flex" justify="center" class="logoRow">
-                        <i-col span=2 >
-                            <img src="../assets/images/SymphonyLogo.png" height=75/>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col :xs=24 :sm=18 :md=10 :lg=8>
-                            <p class="p1">Verify your Email</p>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col :xs=18 :sm=12 :md=10 :lg=10>
-                            <p class="p3">
-                                Enter your email to receive a verification code and continue your sign up. 
-                            </p>
-                        </i-col>
-                    </Row>
-                    <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
-                        <Row :gutter=16 type="flex" justify="center" class="standardRow">
-                            <i-col span=8>
-                                <FormItem prop="email">
-                                    <i-input v-model="emailForm.email" placeholder="Enter your business email"></i-input>
-                                </FormItem>                                 
-                            </i-col>
-                        </Row>
-                    </Form>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col span=3>
-                            <Button type="primary" :loading="loading" size="large" @click="handleValidateEmail('emailForm')">Send Verification</Button>
-                        </i-col>
-                    </Row>
-                    <Row type="flex" justify="center" class="standardRow">
-                        <i-col :xs=18 :sm=16 :md=14 :lg=10>
-                            <p class="p4">
-                                Symphony is not accepting sign ups from non-business emails at this time, including GMail, Yahoo and Outlook.
-                            </p>
-                        </i-col>
-                    </Row>
-                </Content>
-            </Layout>
-            <Footer></Footer>
-        </Layout>
-        
-    </div>
+    <div class="lite-layout">
+        <div class="lite-header">
+            <div class="lite-header-logo"></div>
+        </div>
+        <div class="lite-banner">
+            <p>Sign up</p>
+        </div>
+
+        <div class="lite-body">
+            <Row>
+                <i-col span=4></i-col>
+                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+                    <p style="color: #006caf;">First, let's confirm your email address.</p>
+                    <div class="lite-container-row">
+                        We'll confirm your email to help protect your identity. Then we'll ask for your business and payment 
+                        information. 
+                    </div>
+                    <div class="lite-container-row" style="height:80px;">
+                        Business Email
+                        <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
+                            <FormItem prop="email">
+                                <i-input v-model="emailForm.email" placeholder="Enter your business email" ></i-input>
+                            </FormItem> 
+                        </Form>
+                    </div>
+                        <!--<Button type="primary" :loading="loading" size="large" @click="handleValidateEmail('emailForm')">Send Verification</Button>-->
+                    <div>
+                        <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Get Started</button>
+                    </div>
+                </i-col>
+                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                    <p>The Symphony Edge</p>
+                    <ul>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/lock.svg" height="20px"/></div>Lock-tight information security</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/check.svg" height="17px" /></div>Complies with global regulations</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/chat.svg" height="17px" /></div>Robust text, voice and video chat</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/refresh.svg" height="20px" /></div>Syncs with other productivity apps</li>
+                        <li><div class="sym-list-bullet"><img src="../assets/images/mobile.svg" height="20px" /></div>Ideal for desktop and mobile users</li>
+                    </ul>
+
+                </i-col>
+                <i-col span=2></i-col>
+            </Row>
+        </div>
+    </div>        
 </template>
 <script>
     const axios = require('axios')

@@ -19,7 +19,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "iview": "^2.11.0",    
+    "iview": "^2.11.0",
     "moment": "^2.22.0",
     "nuxt": "^1.4.0",
     "iview-loader": "^1.1.0",
