@@ -11,7 +11,7 @@ body {
 .lite-layout {
     color: #333333;
     width: 100%;
-    height: 600px;
+    height: 400px;
 }
 
 .lite-header {
@@ -61,34 +61,34 @@ body {
     padding: 10px 20px;
 }
 
-.lite-col p {
+.symphony-edge-header {
     font-size: 1.6em;
     font-weight: bold;
 }
 
-.lite-col ul {
+.symphony-edge-list {
     list-style: none;
     margin-top: 15px;
     margin-left: 10px;
 }
 
-.lite-col li {
+.symphony-edge-list li {
     margin: 10px 0;
     font-size: 1em;
 }
 
-.sym-list-bullet {
+.symphony-edge-list li > div {
     float: left;
     height: 20px;
     width: 20px;
     margin-right: 7px;
-
 }
 
 .lite-container-row {
     width: 100%;
     height: 40px;
     margin-top: 20px;
+    font-size: 1em;
 }
 
 .lite-container-row input {
@@ -104,6 +104,10 @@ body {
 
 .lite-link-button {
     color: #0395a1;
+}
+
+.timeline-content {
+    font-size: 14px;
 }
 
 .sym-layout {

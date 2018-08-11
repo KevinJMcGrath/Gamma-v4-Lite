@@ -1,8 +1,19 @@
 <template>
   <div>
+    <symphony-header/>
     <nuxt/>
   </div>
 </template>
+
+<script>
+  import SymphonyHeader from '~/components/SymphonyHeader.vue'
+
+  export default {
+    components: {
+      SymphonyHeader
+    }
+  }
+</script>
 
 <style>
 html {

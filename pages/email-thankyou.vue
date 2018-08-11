@@ -1,47 +1,28 @@
 <template>
     <div class="lite-layout">
-        <div class="lite-header">
-            <div class="lite-header-logo"></div>
-        </div>
-        <div class="lite-banner">
-            <p>Sign up</p>
-        </div>
-
         <div class="lite-body">
             <Row>
                 <i-col span=4></i-col>
                 <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
-                    <Row>
-                        
+                    <Row>                        
                         <i-col span=6>
                             <img src="../assets/images/big-green-check.png" height="60px" />
                         </i-col>
                         <i-col span=16>
-                            <p style="color: #006caf;">Please check your inbox for next steps.</p>
+                            <p class="symphony-edge-header" style="color: #006caf;">Please check your inbox for next steps.</p>
                             <div class="lite-container-row">
-                                We sent a confirmation email to: <b>{{ $store.state.email.email_address }}</b>
+                                We sent a confirmation email to: <b>{{ input_email }}</b>
                             </div>
                             <div class="lite-container-row">
                                 <a class="lite-link-button" @click="handleResendEmail()">Resend email</a>
                                 <br/><br/>
                                 <a class="lite-link-button" @click="handleChangeEmail()">Enter new email address</a>
                             </div>
-                        </i-col>
-                    
-                    
+                        </i-col>                    
                     </Row>
-
                 </i-col>
                 <i-col span=8 type="flex" justify="center"  class="lite-col">
-                    <p>The Symphony Edge</p>
-                    <ul>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/lock.svg" height="20px"/></div>Lock-tight information security</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/check.svg" height="17px" /></div>Complies with global regulations</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/chat.svg" height="17px" /></div>Robust text, voice and video chat</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/refresh.svg" height="20px" /></div>Syncs with other productivity apps</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/mobile.svg" height="20px" /></div>Ideal for desktop and mobile users</li>
-                    </ul>
-
+                    <symphony-edge/>
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
@@ -50,6 +31,8 @@
     </div>
 </template>
 <script>
+    import SymphonyEdge from '~/components/SymphonyEdge.vue'
+    const axios = require('axios')
 
     export default {
         data() {            
@@ -68,23 +51,90 @@
                 
             }
         },
+        fetch({ store, params, query, redirect }) {
+            console.log('email from vuex: ' + store.state.email.email_address)
+            if(!store.state.email.email_address)
+            {
+                //Load query parameters
+                if (query.qid)
+                {
+                    // If you reload the page, the page is rendered serverside. The axios call on the server
+                    // requires the base url to be explicitly set. 
+                    // NOTE: Make sure to check this to ensure process.env.HOST/PORT are being set properly
+                    // on GCP
+                    let options = {}
+                    if (process.server) {
+                        options.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 8080}`                        
+                    }
+                                        
+                    //http://localhost:8080
+                    return axios.post('/api/decode64', { message: query.qid }, options).then(function(response) {
+
+                        let email_decoded = response.data.decoded  
+                        
+                        // This is wrong. Either I don't have access to the computed functions 
+                        // or you have to call them differently from the fetch() method
+                        // this.input_email = email_decoded
+
+                        // Correct way to update the store
+                        store.commit('SET_EMAIL', email_decoded)
+                        //console.log('email from store: ' + store.state.email.email_address)
+
+                    }.bind(this)).catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response.data)
+                            console.log(error.response.status)
+                            console.log(error.response.headers)
+                        }
+                        else if (error.request) {
+                            console.log(error.request)
+                        }
+                        else {
+                            console.log('Error: ' + error.message)
+                        }
+                    })                    
+                }
+                else
+                {
+                    //I might need to return an error here instead.
+                    redirect('/email')
+                }
+            }
+            
+        },
         mounted: function() {
-                this.emailAddress = this.$store.state.email.email_address
+                console.log('running mounted function')
+
+                // I'm going to leave this here as a reminder. I'm pretty sure I was screwing up the flow
+                // by trying to set this value here after the fetch() method ran. Since I have the computed property
+                // defined, after the fetch() is called and the store is updated, the getter correctly populates the
+                // email address in the component body. 
+                //this.input_email = this.$store.state.email.email_address
         },
         methods: {
             handleResendEmail() {
                this.$Notice.success({
                 title: 'Email verification Re-sent',
-                desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.emailAddress + '</p>Click Change Email to use a different address.',
+                desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click Change Email to use a different address.',
                 duration: 6
                });
             },
             handleChangeEmail() {
                 this.$store.commit('SET_EMAIL', '')
                 this.$router.push({ name: "email" });
-            },
-            handleStartInterview() {
-                this.$router.push( { name: "contact" });
+            }
+        },
+        components: {
+            SymphonyEdge
+        },
+        computed: {
+            input_email: {
+                get () {
+                    return this.$store.state.email.email_address
+                },
+                set (value) {
+                    this.$store.commit('SET_EMAIL', value)
+                }
             }
         }
     }

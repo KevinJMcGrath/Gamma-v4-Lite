@@ -1,98 +1,72 @@
 <template>
-    <div class="sym-layout">
-        <Layout>
-            <Header class="headerClass"></Header>
-            <Layout class="layoutClass">
-                <Sider hide-trigger class="sidebarClass">
-                    <Steps :current="0" direction="vertical">
-                        <Step title="Profile" content="Your contact information"></Step>
-                        <Step title="Organization" content="Some details about your company"></Step>
-                        <Step title="Settings" content="Choose the right Symphony settings for your team"></Step>
-                        <Step title="Terms of Service" content="Symphony terms and conditions"></Step>
-                        <Step title="Billing" content="Enter your payment information"></Step>
-                        <Step title="Confirmation" content="Review and confirm your information"></Step>
-                        <Step title="Get Started!" content=""></Step>
-                    </Steps>
-                </Sider>
-                <Content class="contentClass">
-                    <Layout class="invisibleLayout">
-                        <Row type="flex" justify="center" class="logoRow">
-                            <i-col span=2 >
-                                <img src="../assets/images/Contact-Icon.png" height=75/>
-                            </i-col>
-                        </Row>
-                        <Row type="flex" justify="center" class="standardRow">
-                            <i-col :xs=24 :sm=18 :md=10 :lg=8> <!--span=6-->
-                                <p class="p2">Profile</p>
-                            </i-col>
-                        </Row>                        
-                        <Row type="flex" justify="center" class="standardRow">
-                            <i-col :xs=24 :sm=20 :md=18 :lg=16><!--span=16-->
-                                <p class="p4">
-                                    Congratulations! You're the first person on your Symphony team, which makes you the team admin. As team admin, you will help
-                                    tailor Symphony to your organization's secure collaboration needs.<br/>
-                                    First, we need some information to set up your profile. 
-                                </p>
-                            </i-col>
-                        </Row>
-                        <Row type="flex" justify="center" class="standardRow">
-                            <i-col :xs=20 :sm=20 :md=12 :lg=10>
-                                <Form ref="contactForm" :model="contactForm" :label-width="100" :rules="validation_rules">
-                                    <FormItem label="First Name" prop="firstname">                                        
-                                        <Row :gutter=8>
-                                            <i-col span=20>
+    <div class="lite-layout">
+        <div class="lite-body">
+            <Row>
+                <i-col span=4></i-col>
+                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+                    <Timeline>
+                        <TimelineItem>
+                            <p style="color: #006caf;font-size:1.6em;">Your Information</p>
+                            <div class="timeline-content" style="height:375px;">
+                            <Form ref="contactForm" :model="contactForm" :rules="validation_rules"> <!--:label-width="100" -->
+                                <div class="lite-container-row"> 
+                                    Email Address<br/>
+                                    <b>{{ input_email }}</b><br/>
+                                </div>
+                                <div class="lite-container-row" style="height:60px;"> 
+                                    <Row :gutter="4">
+                                        <i-col span=12>
+                                            First Name<br/>
+                                            <FormItem prop="firstname"> 
                                                 <i-input v-model="input_firstname"></i-input>
-                                            </i-col>
-                                            <i-col span=2>
-                                                
-                                            </i-col>
-                                        </Row>
-                                    </FormItem>
-                                    <FormItem label="Last Name" prop="lastname">
-                                        <Row :gutter=8>
-                                            <i-col span=20>
+                                            </FormItem>
+                                        </i-col>
+                                        <i-col span=12>
+                                            Last Name<br/>
+                                            <FormItem prop="lastname"> 
                                                 <i-input v-model="input_lastname"></i-input>
-                                            </i-col>
-                                            <i-col span=2>
-                                                
-                                            </i-col>
-                                        </Row>
+                                            </FormItem>
+                                        </i-col>                                    
+                                    </Row>
+                                </div>
+                                <div class="lite-container-row" style="height:70px;"> 
+                                    Daytime Phone Number<br/>
+                                    <FormItem prop="phone"> 
+                                        <!--<i-input v-model="input_phone"></i-input>-->
+                                        <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
+                                        <vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>
                                     </FormItem>
-                                    <FormItem label="Phone" prop="phone">
-                                        <Row :gutter=8>
-                                            <i-col span=20>
-                                                <i-input v-model="input_phone"></i-input>
-                                            </i-col>
-                                            <i-col span=2>
-                                                <Tooltip placement="right">
-                                                    <Icon type="help-circled" color="steelblue" size="15"></Icon>
-                                                    <div slot="content">
-                                                        <p>Phone number where Symphony can reach <br/>
-                                                        you during business hours (9am-5pm EST)</p>
-                                                    </div>
-                                                </Tooltip>
-                                            </i-col>
-                                        </Row>                                        
-                                    </FormItem>
-                                </Form>
-                            </i-col>
-                        </Row>
-                        <Row type="flex" justify="center" class="buttonRow">
-                            <i-col :xs=5 :sm=4 :md=3 :lg=2 class-name="backButtonCol"> 
-                                <Button type="primary" size="large" @click="handleBackButton">Back</Button>
-                            </i-col>
-                            <i-col :xs=6 :sm=5 :md=4 :lg=3 class-name="nextButtonCol">
-                                <Button type="primary" size="large" @click="handleGotoCompany">Continue</Button>
-                            </i-col>
-                        </Row>
-                    </Layout>
-                </Content>
-            </Layout>
-            <Footer></Footer>
-        </Layout>
+                                </div>
+                                <div>
+                                    <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Next</button>
+                                </div>
+                            </Form>
+                            </div>
+                        </TimelineItem>
+                        <TimelineItem>
+                            <p>Business Information</p>
+                        </TimelineItem>
+                        <TimelineItem>
+                            <p>Billing</p>
+                        </TimelineItem>
+                        <TimelineItem>
+                            <p>Review</p>
+                        </TimelineItem>
+
+                    </Timeline>
+                </i-col>
+                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                    <symphony-edge/>
+                </i-col>
+                <i-col span=2></i-col>
+            </Row>
+        </div>
     </div>  
 </template>
 <script>
+    import SymphonyEdge from '~/components/SymphonyEdge.vue'
+    
+
     export default {
         data() {
             return {
@@ -126,7 +100,7 @@
             }
         },
         fetch({ store, params, query, redirect }) {
-
+            //http://localhost:8080/contact?sseid=1234567890&email=kevinmcgr@gmail.com
             if(!(store.state.status.guid && store.state.email.email_address))
             {
                 //Load query parameters
@@ -150,6 +124,8 @@
             this.contactForm.firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
             this.contactForm.phone = this.$store.state.user.phone
+
+            //this.$els.phone-input
         },
         computed: {
             // Using computed properties for two-way binding with Vuex
@@ -180,6 +156,11 @@
                     this.contactForm.phone = value;
                     this.$store.commit('SET_PHONE', value)
                 }
+            },
+            input_email: {
+                get() {
+                    return this.$store.state.email.email_address
+                }
             }
         },
         methods: {
@@ -200,7 +181,13 @@
             },
             handleBackButton() {
                 this.$router.push({ name: "index" })                
+            },
+            handlePhoneValidation({number, isValid, country}) {
+                console.log(number, isValid, country)
             }
+        },
+        components: {
+            SymphonyEdge
         }
     }
 </script>

@@ -1,17 +1,10 @@
 <template>
     <div class="lite-layout">
-        <div class="lite-header">
-            <div class="lite-header-logo"></div>
-        </div>
-        <div class="lite-banner">
-            <p>Sign up</p>
-        </div>
-
         <div class="lite-body">
             <Row>
                 <i-col span=4></i-col>
                 <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
-                    <p style="color: #006caf;">First, let's confirm your email address.</p>
+                    <p class="symphony-edge-header" style="color: #006caf;">First, let's confirm your email address.</p>
                     <div class="lite-container-row">
                         We'll confirm your email to help protect your identity. Then we'll ask for your business and payment 
                         information. 
@@ -30,15 +23,7 @@
                     </div>
                 </i-col>
                 <i-col span=8 type="flex" justify="center"  class="lite-col">
-                    <p>The Symphony Edge</p>
-                    <ul>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/lock.svg" height="20px"/></div>Lock-tight information security</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/check.svg" height="17px" /></div>Complies with global regulations</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/chat.svg" height="17px" /></div>Robust text, voice and video chat</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/refresh.svg" height="20px" /></div>Syncs with other productivity apps</li>
-                        <li><div class="sym-list-bullet"><img src="../assets/images/mobile.svg" height="20px" /></div>Ideal for desktop and mobile users</li>
-                    </ul>
-
+                    <symphony-edge/>
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
@@ -46,6 +31,7 @@
     </div>        
 </template>
 <script>
+    import SymphonyEdge from '~/components/SymphonyEdge.vue'
     const axios = require('axios')
 
     export default {
@@ -102,15 +88,12 @@
                     {
                         this.loading = true
                         axios.post('/api/verify', { email_address: this.emailForm.email }).then(function(response) {
-                            console.log('API Response: ')
-                            console.log(response)
 
                             this.$store.commit('SET_EMAIL', this.emailForm.email)
-
-                            this.$router.push({name: "email-thankyou"})
+                            this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
 
                         }.bind(this)).catch(function (error) {
-                            console.error(error);
+                            //console.error(error);
                             this.loading = false
 
                             let d = 'There was a problem completing your verification request. '
@@ -130,8 +113,7 @@
                                     default:
                                         break
                                 }
-                            }
-                            
+                            }                           
 
                             this.$Notice.error({
                                 title: 'Error Verifying Email Address',
@@ -143,10 +125,26 @@
                     }
                     else if (this.emailForm.email == 'kevinmcgr@gmail.com')
                     {
-                        this.$store.state.email.email_address = this.emailForm.email
+                        axios.post('/api/encode64', { message: this.emailForm.email }).then(function(response) {
 
-                            this.$router.push({name: "email-thankyou"})
+                            this.$store.commit('SET_EMAIL', this.emailForm.email)
 
+                            this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
+
+
+                        }.bind(this)).catch(function (error) {
+                            if (error.response) {
+                                console.log(error.response.data)
+                                console.log(error.response.status)
+                                console.log(error.response.headers)
+                            }
+                            else if (error.request) {
+                                console.log(error.request)
+                            }
+                            else {
+                                console.log('Error: ' + error.message)
+                            }
+                        })
                     }
                     else
                     {
@@ -154,6 +152,9 @@
                     }
                 })                
             }
+        },
+        components: {
+            SymphonyEdge
         }
     }
 </script>
