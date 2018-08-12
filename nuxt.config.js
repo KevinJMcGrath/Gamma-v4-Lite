@@ -11,17 +11,17 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://unpkg.com/iview@2.11.0/dist/styles/iview.css'},
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto'},
-      //{ rel: 'stylesheet', href: '../dist/intl-tel-input/css/intlTelInput.css'},
+      //{ rel: 'stylesheet', href: 'intl-tel-input/css/intlTelInput.css'},
       { rel: 'stylesheet', href: '/common.css'}
     ],
     script: [
       { hid: 'stripe', src: 'https://js.stripe.com/v3/'}//,
-      //{ hid: 'intl-tel-input', src: '../dist/intl-tel-input/js/intlTelInput.js'}
+      //{ hid: 'intl-tel-input', src: 'intl-tel-input/js/intlTelInput.js'}
     ]
   },
   css: [
-    '~/static/common.css',
-    'vue-tel-input/dist/vue-tel-input.css'
+    '~/static/common.css'//,
+    //'vue-tel-input/dist/vue-tel-input.css' //2
   ],
 
   loading: { color: '#3B8070' },
@@ -31,8 +31,8 @@ module.exports = {
     extractCSS: true,
 
     vendor: [
-      'iview',
-      'vue-tel-input'      
+      'iview'//,
+      //'vue-tel-input'      //1
     ],
 
     extend (config, { isDev, isClient }) {
@@ -67,7 +67,7 @@ module.exports = {
 
   //Working - 3/31/2018
   plugins: [
-    { src: '~/plugins/iview.js', ssr: true},
-    { src: '~/plugins/vue-tele.js', ssr: true}
+    { src: '~/plugins/iview.js', ssr: true}//,
+    //{ src: '~/plugins/vue-tele.js', ssr: true} //3
   ]
 }

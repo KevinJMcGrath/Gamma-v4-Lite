@@ -7,7 +7,7 @@
                     <Timeline>
                         <TimelineItem>
                             <p style="color: #006caf;font-size:1.6em;">Your Information</p>
-                            <div class="timeline-content" style="height:375px;">
+                            <div class="timeline-content" style="height:280px;">
                             <Form ref="contactForm" :model="contactForm" :rules="validation_rules"> <!--:label-width="100" -->
                                 <div class="lite-container-row"> 
                                     Email Address<br/>
@@ -34,17 +34,17 @@
                                     <FormItem prop="phone"> 
                                         <!--<i-input v-model="input_phone"></i-input>-->
                                         <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
-                                        <vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>
+                                        <!--<vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>-->
                                     </FormItem>
                                 </div>
                                 <div>
-                                    <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Next</button>
+                                    <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
                                 </div>
                             </Form>
                             </div>
                         </TimelineItem>
                         <TimelineItem>
-                            <p>Business Information</p>
+                            <p>Company Information</p>
                         </TimelineItem>
                         <TimelineItem>
                             <p>Billing</p>
@@ -164,7 +164,7 @@
             }
         },
         methods: {
-            handleGotoCompany () {
+            handleGotoBilling () {
 
                 this.$refs['contactForm'].validate((valid) => {
                     if (valid)

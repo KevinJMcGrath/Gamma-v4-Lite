@@ -1,104 +1,68 @@
 <template>
-    <div class="sym-layout">
-        <Layout>
-            <Header class="headerClass"></Header>
-            <Layout>
-                <Sider hide-trigger class="sidebarClass">
-                    <Steps :current="4" direction="vertical">
-                        <Step title="Profile" content="Your contact information"></Step>
-                        <Step title="Organization" content="Some details about your company"></Step>
-                        <Step title="Settings" content="Choose the right Symphony settings for your team"></Step>
-                        <Step title="Terms of Service" content="Symphony terms and conditions"></Step>
-                        <Step title="Billing" content="Enter your payment information"></Step>
-                        <Step title="Confirmation" content="Review and confirm your information"></Step>
-                        <Step title="Get Started!" content=""></Step>
-                    </Steps>
-                </Sider>
-                <Content class="contentClass">
-                    <Layout class="invisibleLayout">
-                        <Row type="flex" justify="center" class="logoRow">
-                            <i-col span=2 >
-                                <img src="../assets/images/Billing-Icon.png" height=75/>
-                            </i-col>
-                        </Row>
-                        <Row type="flex" justify="center" class="standardRow">
-                            <i-col :xs=24 :sm=18 :md=10 :lg=8>
-                                <p class="p2">Billing</p>
-                            </i-col>
-                        </Row>
-                        <Row type="flex" justify="center" class="standardRow">
-                            <i-col :xs=24 :sm=20 :md=18 :lg=16>
-                                <p class="p4">
-                                    Please provide  your payment information. Symphony uses <a href="#">Stripe</a> to process payments to provide you an easy, secure experience.  
-                                </p>
-                            </i-col>
-                        </Row>
+    <div class="lite-layout">
+        <div class="lite-body">
+            <Row>
+                <i-col span=4></i-col>
+                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+                    <Timeline>
+                        <TimelineItem>
+                            <p style="color: #0395a1;">Your Information</p>
+                        </TimelineItem>
+                        <TimelineItem>
+                            <p style="color: #006caf;font-size:1.6em;">Company Information</p>
+                            <div class="timeline-content" style="height:280px;">
+                            <Form ref="billingForm" :model="billingForm" :rules="validation_rules">
+                                <div class="lite-container-row"> 
+                                    Company Legal Name<br/>
+                                    <FormItem prop="phone"> 
+                                        <i-input v-model="input_phone"></i-input>
+                                    </FormItem>
+                                </div>
+                                <div class="lite-container-row" style="height:60px;"> 
+                                    <Row :gutter="4">
+                                        <i-col span=12>
+                                            First Name<br/>
+                                            <FormItem prop="firstname"> 
+                                                <i-input v-model="input_firstname"></i-input>
+                                            </FormItem>
+                                        </i-col>
+                                        <i-col span=12>
+                                            Last Name<br/>
+                                            <FormItem prop="lastname"> 
+                                                <i-input v-model="input_lastname"></i-input>
+                                            </FormItem>
+                                        </i-col>                                    
+                                    </Row>
+                                </div>
+                                <div class="lite-container-row" style="height:70px;"> 
+                                    Daytime Phone Number<br/>
+                                    <FormItem prop="phone"> 
+                                        <!--<i-input v-model="input_phone"></i-input>-->
+                                        <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
+                                        <!--<vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>-->
+                                    </FormItem>
+                                </div>
+                                <div>
+                                    <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
+                                </div>
+                            </Form>
+                            </div>
+                        </TimelineItem>
+                        <TimelineItem>
+                            <p>Billing</p>
+                        </TimelineItem>
+                        <TimelineItem>
+                            <p>Review</p>
+                        </TimelineItem>
 
-                        <Form ref="billingForm" :model="billingForm" :label-width="150" :rules="validation_rules">
-                        <Row type="flex" justify="center"  class="standardRow">
-                            <i-col :xs=20 :sm=20 :md=18 :lg=14>
-                                <Card>
-                                    <p slot="title">Payment Details</p>
-                                    <p>
-                                        <Row type="flex" justify="center">
-                                            <i-col span=18>
-                                                <div class="stripeBox">
-                                                    <div id="card-element"></div>
-                                                </div>
-                                                <p style="color: #ED3F14; font-size: 0.9em;">{{billingForm.stripeError.message}}</p>
-                                            </i-col>
-                                        </Row>
-                                        <Row>
-                                            <i-col span=24>
-                                                <FormItem :label-width=10 prop="address1">
-                                                    <i-input v-model="input_add1" placeholder="Street Address"></i-input>
-                                                </FormItem>
-                                            </i-col>
-                                        </Row>
-                                        <Row>
-                                            <i-col span=10>
-                                                <FormItem :label-width=10 prop="city">
-                                                    <i-input v-model="input_city" placeholder="City"></i-input>
-                                                </FormItem>
-                                            </i-col>
-                                            <i-col span=6 >
-                                                <FormItem :label-width=10 prop="state">
-                                                    <i-input v-model="input_state" placeholder="State"></i-input>
-                                                </FormItem>
-                                            </i-col>
-                                            <i-col span=8>
-                                                <FormItem :label-width=10 prop="zip_code">
-                                                    <i-input v-model="input_zip" placeholder="ZIP"></i-input>
-                                                </FormItem>
-                                            </i-col>
-                                        </Row>
-                                    </p>
-                                </Card>
-                            </i-col>
-                        </Row>
-                        </Form>
-
-                        <Row type="flex" justify="center" class="standardRow">
-                            <i-col :xs=24 :sm=20 :md=18 :lg=16>
-                                <Alert show-icon>
-                                    Your credit card will <b>not</b> be charged until you receive your login information.
-                                </Alert>
-                            </i-col>
-                        </Row>
-
-                        <Row type="flex" justify="center" class="buttonRow">
-                            <i-col :xs=5 :sm=4 :md=3 :lg=2 class-name="backButtonCol">
-                                <Button type="primary" size="large" @click="handleGotoLegal">Back</Button>
-                            </i-col>
-                            <i-col :xs=6 :sm=5 :md=4 :lg=3 class-name="nextButtonCol">
-                                <Button type="primary" :loading="loading" size="large" @click="handleGotoSummary">Continue</Button>
-                            </i-col>
-                        </Row>
-                    </Layout>
-                </Content>
-            </Layout>
-            <Footer></Footer>
-        </Layout>
+                    </Timeline>
+                </i-col>
+                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                    <symphony-edge/>
+                </i-col>
+                <i-col span=2></i-col>
+            </Row>
+        </div>       
     </div>  
 </template>
    
