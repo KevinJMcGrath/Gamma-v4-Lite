@@ -1,9 +1,9 @@
 <template>
     <div class="lite-layout">
         <div class="lite-body">
-            <Row>
+            <Row type="flex" justify="center">
                 <i-col span=4></i-col>
-                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=10 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem>
                             <p style="color: #006caf;font-size:1.6em;">Your Information</p>
@@ -55,7 +55,7 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                <i-col span=8 class="lite-col">
                     <symphony-edge/>
                 </i-col>
                 <i-col span=2></i-col>

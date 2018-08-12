@@ -1,9 +1,8 @@
 <template>
     <div class="lite-layout">
         <div class="lite-body">
-            <Row>
-                <i-col span=4></i-col>
-                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+            <Row type="flex" justify="center">
+                <i-col span=10 offset=4 class="lite-col" style="border-right: 1px solid lightgray;">
                     <p class="symphony-edge-header" style="color: #006caf;">First, let's confirm your email address.</p>
                     <div class="lite-container-row">
                         We'll confirm your email to help protect your identity. Then we'll ask for your business and payment 
@@ -22,7 +21,7 @@
                         <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Get Started</button>
                     </div>
                 </i-col>
-                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                <i-col span=8 class="lite-col">
                     <symphony-edge/>
                 </i-col>
                 <i-col span=2></i-col>

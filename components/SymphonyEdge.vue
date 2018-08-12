@@ -10,3 +10,30 @@
         </ul>
     </div>
 </template>
+
+<style scoped>
+
+    .symphony-edge-header {
+        font-size: 1.6em;
+        font-weight: bold;
+    }
+
+    .symphony-edge-list {
+        list-style: none;
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+
+    .symphony-edge-list li {
+        margin: 10px 0;
+        font-size: 1em;
+    }
+
+    .symphony-edge-list li > div {
+        float: left;
+        height: 20px;
+        width: 20px;
+        margin-right: 7px;
+    }
+
+</style>

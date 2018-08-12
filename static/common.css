@@ -10,8 +10,8 @@ body {
 
 .lite-layout {
     color: #333333;
-    width: 100%;
-    height: 400px;
+    /*width: 100%;
+    height: 400px;*/
 }
 
 .lite-header {
@@ -51,9 +51,10 @@ body {
 }
 
 .lite-body {
-    padding-top: 20px;
+    /*padding-top: 20px;
     padding-left: 15%;
-    height: 200px;
+    height: 200px;*/
+    margin-top: 25px;
     font-size: 14px;
 }
 

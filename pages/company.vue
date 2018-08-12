@@ -1,9 +1,8 @@
 <template>
     <div class="lite-layout">
         <div class="lite-body">
-            <Row>
-                <i-col span=4></i-col>
-                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+            <Row type="flex" justify="center">
+                <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem>
                             <p style="color: #0395a1;">Your Information</p>
@@ -81,7 +80,8 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=8 type="flex" justify="center"  class="lite-col">
+                <i-col span=6 class="lite-col">
+                    <symphony-billing />
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
@@ -90,6 +90,7 @@
     </div>  
 </template>
 <script>
+    import SymphonyBilling from '~/components/SymphonyBilling.vue'
 
     export default {
         data() {
@@ -183,6 +184,9 @@
             modal_ok() {
 
             }
+        },
+        components: {
+            SymphonyBilling
         }
     }
 </script>

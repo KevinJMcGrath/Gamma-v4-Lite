@@ -22,7 +22,8 @@ const store = () => new Vuex.Store({
 		user: {
 			firstname: '',
 			lastname: '',
-			phone: ''
+			phone: '',
+			country_code: 'us'
 		},
 		company: {
 			name: '',
