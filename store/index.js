@@ -120,6 +120,9 @@ const store = () => new Vuex.Store({
 		SET_ZIP(state, zip_code) {
 			state.billing.zip_code = zip_code
 		},
+		SET_COUNTRY(state, country) {
+			state.billing.country = country
+		},
 		SET_STRIPE_TOKEN(state, tokenObj) {
 			state.billing.stripe_token = tokenObj
 		},
@@ -156,7 +159,36 @@ const store = () => new Vuex.Store({
 				return ''
 			}
 			
+		},
+		getPaymentLast4: (state) => {
+			if (state.billing.stripe_token && state.billing.stripe_token.card && state.billing.stripe_token.card.last4) {
+					return state.billing.stripe_token.card.last4
+			}
+
+			return '1234'
+		},
+		getPaymentBrand: (state) => {
+			if (state.billing.stripe_token && state.billing.stripe_token.card && state.billing.stripe_token.card.brand) {
+					return state.billing.stripe_token.card.brand
+				}
+			
+			return 'visa'
+		},
+		getPaymentExpMon: (state) => {
+			if (state.billing.stripe_token && state.billing.stripe_token.card && state.billing.stripe_token.card.exp_month) {
+					return state.billing.stripe_token.card.exp_month
+				}
+			
+			return '01'
+		}, 
+		getPaymentExpYear: (state) => {
+			if (state.billing.stripe_token && state.billing.stripe_token.card && state.billing.stripe_token.card.exp_year) {
+					return state.billing.stripe_token.card.exp_year
+				}
+			
+			return '30'
 		}
+
 	},	
 	actions: {
 		async nuxtServerInit({ commit }, { req, res }) {

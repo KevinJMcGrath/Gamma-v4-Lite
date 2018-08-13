@@ -17,7 +17,7 @@
                         <TimelineItem>
                             <p class="timeline-current-label">Billing</p>
                             <div class="timeline-spacer"></div> 
-                            <div class="timeline-content" style="height:900px;">
+                            <div class="timeline-content" style="height:700px;">
                                 <p class="timeline-billing-subgroup">Card Info</p>
                                 <Form ref="billingForm" :model="billingForm" :rules="validation_rules">
                                     <div class="lite-container-row"> 
