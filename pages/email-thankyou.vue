@@ -8,7 +8,7 @@
                             <img src="../assets/images/big-green-check.png" height="60px" />
                         </i-col>
                         <i-col span=16>
-                            <p class="symphony-edge-header" style="color: #006caf;">Please check your inbox for next steps.</p>
+                            <p class="info-header">Please check your inbox for next steps.</p>
                             <div class="lite-container-row">
                                 We sent a confirmation email to: <b>{{ input_email }}</b>
                             </div>
@@ -139,5 +139,10 @@
     }
 </script>
 <style scoped>
-   
+   .info-header {
+        font-size: 1.6em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #006caf;
+    }
 </style>

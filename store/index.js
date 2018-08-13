@@ -2,6 +2,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+//import { stat } from 'fs';
 
 //const fs = (process.server ? require('fs') : null)
 const moment = require('moment')
@@ -38,6 +39,7 @@ const store = () => new Vuex.Store({
 			terms_accepted: false
 		},
 		billing: {
+			card_fullname: '',
 			payment_type: '',
 			address1: '',
 			address2: '',
@@ -79,6 +81,9 @@ const store = () => new Vuex.Store({
 		SET_PHONE(state, phone) {
 			state.user.phone = phone
 		},
+		SET_COUNTRYCODE(state, country_code) {
+			state.user.country_code = country_code
+		},
 		SET_COMPANY(state, company) {
 			state.company.name = company
 		},
@@ -96,6 +101,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_TANDC(state, terms_accepted) {
 			state.legal.terms_accepted = terms_accepted
+		},
+		SET_CARD_FULLNAME(state, fullname) {
+			state.billing.card_fullname = fullname
 		},
 		SET_ADD1(state, address1) {
 			state.billing.address1 = address1
@@ -173,7 +181,7 @@ function SetLog(logActivity)
 	console.log(moment().format('MM-DD-YYYY HH:mm:ss.SSS Z') + ' | ' + logActivity + ' | ' + processExe)
 }
 
-function testFunc2() {
+/*function testFunc2() {
 	return new Promise((resolve, reject) => {
 		console.log('Executing timeout')
 		setTimeout(() => {
@@ -181,9 +189,9 @@ function testFunc2() {
 			resolve(vnum)
 		}, 5000)
 	})
-}
+}*/
 
-function getData() {
+/*function getData() {
 	return new Promise(function(resolve, reject) {
 		const fs = (process.server ? require('fs') : null)
 		let fileName = './static/index.txt'
@@ -203,7 +211,7 @@ function getData() {
 			resolve('shrug')
 		}
 	})
-}
+}*/
 
 //DON'T FORGET THIS PART
 export default store

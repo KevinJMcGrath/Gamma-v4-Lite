@@ -3,12 +3,12 @@
         <div class="lite-body">
             <Row type="flex" justify="center">
                 <i-col span=10 offset=4 class="lite-col" style="border-right: 1px solid lightgray;">
-                    <p class="symphony-edge-header" style="color: #006caf;">First, let's confirm your email address.</p>
+                    <p class="info-header">First, let's confirm your email address.</p>
                     <div class="lite-container-row">
                         We'll confirm your email to help protect your identity. Then we'll ask for your business and payment 
                         information. 
                     </div>
-                    <div class="lite-container-row" style="height:80px;">
+                    <div class="lite-container-row">
                         Business Email
                         <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
                             <FormItem prop="email">
@@ -158,5 +158,10 @@
     }
 </script>
 <style scoped>
-
+    .info-header {
+        font-size: 1.6em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #006caf;
+    }
 </style>

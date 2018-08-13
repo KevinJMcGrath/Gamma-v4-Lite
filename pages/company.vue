@@ -1,14 +1,17 @@
 <template>
-    <div class="lite-layout">
+    <div class="lite-layout">        
         <div class="lite-body">
             <Row type="flex" justify="center">
                 <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
-                        <TimelineItem>
-                            <p style="color: #0395a1;">Your Information</p>
+                        <TimelineItem class="completed-icon" color="#0395a1">
+                            <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
+                            <p class="timeline-completed-label">Your Information</p>
+                            <div class="timeline-spacer"></div>
                         </TimelineItem>
                         <TimelineItem>
-                            <p style="color: #006caf;font-size:1.6em;">Company Information</p>
+                            <p class="timeline-current-label">Company Information</p>
+                            <div class="timeline-spacer"></div>   
                             <div class="timeline-content" style="height:280px;">
                                 <Form :model="companyForm" :rules="validation_rules">
                                     <div class="lite-container-row"> 
@@ -190,7 +193,6 @@
         }
     }
 </script>
-<style scoped>
-
-
+<style >
+    
 </style>

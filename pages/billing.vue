@@ -1,55 +1,108 @@
 <template>
     <div class="lite-layout">
         <div class="lite-body">
-            <Row>
-                <i-col span=4></i-col>
-                <i-col span=10 type="flex" justify="center" class="lite-col" style="border-right: 1px solid lightgray;">
+            <Row type="flex" justify="center">
+                <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
-                        <TimelineItem>
-                            <p style="color: #0395a1;">Your Information</p>
+                        <TimelineItem class="completed-icon" color="#0395a1">
+                            <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
+                            <p class="timeline-completed-label">Your Information</p>
+                            <div class="timeline-spacer"></div>
+                        </TimelineItem>
+                        <TimelineItem class="completed-icon" color="#0395a1">
+                            <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
+                            <p class="timeline-completed-label">Company Information</p>
+                            <div class="timeline-spacer"></div>
                         </TimelineItem>
                         <TimelineItem>
-                            <p style="color: #006caf;font-size:1.6em;">Company Information</p>
-                            <div class="timeline-content" style="height:280px;">
-                            <Form ref="billingForm" :model="billingForm" :rules="validation_rules">
-                                <div class="lite-container-row"> 
-                                    Company Legal Name<br/>
-                                    <FormItem prop="phone"> 
-                                        <i-input v-model="input_phone"></i-input>
-                                    </FormItem>
-                                </div>
-                                <div class="lite-container-row" style="height:60px;"> 
-                                    <Row :gutter="4">
-                                        <i-col span=12>
-                                            First Name<br/>
-                                            <FormItem prop="firstname"> 
-                                                <i-input v-model="input_firstname"></i-input>
-                                            </FormItem>
-                                        </i-col>
-                                        <i-col span=12>
-                                            Last Name<br/>
-                                            <FormItem prop="lastname"> 
-                                                <i-input v-model="input_lastname"></i-input>
-                                            </FormItem>
-                                        </i-col>                                    
-                                    </Row>
-                                </div>
-                                <div class="lite-container-row" style="height:70px;"> 
-                                    Daytime Phone Number<br/>
-                                    <FormItem prop="phone"> 
-                                        <!--<i-input v-model="input_phone"></i-input>-->
-                                        <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
-                                        <!--<vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>-->
-                                    </FormItem>
-                                </div>
-                                <div>
-                                    <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
-                                </div>
-                            </Form>
+                            <p class="timeline-current-label">Billing</p>
+                            <div class="timeline-spacer"></div> 
+                            <div class="timeline-content" style="height:900px;">
+                                <p class="timeline-billing-subgroup">Card Info</p>
+                                <Form ref="billingForm" :model="billingForm" :rules="validation_rules">
+                                    <div class="lite-container-row"> 
+                                        Name on Card<br/>
+                                        <FormItem prop="fullname"> 
+                                            <i-input v-model="input_fullname"></i-input>
+                                        </FormItem>
+                                    </div>
+
+                                    <div class="lite-container-row stripe-container"> 
+                                        Card Number<br/>
+                                        <div id="stripe-card-number" class="field empty"></div>
+                                    </div>
+
+                                    <div class="lite-container-row stripe-container"> 
+                                        <Row :gutter=6>
+                                            <i-col span="12">
+                                                Expiration Date<br/>
+                                                <div id="stripe-card-exp" class="field empty"></div>
+                                            </i-col>
+                                            <i-col span="12">
+                                                Security Code<br/>
+                                                <div id="stripe-card-cvc" class="field empty"></div>
+                                            </i-col>
+                                        </Row>
+                                    </div>
+
+                                    <p class="timeline-billing-subgroup">Billing Address</p>
+
+                                    <div class="lite-container-row"> 
+                                        Address Line 1<br/>
+                                        <FormItem prop="address1"> 
+                                            <i-input v-model="input_add1" placeholder="123 Main Street"></i-input>
+                                        </FormItem>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
+                                        Address Line 2<br/>
+                                        <FormItem prop="address2"> 
+                                            <i-input v-model="input_add2" placeholder="Apt, Office, Suite"></i-input>
+                                        </FormItem>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
+                                        <Row :gutter="8">
+                                            <i-col span=12>
+                                                Country<br/>
+                                                <FormItem prop="country"> 
+                                                    <i-input v-model="input_country"></i-input>
+                                                </FormItem>
+                                            </i-col>
+                                            <i-col span=12>
+                                                City<br/>
+                                                <FormItem prop="city"> 
+                                                    <i-input v-model="input_city"></i-input>
+                                                </FormItem>
+                                            </i-col>                                    
+                                        </Row>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
+                                        <Row :gutter="8">
+                                            <i-col span=12>
+                                                State<br/>
+                                                <FormItem prop="country"> 
+                                                    <i-input v-model="input_state"></i-input>
+                                                </FormItem>
+                                            </i-col>
+                                            <i-col span=12>
+                                                ZIP Code<br/>
+                                                <FormItem prop="city"> 
+                                                    <i-input v-model="input_zip"></i-input>
+                                                </FormItem>
+                                            </i-col>                                    
+                                        </Row>
+                                    </div>
+
+                                    <!-- <symphony-country-state /> -->
+
+                                    <div>
+                                        <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoSummary()">Next</button>
+                                    </div>
+
+                                </Form>
                             </div>
-                        </TimelineItem>
-                        <TimelineItem>
-                            <p>Billing</p>
                         </TimelineItem>
                         <TimelineItem>
                             <p>Review</p>
@@ -57,8 +110,8 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=8 type="flex" justify="center"  class="lite-col">
-                    <symphony-edge/>
+                <i-col span=6 class="lite-col">
+                    <symphony-billing />
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
@@ -67,23 +120,29 @@
 </template>
    
 <script>
-    var stripe = Stripe('pk_test_gUJYd9BdGY6XdYL9RltHkmRe');
-    var stripeElement;
+    import SymphonyBilling from '~/components/SymphonyBilling.vue'
+    //import SymphonyCountryState from '~/components/SymphonyCountryState.vue'
 
     export default {
         data() {
             return {
                 loading: false,
+                stripe_elements: null,
                 page_title: 'Symphony - Billing Details',
                 billingForm: {
+                    fullname: '',
                     address1: '',
                     address2: '',
                     city: '',
                     state: '',
                     zip_code: '',
+                    country_code: '',
                     stripeError: ''
                 },
                 validation_rules: {
+                    fullname: [
+                        { required: true, message: 'Please provide the name as it appears on your credit card.', trigger: 'blur' }
+                    ],
                     address1: [
                         { required: true, message: 'Please provide your street address.', trigger: 'blur' }
                     ],
@@ -110,15 +169,26 @@
         },
         mounted: function() {
 
+            this.billingForm.fullname = this.$store.state.billing.fullname
             this.billingForm.address1 = this.$store.state.billing.address1
             this.billingForm.address2 = this.$store.state.billing.address2
             this.billingForm.city = this.$store.state.billing.city
             this.billingForm.state = this.$store.state.billing.billing_state
             this.billingForm.zip_code = this.$store.state.billing.zip_code
+            this.billingForm.country_code = this.$store.state.user.country_code
 
-            stripeElement = MountStripeElements();
+            this.MountStripeElements();
         },
         computed: {
+            input_fullname: {
+                get () {
+                    return this.$store.state.billing.fullname
+                },
+                set (value) {
+                    this.billingForm.fullname
+                    this.$store.commit('SET_CARD_FULLNAME', value)
+                }
+            },
             input_add1: {
                 get () {
                     return this.$store.state.billing.address1
@@ -168,6 +238,16 @@
                     this.billingForm.zip_code = value
                     this.$store.commit('SET_ZIP', value)
                 }
+            },
+            input_country: {
+                get () {
+                    return this.$store.state.user.country_code
+                },
+                set (value)
+                {
+                    this.billingForm.country_code = value
+                    this.$store.commit('SET_COUNTRYCODE', value)
+                }
             }
         },
         methods: {            
@@ -177,7 +257,11 @@
                     if (valid)
                     {
                         this.loading = true
-                        stripe.createToken(stripeElement).then(function(result) {
+
+                        // The create token call takes a single element. You can apparently
+                        // just submit one element of the collection and it will obtain the 
+                        // the others automatically.
+                        stripe.createToken(this.stripe_elements[0]).then(function(result) {
                             if (result.token)
                             {
                                 //globalState.billing.stripe_token = result.token;
@@ -213,45 +297,100 @@
 
                                               
             },
-            handleGotoLegal() {
-                this.$router.push({name: "legal"})
+            MountStripeElements() {
+                // Initialize the stripe elements using the public key
+                const stripe = Stripe('pk_test_gUJYd9BdGY6XdYL9RltHkmRe');
+
+                // Create the elements collection from which each individual element
+                // will be created.
+                // It's possible to use locale to localize the elements. 
+                this.stripe_elements = stripe.elements({
+                    fonts: [
+                        {cssSrc: 'https://fonts.googleapis.com/css?family=Lato'}
+                    ],
+                    //locale: auto
+                });
+                
+                // Build the styles collection. The elements constructor takes an object 
+                // as a parameter that includes a fonts property for passing information
+                // about what fonts you wish to use. 
+                var elementStyles = {
+                    base: {
+                        color: '#32325D',
+                        fontWeight: 500,
+                        fontFamily: 'Lato, Consolas, Menlo, monospace',
+                        fontSize: '16px',
+                        fontSmoothing: 'antialiased',
+                        '::placeholder': { color: '#CFD7DF' },
+                        ':-webkit-autofill': { color: '#e39f48' },
+                        //':focus': { border: '2px solid #0395a1' }
+                    },
+                    invalid: {
+                        color: '#E25950',
+                        '::placeholder': { color: '#FFCCA5' },
+                    },
+                };
+
+                // I guess this just gives the names of the classes the elements use. Whatevs
+                var elementClasses = {
+                    focus: 'focused',
+                    empty: 'empty',
+                    invalid: 'invalid',
+                };
+
+                // Now we build each individual element. 
+                // Here, I'm breaking out the three card elements into individual "mounts"
+                // so they can be styled and organized better. 
+                // In prior iterations, I used the combo element that just emitted
+                // all three fields in the iframe.
+
+                // Note that the objects are created from the elements collection
+                // and that each object has a mount method that takes the
+                // class id of a div on the page as it's target. 
+                const cardNumber = this.stripe_elements.create('cardNumber', {
+                    style: elementStyles,
+                    classes: elementClasses
+                })
+                cardNumber.mount('#stripe-card-number')
+
+                const cardExp = this.stripe_elements.create('cardExpiry', {
+                    style: elementStyles,
+                    classes: elementClasses
+                })
+                cardExp.mount('#stripe-card-exp')
+
+                const cardCVC = this.stripe_elements.create('cardCvc', {
+                    style: elementStyles,
+                    classes: elementClasses
+                })
+                cardCVC.mount('#stripe-card-cvc')              
             }
+        },
+        components: {
+            SymphonyBilling,
+            //SymphonyCountryState
         }
-    }
-
-    function MountStripeElements()
-    {
-        
-        var elements = stripe.elements();
-        
-        var card = elements.create('card', {
-          hidePostalCode: true,
-          style: {
-            base: {
-              iconColor: '#F99A52',
-              color: '#32315E',
-              fontWeight: 400,
-              fontFamily: '"Helvetica Neue", "Helvetica", sans-serif',
-              fontSize: '15px',
-
-              '::placeholder': {
-                color: 'steelblue',
-              }
-            },
-          }
-        });
-        card.mount('#card-element');
-
-        return card;
     }
 </script>
 <style scoped>
 
-    .stripeBox {
-        border: 1px solid lightgray;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 20px;
+    .timeline-billing-subgroup {
+        font-weight: bold;
+        border-bottom: 1px solid lightgray;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
     }
 
+    .stripe-container .field {
+        border-radius: 4px;
+        padding: 8px 20px;
+        border: 1px solid #a3a3a3;
+    }
+
+    /*.stripe-container .field.focus,
+    .stripe-container .field:focus {
+        border: 2px solid #0395a1;
+    }*/
+
 </style>
+

@@ -6,14 +6,15 @@
                 <i-col span=10 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem>
-                            <p style="color: #006caf;font-size:1.6em;">Your Information</p>
+                            <p class="timeline-current-label">Your Information</p>
+                            <div class="timeline-spacer"></div>
                             <div class="timeline-content" style="height:280px;">
                             <Form ref="contactForm" :model="contactForm" :rules="validation_rules"> <!--:label-width="100" -->
-                                <div class="lite-container-row"> 
+                                <div class="lite-container-row" style="height: 40px;"> 
                                     Email Address<br/>
                                     <b>{{ input_email }}</b><br/>
                                 </div>
-                                <div class="lite-container-row" style="height:60px;"> 
+                                <div class="lite-container-row"> 
                                     <Row :gutter="4">
                                         <i-col span=12>
                                             First Name<br/>
@@ -29,7 +30,7 @@
                                         </i-col>                                    
                                     </Row>
                                 </div>
-                                <div class="lite-container-row" style="height:70px;"> 
+                                <div class="lite-container-row" > 
                                     Daytime Phone Number<br/>
                                     <FormItem prop="phone"> 
                                         <!--<i-input v-model="input_phone"></i-input>-->

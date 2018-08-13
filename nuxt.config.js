@@ -15,8 +15,10 @@ module.exports = {
       { rel: 'stylesheet', href: '/common.css'}
     ],
     script: [
-      { hid: 'stripe', src: 'https://js.stripe.com/v3/'}//,
-      //{ hid: 'intl-tel-input', src: 'intl-tel-input/js/intlTelInput.js'}
+      { hid: 'stripe', src: 'https://js.stripe.com/v3/'},
+      //{ hid: 'intl-tel-input', src: 'intl-tel-input/js/intlTelInput.js'},
+      //https://ionicons.com/
+      { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
     ]
   },
   css: [
@@ -55,9 +57,20 @@ module.exports = {
         }
       })
 
+      // 8/12/2018 - KJM - Added this to hopefully fix the 
+      // icon issue. Update: it didn't help. I'm using the 
+      // font reference directly.
+      // Having SVG in this caused my svg images to not load properly 
+      // when specified as a local resource. Clearly I don't
+      // understand this junk well enough. 
+      /*config.module.rules.push({
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=10000',
+        options: {}
+      })*/
 
       config.module.rules.push({
-        test: /\.(txt|ttf|pdf)$/,
+        test: /\.(txt|pdf|ttf)$/,
         loader: 'file-loader',
         options: {}
       })

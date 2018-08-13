@@ -18,6 +18,7 @@
     "@google-cloud/trace-agent": "^2.7.2",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
+    "country-state-city": "0.0.5",
     "css-loader": "^0.23.1",
     "express": "^4.16.3",
     "iview": "^2.11.0",
