@@ -25,6 +25,7 @@ secrets.json
 
 # VSCode
 *.code-workspace
+.vscode
 
 #env
 .env
