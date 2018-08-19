@@ -51,47 +51,13 @@
             }
         },
         fetch({ store, params, query, redirect }) {
-            console.log('email from vuex: ' + store.state.email.email_address)
+            // console.log('email from vuex: ' + store.state.email.email_address)
             if(!store.state.email.email_address)
             {
                 //Load query parameters
-                if (query.qid)
+                if (query.hasOwnProperty('em') && query.em.length !== 0)
                 {
-                    // If you reload the page, the page is rendered serverside. The axios call on the server
-                    // requires the base url to be explicitly set. 
-                    // NOTE: Make sure to check this to ensure process.env.HOST/PORT are being set properly
-                    // on GCP
-                    let options = {}
-                    if (process.server) {
-                        options.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 8080}`                        
-                    }
-                                        
-                    //http://localhost:8080
-                    return axios.post('/api/decode64', { message: query.qid }, options).then(function(response) {
-
-                        let email_decoded = response.data.decoded  
-                        
-                        // This is wrong. Either I don't have access to the computed functions 
-                        // or you have to call them differently from the fetch() method
-                        // this.input_email = email_decoded
-
-                        // Correct way to update the store
-                        store.commit('SET_EMAIL', email_decoded)
-                        //console.log('email from store: ' + store.state.email.email_address)
-
-                    }.bind(this)).catch(function (error) {
-                        if (error.response) {
-                            console.log(error.response.data)
-                            console.log(error.response.status)
-                            console.log(error.response.headers)
-                        }
-                        else if (error.request) {
-                            console.log(error.request)
-                        }
-                        else {
-                            console.log('Error: ' + error.message)
-                        }
-                    })                    
+                    store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
                 }
                 else
                 {
@@ -102,8 +68,6 @@
             
         },
         mounted: function() {
-                console.log('running mounted function')
-
                 // I'm going to leave this here as a reminder. I'm pretty sure I was screwing up the flow
                 // by trying to set this value here after the fetch() method ran. Since I have the computed property
                 // defined, after the fetch() is called and the store is updated, the getter correctly populates the
@@ -112,11 +76,39 @@
         },
         methods: {
             handleResendEmail() {
-               this.$Notice.success({
-                title: 'Email verification Re-sent',
-                desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click Change Email to use a different address.',
-                duration: 6
-               });
+                axios.post('/api/verify', { email_address: this.input_email, resend: true}).then(function(response) {
+                    this.$Notice.success({
+                        title: 'Email verification Re-sent',
+                        desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click Change Email to use a different address.',
+                        duration: 6
+                    });
+
+                }.bind(this)).catch(function (error) {
+                    let d = 'There was a problem completing your verification request. '
+
+                    if (error.response.data.errorDetail)
+                    {
+                        switch (error.response.data.errorDetail) {
+                            case '1':
+                                d += 'Your email was previously submitted and blocked as freemail.'
+                                break
+                            case '2':
+                                d += 'Your email was previously submitted and blocked - your company is already on Symphony.'
+                                break
+                            case '3':
+                                d += 'An account with this email address already exists.'
+                                break
+                            default:
+                                break
+                        }
+                    }                           
+
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: d,
+                        duration: 0
+                    })
+                }.bind(this))
             },
             handleChangeEmail() {
                 this.$store.commit('SET_EMAIL', '')

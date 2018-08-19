@@ -22,4 +22,8 @@ export default {
     .sym-links a:link {
         color: #0395a1;
     }
+
+    .sym-links a:hover {
+        text-decoration: underline;
+    }
 </style>

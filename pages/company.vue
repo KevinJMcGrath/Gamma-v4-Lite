@@ -4,7 +4,7 @@
             <Row type="flex" justify="center">
                 <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
-                        <TimelineItem class="completed-icon" color="#0395a1">
+                        <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
                             <p class="timeline-completed-label">Your Information</p>
                             <div class="timeline-spacer"></div>

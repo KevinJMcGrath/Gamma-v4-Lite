@@ -113,10 +113,13 @@ ion-icon {
 breaks the ability to adjust the style on the timeline */
 li.completed-icon > div {
     background-color: transparent !important; 
+    color: #006caf;
+    /*color="#0395a1"*/
 }
 
 p.timeline-completed-label {
-    color: #0395a1;
+    /*color: #0395a1;*/
+    color: #006caf;
     font-size: 1.2em;
     position: absolute; 
     top: -3px;
@@ -124,6 +127,7 @@ p.timeline-completed-label {
 
 p.timeline-current-label {
     color: #006caf;
+    font-weight: bold;
     font-size:1.6em;
     position:absolute;
     top:-5px;
@@ -135,6 +139,7 @@ header text for the timeline element, as it would be misaligned otherwise.  */
     height: 15px;
 }
 
+/*
 .sym-layout {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
@@ -244,3 +249,4 @@ header text for the timeline element, as it would be misaligned otherwise.  */
     padding-top:15px !important;
     padding-left:5px !important;
 }
+*/

@@ -12,11 +12,10 @@
                         Business Email
                         <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
                             <FormItem prop="email">
-                                <i-input v-model="emailForm.email" placeholder="Enter your business email" ></i-input>
+                                <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" ></i-input>
                             </FormItem> 
                         </Form>
                     </div>
-                        <!--<Button type="primary" :loading="loading" size="large" @click="handleValidateEmail('emailForm')">Send Verification</Button>-->
                     <div>
                         <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Get Started</button>
                     </div>
@@ -58,7 +57,7 @@
 
             return {
                 page_title: 'Symphony - Verify Email',
-                loading: false,
+                test_flag: false,
                 emailForm: {
                     email: 'kevinmcgr@gmail.com'
                 },
@@ -80,20 +79,55 @@
                 
             }
         },
+        fetch({ store, params, query, redirect, env }) {
+
+            /*
+            if (process.server)
+            {
+                console.log('server side')
+                // process.env
+                console.log(process.env.SFDC_BASE_URL)
+                console.log(process.env.SFDC_GAMMA_KEY)
+
+                // context.env
+                console.log(env.SFDC_BASE_URL)
+                console.log(env.SFDC_GAMMA_KEY)
+
+            }
+            
+            if (process.client)
+            {
+                console.log('client side')
+                console.log(process.env.SFDC_GAMMA_KEY)
+                console.log(env.SFDC_GAMMA_KEY)
+            }
+            */
+
+            if (query.hasOwnProperty('em') && query.em.length !== 0)
+            {
+                store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
+            }
+
+            if (query.hasOwnProperty('tf') && query.tf === '1')
+            {
+                store.commit('SET_FLAG', true)
+            }
+        },
+        mounted: function() {
+
+        },
         methods: {
             handleValidateEmail(name) {
+                console.log('Sending Email...')
                 this.$refs[name].validate((valid) => {
-                    if (valid && this.emailForm.email != 'kevinmcgr@gmail.com')
+                    if (valid && !this.$store.status.test_flag)
                     {
-                        this.loading = true
-                        axios.post('/api/verify', { email_address: this.emailForm.email }).then(function(response) {
+                        axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
 
-                            this.$store.commit('SET_EMAIL', this.emailForm.email)
                             this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
 
                         }.bind(this)).catch(function (error) {
                             //console.error(error);
-                            this.loading = false
 
                             let d = 'There was a problem completing your verification request. '
 
@@ -122,34 +156,28 @@
                         }.bind(this))
                         
                     }
-                    else if (this.emailForm.email == 'kevinmcgr@gmail.com')
-                    {
-                        axios.post('/api/encode64', { message: this.emailForm.email }).then(function(response) {
-
-                            this.$store.commit('SET_EMAIL', this.emailForm.email)
-
-                            this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
-
-
-                        }.bind(this)).catch(function (error) {
-                            if (error.response) {
-                                console.log(error.response.data)
-                                console.log(error.response.status)
-                                console.log(error.response.headers)
-                            }
-                            else if (error.request) {
-                                console.log(error.request)
-                            }
-                            else {
-                                console.log('Error: ' + error.message)
-                            }
-                        })
+                    else if (this.$store.status.test_flag)
+                    {   
+                        let enc = btoa(this.$store.email.email_address).replace(/=/g, '-')
+                        this.$router.push({name: "email-thankyou", query:{qid: enc}})
                     }
                     else
                     {
                         this.$Message.error()
                     }
                 })                
+            }
+        },
+        computed: {
+            input_email: {
+                get () {
+                    return this.$store.state.email.email_address                    
+                },
+                set (value) {
+                    // I'm intentionally adding side effects to make the validation rules work. Not ideal
+                    this.emailForm.email = value;
+                    this.$store.commit('SET_EMAIL', value)
+                }
             }
         },
         components: {
@@ -163,5 +191,9 @@
         font-weight: bold;
         margin-bottom: 20px;
         color: #006caf;
+    }
+
+    .email-input {
+        width: 50%;
     }
 </style>

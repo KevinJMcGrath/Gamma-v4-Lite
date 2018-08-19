@@ -1,4 +1,11 @@
-module.exports = {
+require('dotenv').config()
+
+console.log(process.env.SFDC_BASE_URL)
+console.log(process.env.SFDC_GAMMA_KEY)
+console.log(process.env.TEST_VAL)
+console.log(process.env.TEST_VAL2)
+
+module.exports = {  
   dev: (process.env.NODE_ENV !== 'production'),
   head: {
     title: '{{title}}',
@@ -82,5 +89,9 @@ module.exports = {
   plugins: [
     { src: '~/plugins/iview.js', ssr: true}//,
     //{ src: '~/plugins/vue-tele.js', ssr: true} //3
+  ],
+
+  modules: [
+    ['@nuxtjs/dotenv', {only: ['SFDC_BASE_URL']}]
   ]
 }

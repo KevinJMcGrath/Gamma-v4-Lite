@@ -4,17 +4,17 @@
             <Row type="flex" justify="center">
                 <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
-                        <TimelineItem class="completed-icon" color="#0395a1">
+                        <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
                             <p class="timeline-completed-label">Your Information</p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
-                        <TimelineItem class="completed-icon" color="#0395a1">
+                        <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
                             <p class="timeline-completed-label">Company Information</p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
-                        <TimelineItem class="completed-icon" color="#0395a1">
+                        <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
                             <p class="timeline-completed-label">Billing</p>
                             <div class="timeline-spacer"></div>
@@ -178,9 +178,6 @@
 
 
                 }.bind(this))                               
-            },
-            handleGotoBilling() {
-                this.$router.push({name: "billing"})
             }
         },
         components: {
@@ -226,6 +223,10 @@
 
     .tandc a:link {
         color: #0395a1;
+    }
+
+    .tandc a:hover {
+        text-decoration: underline;
     }
 
     .tandc label {

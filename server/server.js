@@ -33,6 +33,8 @@ else {
 	console.log('Initializing server - Development')
 }
 
+process.env.DEBUG = 'nuxt:*'
+
 const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
 const express = require('express')
@@ -90,17 +92,21 @@ if (config.dev) {
 
 
 //Production error handler
-/*app.use((err, req, res) => {
+app.use((err, req, res, next) => {
+	if (!err) {
+		return next()
+	}
+
 	console.error('Error rendering route')
 	console.error(err.message)
 	console.error(err.statusCode)
 
-	res.status(err.status || 500)
+	/*res.status(err.status || 500)
 	res.render('error', {
 		message: err.message,
 		error: {}
-	})
-})*/
+	})*/
+})
 
 
 app.use(nuxt.render)

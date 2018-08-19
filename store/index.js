@@ -1,20 +1,36 @@
 'use strict'
 
 import Vue from 'vue'
-import Vuex from 'vuex'
-//import { stat } from 'fs';
+import Vuex, {Payload, Store} from 'vuex'
+//import VuexPersistence from 'vuex-persist'
 
-//const fs = (process.server ? require('fs') : null)
 const moment = require('moment')
 
 Vue.use(Vuex)
 
+/*
+let vuexPersist
+if (process.browser)
+{
+	vuexPersist = new VuexPersistence({
+		strictMode: process.env.NODE_ENV !== 'production',
+		//storage: window.sessionStorage,
+		// Function that passes the state and returns the state with only the objects you want to store.
+		// reducer: state => state,
+		// Function that passes a mutation and lets you decide if it should update the state in localStorage.
+		// filter: mutation => (true)
+	})
+}*/
+
+
 const store = () => new Vuex.Store({
-	strict: true,
+	strict: process.env.NODE_ENV !== 'production',
 	//Establishing the fields for the store
 	state: {
 		status: {
-			guid: ''
+			guid: '',
+			current: false,
+			test_flag: false
 		},
 		email: {
 			email_address: '',
@@ -57,15 +73,19 @@ const store = () => new Vuex.Store({
 		page_state: [
 			{ index: 0, name: "contact", completed: false },
 			{ index: 1, name: "company", completed: false },
-			{ index: 2, name: "service", completed: false },
-			{ index: 3, name: "legal", completed: false },
-			{ index: 4, name: "billing", completed: false },
-			{ index: 5, name: "summary", completed: false },
-			{ index: 6, name: "thank", completed: false }
+			{ index: 2, name: "billing", completed: false },
+			{ index: 3, name: "summary", completed: false },
+			{ index: 4, name: "thank", completed: false }
 		]
 	},
+	
 	//Creating properties for updating the fields
 	mutations: {
+		// Required for vuex-persist in strict mode
+		//RESTORE_MUTATION: (process.browser ? vuexPersist.RESTORE_MUTATION : function BLANK(state) {}),
+		SET_FLAG(state, flag) {
+			state.status.flag = flag
+		},
 		SET_GUID(state, guid) {
 			state.status.guid = guid
 		},
@@ -203,7 +223,9 @@ const store = () => new Vuex.Store({
 		}
 
 		
-	}
+	},
+	//plugins: [vuexPersist.plugin]
+	//plugins: process.browser ? [vuexPersist.plugin] : []
 
 })
 
@@ -213,37 +235,7 @@ function SetLog(logActivity)
 	console.log(moment().format('MM-DD-YYYY HH:mm:ss.SSS Z') + ' | ' + logActivity + ' | ' + processExe)
 }
 
-/*function testFunc2() {
-	return new Promise((resolve, reject) => {
-		console.log('Executing timeout')
-		setTimeout(() => {
-			let vnum = Math.floor(Math.random()*20000) + new Date().getTime()
-			resolve(vnum)
-		}, 5000)
-	})
-}*/
 
-/*function getData() {
-	return new Promise(function(resolve, reject) {
-		const fs = (process.server ? require('fs') : null)
-		let fileName = './static/index.txt'
-		let type = 'UTF-8'
-
-		if (fs)
-		{
-			SetLog('Loading File')
-			fs.readFile(fileName, type, (err, data) => {
-				err ? reject(err) : resolve(data)
-			})
-		}
-		else
-		{
-			SetLog('Failed to load fs')
-			//console.log('fs is not available client side')
-			resolve('shrug')
-		}
-	})
-}*/
 
 //DON'T FORGET THIS PART
 export default store
