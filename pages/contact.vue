@@ -9,7 +9,7 @@
                             <p class="timeline-current-label">Your Information</p>
                             <div class="timeline-spacer"></div>
                             <div class="timeline-content" style="height:280px;">
-                            <Form ref="contactForm" :model="contactForm" :rules="validation_rules"> <!--:label-width="100" -->
+                            <Form ref="contactForm" :model="contactForm" :rules="validation_rules">
                                 <div class="lite-container-row" style="height: 40px;"> 
                                     Email Address<br/>
                                     <b>{{ input_email }}</b><br/>
@@ -33,7 +33,7 @@
                                 <div class="lite-container-row" > 
                                     Daytime Phone Number<br/>
                                     <FormItem prop="phone"> 
-                                        <!--<i-input v-model="input_phone"></i-input>-->
+                                        <i-input v-model="input_phone" style="width: 40%"></i-input>
                                         <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
                                         <!--<vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>-->
                                     </FormItem>
@@ -66,7 +66,7 @@
 </template>
 <script>
     import SymphonyEdge from '~/components/SymphonyEdge.vue'
-    
+    const axios = require('axios')    
 
     export default {
         data() {
@@ -100,22 +100,64 @@
                 
             }
         },
-        fetch({ store, params, query, redirect }) {
-            //http://localhost:8080/contact?sseid=1234567890&email=kevinmcgr@gmail.com
-            if(!(store.state.status.guid && store.state.email.email_address))
-            {
-                //Load query parameters
-                if (query.sseid && query.email)
+        fetch({ store, params, query, redirect, env }) {
+            return new Promise((resolve, reject) => {
+                if(!store.state.status.guid)
                 {
-                    store.commit('SET_GUID', query.sseid)
-                    store.commit('SET_EMAIL', query.email.replace(' ', '+'))
+                    console.log("loading guid")
+                    //Load query parameters
+                    if (query.sseid)
+                    {
+                        store.commit('SET_GUID', query.sseid)
+                        axios.post(process.env.BASE_URL + '/api/confirm', { guid: query.sseid }).then(function(response) {
+
+                            let email_address = response.data.user_email
+                            store.commit('SET_EMAIL', email_address)
+                            store.commit('SET_VERIFIED', true)
+                            resolve(true)
+                        })
+                        .catch((error) => {
+                            console.log('error in axios')
+
+                            if (error.response)
+                            {
+                                console.error('Error response from Express...')
+                                console.error('Response Code: ' + error.response.status)
+                                console.error('Response Text: ' + error.response.statusText)
+                                console.error('Response Body: ' + error.response.data)
+                            }
+                            else if (error.request)
+                            {
+                                // Request was made but no response was received
+                                console.error(error.request)
+
+                            }
+                            else
+                            {
+                                console.error('Unknown Error: ' + error.message)
+
+                            }
+                            reject()
+                            
+                            redirect('/email')
+                        })
+
+                        
+                    }
+                    else
+                    {
+                        //I might need to return an error here instead.
+                        reject()
+                        redirect('/email')
+                    }
+
+                    
                 }
                 else
                 {
-                    //I might need to return an error here instead.
-                    redirect('/email')
+                    resolve(true)
                 }
-            }
+            })            
             
         },
         mounted: function() {
@@ -186,6 +228,7 @@
             handlePhoneValidation({number, isValid, country}) {
                 console.log(number, isValid, country)
             }
+
         },
         components: {
             SymphonyEdge

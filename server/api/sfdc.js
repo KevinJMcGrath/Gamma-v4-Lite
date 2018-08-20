@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const axios = require('axios')
 const crypto = require('crypto')
+const domain_search = require('../lib/domain.js')
 
 
 //Add logic for storing API keys here
@@ -8,118 +9,153 @@ const crypto = require('crypto')
 const router = Router()
 
 //const baseURL = 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
-const baseURL = process.env.SFDC_BASE_URL
+let baseURL = process.env.SFDC_BASE_URL
+//const baseURL = process.env.SFDC_BASE_URL
 
-router.post('/test', function(req, res, next) {
-	console.log(req.body.email_address)
+function log_response(resp, isError)
+{
+	if (isError)
+	{
+		console.error('HTTP error')
+		console.error('Response Code: ' + resp.status)
+		console.error('Response Text: ' + resp.statusText)
+		console.error('Response Body: ' + resp.data)
 
-	res.json(req.body.email_address)
+	}
+	else
+	{
+		if (process.env.GAMMA_DEBUG)
+		{
+			console.log('Success!')
+			console.log('Response Code: ' + resp.status)
+			console.log('Response Text: ' + resp.statusText)
+			console.log('Response Body: ' + resp.data)
+		}		
+	}
+	
+}
+
+function axios_error(error)
+{
+	let err_obj = {}
+
+	if (error.response)
+	{
+		log_response(error.response, true)
+
+		err_obj.status = error.respose.status
+		err_obj.message = error.response.statusText
+		err_obj.data = error.response.data
+	}
+	else if (error.request)
+	{
+		// Request was made but no response was received
+		console.error('Request was sent but received no response')
+		console.error(error.request)
+
+		err_obj.status = 500
+		err_obj.message = 'No response from Salesforce'		
+	}
+	else
+	{
+		console.error('Unknown Error: ' + error.message)
+
+		err_obj.status = 500
+		err_obj.message = 'Unkown error'
+		err_obj.data = ''
+	}
+
+	return err_obj
+}
+
+router.post('/domain-check', function(req, res, next) {
+
+	let email_address = req.body.email_address
+	domain_search.isForbiddenDomain(email_address).then((result) => {
+		if (result) {
+			let domain = domain_search.getDomain(email_address)
+			res.json( { success: false, message: 'Invalid Email', server_code: 11, domain_name: domain })	
+		}
+		else
+		{
+			res.json( { success: true })
+		}
+
+	}).catch((error) => {
+		console.error(error.message)
+		res.json( { success: false, message: 'Problem verifying email'})
+	})
 })
-
 
 router.post('/verify', function(req, res, next) {
 
+	console.log('Entering /verify')
+	let email_address = req.body.email_address	
+	
 	const payload = { 
-		emailAddress: req.body.email_address,
+		emailAddress: email_address,
 		resend: req.body.hasOwnProperty('resend') ? req.body.resend : false
 	}
 	
-	// '123456789KEVINabcdefgh'
 	const config = {
-		baseURL: baseURL,
+		baseURL: process.env.SFDC_BASE_URL,
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
 	}
 
 	axios.post('/email-verification', payload, config)
-	.then((response) => {
-		console.log('Success!')
-		console.log('Response Code: ' + response.status)
-		console.log('Response Text: ' + response.statusText)
-		console.log('Response Body: ' + response.data)
+	.then((response) => {		
+		log_response(response)
 
-		let encoded_email = encode64(req.body.email_address)
-
+		let encoded_email = btoa(email_address).replace(/=/g, '-')
 		res.json( { success: true, message: response.data, encoded: encoded_email })
 	})
-	.catch((error) => {		
-		console.error('Failure ;_;')
-
-		if (error.response)
-		{
-			console.error('Response Code: ' + error.response.status)
-			console.error('Response Text: ' + error.response.statusText)
-			console.error('Response Body: ')
-			console.error(error.response.data)
-			//console.error('Response Headers: ' + error.response.headers)
-
-			res.status(error.response.status).json(error.response.data)
-		}
-		else if (error.request)
-		{
-			// Request was made but no response was received
-			console.error(error.request)
-
-			res.json( { success: false, message: 'System Error' })
-		}
-		else
-		{
-			console.error('Unknown Error: ' + error.message)
-
-			res.json( { success: false, message: 'Unknown Error' })
-		}
+	.catch((error) => {
+		let err_obj = axios_error(error)
+		res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
 	})
 })
 
-router.post('/purchase-test', function(req, res, next) {
-	let ep = 'http://requestbin.fullcontact.com/1ebcgxn1'
+router.post('/confirm', function(req, res, next) {
+	console.log('Entering /confirm')
+	//let email_address = req.body.email_address
+	let guid = req.body.guid	
+	
+	const payload = { 
+		//email_address: email_address,
+		guid: guid		
+	}
+	
+	const config = {
+		baseURL: process.env.SFDC_BASE_URL,
+		headers: {
+			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
+		}
+	}
 
-	let payload = req.body
-	let config = {}
-
-	axios.post(ep, payload, config)
+	axios.post('/guid-verification', payload, config)
 	.then((response) => {
-		console.log('Success (API Server)')
-		console.log('Response Code: ' + response.status)
-
-		res.status(204)
+		log_response(response)
+		console.log(response.data)
+		res.json( { success: true, message: 'verified', user_email: response.data.user_state.user.email })
 	})
-	.catch((error) => {
-		console.error('Failed to POST')
-		console.error(error)
-
-		if (error.response)
-		{
-			console.error('Response Code: ' + error.response.status)
-			console.error('Response Text: ' + error.response.statusText)
-			console.error('Response Body: ' + error.response.data)
-			console.error('Response Headers: ' + error.response.headers)
-
-			res.json( { success: false, message: 'HTTP Error' })
-		}
-		else if (error.request)
-		{
-			// Request was made but no response was received
-			console.error(error.request)
-
-			res.json( { success: false, message: 'System Error' })
-		}
-		else
-		{
-			console.error('Unknown Error: ' + error.message)
-
-			res.json( { success: false, message: 'Unknown Error' })
-		}
+	.catch((error) => {		
+		let err_obj = axios_error(error)
+		res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
 	})
-}) 
+})
 
+router.post('/test-post', function(req, res, next) {
+	console.log('server reports: test succeeded')
+	res.json({ success: true })
+})
 
 router.post('/purchase-submit', function(req, res, next) {
 	
 	const payload = req.body
 	const config = {
-		baseURL: baseURL,
+		baseURL: process.env.SFDC_BASE_URL,
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
@@ -127,38 +163,12 @@ router.post('/purchase-submit', function(req, res, next) {
 
 	axios.post('/selfservice-submit', payload, config)
 	.then((response) => {
-		console.log('Success!')
-		console.log('Response Code: ' + response.status)
-		console.log('Response Text: ' + response.statusText)
-		console.log('Response Body: ' + response.data)
-
+		log_response(response)
 		res.json( { success: true, message: response.data })
 	})
 	.catch((error) => {		
-		console.error('Failure ;_;')
-
-		if (error.response)
-		{
-			console.error('Response Code: ' + error.response.status)
-			console.error('Response Text: ' + error.response.statusText)
-			console.error('Response Body: ' + error.response.data)
-			console.error('Response Headers: ' + error.response.headers)
-
-			res.json( { success: false, message: 'HTTP Error' })
-		}
-		else if (error.request)
-		{
-			// Request was made but no response was received
-			console.error(error.message)
-
-			res.json( { success: false, message: 'System Error' })
-		}
-		else
-		{
-			console.error('Unknown Error: ' + error.message)
-
-			res.json( { success: false, message: 'Unknown Error' })
-		}
+		let err_obj = axios_error(error)
+		res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
 	})
 })
 

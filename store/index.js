@@ -84,13 +84,16 @@ const store = () => new Vuex.Store({
 		// Required for vuex-persist in strict mode
 		//RESTORE_MUTATION: (process.browser ? vuexPersist.RESTORE_MUTATION : function BLANK(state) {}),
 		SET_FLAG(state, flag) {
-			state.status.flag = flag
+			state.status.test_flag = flag
 		},
 		SET_GUID(state, guid) {
 			state.status.guid = guid
 		},
 		SET_EMAIL(state, email) {
 			state.email.email_address = email
+		},
+		SET_VERIFIED(state, is_verified) {
+			state.email.is_verified = is_verified
 		},
 		SET_FNAME(state, firstname) {
 			state.user.firstname = firstname

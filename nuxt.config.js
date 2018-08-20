@@ -2,8 +2,6 @@ require('dotenv').config()
 
 console.log(process.env.SFDC_BASE_URL)
 console.log(process.env.SFDC_GAMMA_KEY)
-console.log(process.env.TEST_VAL)
-console.log(process.env.TEST_VAL2)
 
 module.exports = {  
   dev: (process.env.NODE_ENV !== 'production'),
@@ -47,6 +45,9 @@ module.exports = {
     extend (config, { isDev, isClient }) {
 
       if (isDev && isClient) {
+
+        config.devtool = '#source-map'
+
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -92,6 +93,6 @@ module.exports = {
   ],
 
   modules: [
-    ['@nuxtjs/dotenv', {only: ['SFDC_BASE_URL']}]
+    ['@nuxtjs/dotenv', {only: ['SFDC_BASE_URL','GAMMA_DEBUG']}]
   ]
 }

@@ -96,6 +96,10 @@ body {
     border: none;
 }
 
+.button_disabled {
+    background-color: rgba(3, 149, 161, 0.3);
+}
+
 .lite-link-button {
     color: #0395a1;
 }

@@ -10,14 +10,15 @@
                     </div>
                     <div class="lite-container-row">
                         Business Email
-                        <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
+                        <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent prevents Enter from submitting-->
                             <FormItem prop="email">
                                 <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" ></i-input>
                             </FormItem> 
                         </Form>
                     </div>
                     <div>
-                        <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Get Started</button>
+                        <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1" 
+                            style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Get Started</button>
                     </div>
                 </i-col>
                 <i-col span=8 class="lite-col">
@@ -57,7 +58,7 @@
 
             return {
                 page_title: 'Symphony - Verify Email',
-                test_flag: false,
+                loading: false,
                 emailForm: {
                     email: 'kevinmcgr@gmail.com'
                 },
@@ -81,28 +82,6 @@
         },
         fetch({ store, params, query, redirect, env }) {
 
-            /*
-            if (process.server)
-            {
-                console.log('server side')
-                // process.env
-                console.log(process.env.SFDC_BASE_URL)
-                console.log(process.env.SFDC_GAMMA_KEY)
-
-                // context.env
-                console.log(env.SFDC_BASE_URL)
-                console.log(env.SFDC_GAMMA_KEY)
-
-            }
-            
-            if (process.client)
-            {
-                console.log('client side')
-                console.log(process.env.SFDC_GAMMA_KEY)
-                console.log(env.SFDC_GAMMA_KEY)
-            }
-            */
-
             if (query.hasOwnProperty('em') && query.em.length !== 0)
             {
                 store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
@@ -117,53 +96,101 @@
 
         },
         methods: {
+            toggleButtonActive() {
+
+            },
             handleValidateEmail(name) {
-                console.log('Sending Email...')
+                this.loading = true
+
+                console.log('(handleValidateEmail) axios default baseURL: ' + axios.default.baseURL)
+
                 this.$refs[name].validate((valid) => {
-                    if (valid && !this.$store.status.test_flag)
-                    {
-                        axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
-
-                            this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
-
-                        }.bind(this)).catch(function (error) {
-                            //console.error(error);
-
-                            let d = 'There was a problem completing your verification request. '
-
-                            if (error.response.data.errorDetail)
-                            {
-                                switch (error.response.data.errorDetail) {
-                                    case '1':
-                                        d += 'Your email was previously submitted and blocked as freemail.'
-                                        break
-                                    case '2':
-                                        d += 'Your email was previously submitted and blocked - your company is already on Symphony.'
-                                        break
-                                    case '3':
-                                        d += 'An account with this email address already exists.'
-                                        break
-                                    default:
-                                        break
-                                }
-                            }                           
-
-                            this.$Notice.error({
-                                title: 'Error Verifying Email Address',
-                                desc: d,
-                                duration: 0
-                            })
-                        }.bind(this))
-                        
-                    }
-                    else if (this.$store.status.test_flag)
+                    
+                    if (this.test_flag)
                     {   
-                        let enc = btoa(this.$store.email.email_address).replace(/=/g, '-')
+                        let enc = btoa(this.input_email).replace(/=/g, '-')
                         this.$router.push({name: "email-thankyou", query:{qid: enc}})
                     }
+                    else if (valid)
+                    {
+                        let doVerify = false
+                        
+                        axios.post('/api/domain-check', { email_address: this.input_email }).then(function(response) {
+                            console.log('email.vue - axios debugging')
+                            console.log(response.data)
+                            console.log(response.headers)
+                            console.log(response.config)
+
+                            doVerify = response.data.success
+
+                            if (response.data.server_code && response.data.server_code === 11)
+                            {
+                                let domain = response.data.domain_name
+                                let msg = 'We do not accept freemail domains '
+
+                                if (domain)
+                                    msg += '(' + domain + ')'
+
+                                this.$Notice.error({
+                                    title: 'Error Verifying Email Address',
+                                    desc: msg,
+                                    duration: 0
+                                })
+                            }                           
+
+                        }.bind(this)).then(function(response) {
+                            console.log('Starting SFDC verification...')
+                            console.log('doVerify: ' + doVerify)
+                            if (doVerify)
+                            {
+                                axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
+
+                                    this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
+
+                                }.bind(this)).catch(function (error) {
+                                    console.error(error.response);
+                                    this.loading = false
+
+                                    let d = 'There was a problem completing your verification request. '
+
+                                    if (error.response.data.error_data.errorDetail)
+                                    {
+                                        switch (error.response.data.error_data.errorDetail) {
+                                            case '1':
+                                                d += 'Your email was previously submitted and blocked as freemail.'
+                                                break
+                                            case '2':
+                                                d += 'Your email was previously submitted and blocked - your company is already on Symphony.'
+                                                break
+                                            case '3':
+                                                d += 'An account with this email address already exists.'
+                                                break
+                                            default:
+                                                break
+                                        }
+                                    }                           
+
+                                    this.$Notice.error({
+                                        title: 'Error Verifying Email Address',
+                                        desc: d,
+                                        duration: 0
+                                    })
+                                }.bind(this))
+                            }
+                        }.bind(this)).catch(function (error) {
+                            console.error(error)
+                            console.error(error.response);
+                            this.loading = false
+                        }.bind(this))
+
+                        
+                        
+                        
+                    }                    
                     else
                     {
                         this.$Message.error()
+                        this.loading = false
                     }
                 })                
             }
@@ -177,6 +204,14 @@
                     // I'm intentionally adding side effects to make the validation rules work. Not ideal
                     this.emailForm.email = value;
                     this.$store.commit('SET_EMAIL', value)
+                }
+            },
+            test_flag: {
+                get () {
+                    return this.$store.state.status.test_flag
+                },
+                set (value) {
+                    this.$store.commit('SET_FLAG', value)
                 }
             }
         },

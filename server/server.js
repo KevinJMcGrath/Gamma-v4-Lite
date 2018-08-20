@@ -42,6 +42,10 @@ const express = require('express')
 const app = express()
 const api = require('./api')
 
+// This should now work with the top level varible
+const config = require('../nuxt.config.js')
+const nuxt = new Nuxt(config)
+
 app.use(bodyParser.json())
 
 // Tell express to use the API routes in the API folder
@@ -64,9 +68,9 @@ app.get('/bob', (req, res) => {
 })*/
 
 
-const config = require('../nuxt.config.js')
+/* const config = require('../nuxt.config.js')
 
-const nuxt = new Nuxt(config)
+const nuxt = new Nuxt(config) */
 
 if (config.dev) {
 	const builder = new Builder(nuxt)
