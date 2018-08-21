@@ -13,10 +13,10 @@
                             <p class="timeline-current-label">Company Information</p>
                             <div class="timeline-spacer"></div>   
                             <div class="timeline-content" style="height:280px;">
-                                <Form :model="companyForm" :rules="validation_rules">
+                                <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
                                         Company Legal Name<br/>
-                                        <FormItem prop="phone"> 
+                                        <FormItem prop="companyname"> 
                                             <i-input v-model="input_company"></i-input>
                                         </FormItem>
                                     </div>
@@ -24,30 +24,7 @@
                                         Industry<br/>
                                         <FormItem prop="industry">
                                             <Select v-model="input_industry" placeholder="Select">
-                                                <Option value="Agriculture-Mining">Agriculture &amp; Mining</Option>
-                                                <Option value="Communications-Media-IT">Communications, Media, IT</Option>
-                                                <Option value="Consulting-Services">Consulting Services</Option>
-                                                <Option value="Consumer-Services">Consumer Services</Option>
-                                                <Option value="eCommerce">eCommerce</Option>
-                                                <Option value="Education">Education</Option>
-                                                <Option value="Energy-Oil-Gas">Energy, Oil and Gas</Option>
-                                                <Option value="Financial-Services">Financial Services</Option>
-                                                <Option value="Food-Beverage">Food &amp; Beverage</Option>
-                                                <Option value="Government">Government</Option>
-                                                <Option value="Healthcare-Pharmaceuticals-Biotec">Healthcare, Pharma and Biotech</Option>
-                                                <Option value="Insurance">Insurance</Option>
-                                                <Option value="Manufacturing">Manufacturing</Option>
-                                                <Option value="Media-Entertainment">Media &amp; Entertainment</Option>
-                                                <Option value="Nonprofit">Nonprofit</Option>
-                                                <Option value="Professional-Services">Professional Services</Option>
-                                                <Option value="Public-Sector">Public Sector</Option>
-                                                <Option value="RealEstate-Construction">Real Estate &amp; Construction</Option>
-                                                <Option value="Restaurant-Hospitality">Restaurant &amp; Hospitality</Option>
-                                                <Option value="Retail">Retail</Option>
-                                                <Option value="Technology">Technology</Option>
-                                                <Option value="Transportation-Storage">Transportation &amp; Storage</Option>
-                                                <Option value="Wholesale-Distribution">Wholesale &amp; Distribution</Option>
-                                                <Option value="Other">Other</Option>
+                                                <Option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</Option>
                                             </Select>
                                         </FormItem>
                                     </div>
@@ -117,7 +94,33 @@
                         { required: true, message: 'Please select a primary industry from the dropdown.', trigger: 'blur'}
                     ]
 
-                }
+                },
+                industry_list: [
+                    { id: 1, value: "Agriculture-Mining", label: "Agriculture & Mining" },
+                    { id: 2, value: "Communications-Media-IT", label: "Communications, Media, IT" },
+                    { id: 3, value: "Consulting-Services", label: "Consulting Services" },
+                    { id: 4, value: "Consumer-Services", label: "Consumer Services" },
+                    { id: 5, value: "eCommerce", label: "eCommerce" },
+                    { id: 6, value: "Education", label: "Education" },
+                    { id: 7, value: "Energy-Oil-Gas", label: "Energy, Oil and Gas" },
+                    { id: 8, value: "Financial-Services", label: "Financial Services" },
+                    { id: 9, value: "Food-Beverage", label: "Food & Beverage" },
+                    { id: 10, value: "Government", label: "Government" },
+                    { id: 12, value: "Healthcare-Pharmaceuticals-Biotec", label: "Healthcare, Pharma and Biotech" },
+                    { id: 13, value: "Insurance", label: "Insurance" },
+                    { id: 14, value: "Manufacturing", label: "Manufacturing" },
+                    { id: 15, value: "Media-Entertainment", label: "Media & Entertainment" },
+                    { id: 16, value: "Nonprofit", label: "Nonprofit" },
+                    { id: 17, value: "Professional-Services", label: "Professional Services" },
+                    { id: 18, value: "Public-Sector", label: "Public Sector" },
+                    { id: 19, value: "RealEstate-Construction", label: "Real Estate & Construction" },
+                    { id: 20, value: "Restaurant-Hospitality", label: "Restaurant & Hospitality" },
+                    { id: 21, value: "Retail", label: "Retail" },
+                    { id: 22, value: "Technology", label: "Technology" },
+                    { id: 23, value: "Transportation-Storage", label: "Transportation & Storage" },
+                    { id: 24, value: "Wholesale-Distribution", label: "Wholesale & Distribution" },
+                    { id: 25, value: "Other", label: "Other" }
+                ]
             }
         },
         head() {
@@ -130,7 +133,7 @@
             }
         },
         mounted: function() {
-
+            console.log('loaded company.vue')
             this.companyForm.companyname = this.$store.state.company.name
             this.companyForm.industry = this.$store.state.company.industry
             this.companyForm.seats = this.$store.state.service.seats
@@ -148,11 +151,11 @@
             },
             input_industry: {
                 get () {
-                    return this.$store.state.company.industry
+                    return this.getSelectOptionValueByLabel(this.$store.state.company.industry)
                 },
                 set (value) {
-                    this.companyForm.industry = value
-                    this.$store.commit('SET_INDUSTRY', value)
+                    this.companyForm.industry = value 
+                    this.$store.commit('SET_INDUSTRY', this.getSelectOptionLabelByValue(value))
                 }
             },
             input_seats: {
@@ -166,12 +169,12 @@
             }
         },
         methods: {
-            handleGotoService () {
-                this.$refs['companyForm'].validate((valid) => {
+            handleGotoBilling () {
+                this.$refs['company_form'].validate((valid) => {
                     if (valid) 
                     {
                         this.$store.commit('SET_PAGE_COMPLETE', 'company')
-                        this.$router.push({name: "service"});        
+                        this.$router.push({name: "billing", query: { sseid: this.$store.state.status.guid }});        
                     }
                     else
                     {
@@ -181,8 +184,29 @@
                 
                 
             },
-            handleGotoContact() {
-                this.$router.push({name: "contact"})
+            getSelectOptionLabelByValue(val) {
+                if (this.industry_list && !!val) {
+                    let ind_obj = this.industry_list.find(inds => inds.value === val)
+
+                    if (ind_obj) {
+                        return ind_obj.label
+                    }
+                    else {
+                        return 'Other'
+                    }
+                } 
+            },
+            getSelectOptionValueByLabel(lbl) {
+                if (this.industry_list && !!lbl) {
+                    let ind_obj = this.industry_list.find(inds => inds.label === lbl)
+
+                    if (ind_obj) {
+                        return ind_obj.value
+                    }
+                    else {
+                        return 'Other'
+                    }
+                } 
             },
             modal_ok() {
 

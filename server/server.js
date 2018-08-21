@@ -43,8 +43,8 @@ const app = express()
 const api = require('./api')
 
 // This should now work with the top level varible
-const config = require('../nuxt.config.js')
-const nuxt = new Nuxt(config)
+//const config = require('../nuxt.config.js')
+//const nuxt = new Nuxt(config)
 
 app.use(bodyParser.json())
 
@@ -68,9 +68,9 @@ app.get('/bob', (req, res) => {
 })*/
 
 
-/* const config = require('../nuxt.config.js')
+const config = require('../nuxt.config.js')
 
-const nuxt = new Nuxt(config) */
+const nuxt = new Nuxt(config) 
 
 if (config.dev) {
 	const builder = new Builder(nuxt)
@@ -96,7 +96,7 @@ if (config.dev) {
 
 
 //Production error handler
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
 	if (!err) {
 		return next()
 	}
@@ -105,12 +105,12 @@ app.use((err, req, res, next) => {
 	console.error(err.message)
 	console.error(err.statusCode)
 
-	/*res.status(err.status || 500)
+	res.status(err.status || 500)
 	res.render('error', {
 		message: err.message,
 		error: {}
-	})*/
-})
+	})
+})*/
 
 
 app.use(nuxt.render)

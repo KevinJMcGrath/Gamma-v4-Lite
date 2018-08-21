@@ -10,7 +10,7 @@
                     </div>
                     <div class="lite-container-row">
                         Business Email
-                        <Form ref="emailForm" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent prevents Enter from submitting-->
+                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent prevents Enter from submitting-->
                             <FormItem prop="email">
                                 <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" ></i-input>
                             </FormItem> 
@@ -18,7 +18,7 @@
                     </div>
                     <div>
                         <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1" 
-                            style="height: 32px; width: 100px;" @click="handleValidateEmail('emailForm')">Get Started</button>
+                            style="height: 32px; width: 100px;" @click="handleValidateEmail()">Get Started</button>
                     </div>
                 </i-col>
                 <i-col span=8 class="lite-col">
@@ -60,7 +60,7 @@
                 page_title: 'Symphony - Verify Email',
                 loading: false,
                 emailForm: {
-                    email: 'kevinmcgr@gmail.com'
+                    email: ''
                 },
                 validation_rules: {
                     email: [
@@ -93,33 +93,34 @@
             }
         },
         mounted: function() {
-
+            
         },
         methods: {
             toggleButtonActive() {
 
             },
-            handleValidateEmail(name) {
+            handleValidateEmail() {
                 this.loading = true
 
                 console.log('(handleValidateEmail) axios default baseURL: ' + axios.default.baseURL)
 
-                this.$refs[name].validate((valid) => {
+                this.$refs['email_form'].validate((valid) => {
                     
-                    if (this.test_flag)
+                    /*if (this.test_flag)
                     {   
                         let enc = btoa(this.input_email).replace(/=/g, '-')
                         this.$router.push({name: "email-thankyou", query:{qid: enc}})
                     }
-                    else if (valid)
+                    else*/ 
+                    if (valid)
                     {
                         let doVerify = false
                         
                         axios.post('/api/domain-check', { email_address: this.input_email }).then(function(response) {
-                            console.log('email.vue - axios debugging')
+/*                             console.log('email.vue - axios debugging')
                             console.log(response.data)
                             console.log(response.headers)
-                            console.log(response.config)
+                            console.log(response.config) */
 
                             doVerify = response.data.success
 
@@ -182,10 +183,6 @@
                             console.error(error.response);
                             this.loading = false
                         }.bind(this))
-
-                        
-                        
-                        
                     }                    
                     else
                     {

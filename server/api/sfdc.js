@@ -29,7 +29,7 @@ function log_response(resp, isError)
 			console.log('Success!')
 			console.log('Response Code: ' + resp.status)
 			console.log('Response Text: ' + resp.statusText)
-			console.log('Response Body: ' + resp.data)
+			//console.log('Response Body: ' + resp.data)
 		}		
 	}
 	
@@ -108,12 +108,18 @@ router.post('/verify', function(req, res, next) {
 	.then((response) => {		
 		log_response(response)
 
-		let encoded_email = btoa(email_address).replace(/=/g, '-')
+		// btoa is not available server side 
+		//let encoded_email = btoa(email_address).replace(/=/g, '-')
+		let encoded_email = Buffer.from(email_address).toString('base64').replace(/=/g, '-')
 		res.json( { success: true, message: response.data, encoded: encoded_email })
 	})
 	.catch((error) => {
-		let err_obj = axios_error(error)
-		res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
+		//let err_obj = axios_error(error)
+		//res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
+
+		console.log(error.response.data)
+		//console.log(error.message)
+		res.status(500).json({success: false, message: error.message, error_data: error.response.data})
 	})
 })
 
@@ -137,7 +143,7 @@ router.post('/confirm', function(req, res, next) {
 	axios.post('/guid-verification', payload, config)
 	.then((response) => {
 		log_response(response)
-		console.log(response.data)
+		//console.log(response.data)
 		res.json( { success: true, message: 'verified', user_email: response.data.user_state.user.email })
 	})
 	.catch((error) => {		

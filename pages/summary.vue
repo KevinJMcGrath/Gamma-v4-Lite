@@ -27,7 +27,7 @@
                                     <Row>
                                         <i-col span=8 ><p>Your Information</p></i-col>
                                         <i-col span=4 offset=12 class="edit-link-col">                                            
-                                            <a href="#"><ion-icon name="create"></ion-icon>Edit</a>
+                                            <a @click="handleGotoContact()"><ion-icon name="create"></ion-icon>Edit</a>
                                         </i-col>
                                     </Row>                                    
                                 </div>
@@ -40,7 +40,7 @@
                                     <Row>
                                         <i-col span=8 ><p>Company Information</p></i-col>
                                         <i-col span=4 offset=12 class="edit-link-col">                                            
-                                            <a href="#"><ion-icon name="create"></ion-icon>Edit</a>
+                                            <a @click="handleGotoCompany()"><ion-icon name="create"></ion-icon>Edit</a>
                                         </i-col>
                                     </Row>                                    
                                 </div>
@@ -53,7 +53,7 @@
                                     <Row>
                                         <i-col span=8 ><p>Billing</p></i-col>
                                         <i-col span=4 offset=12 class="edit-link-col">                                            
-                                            <a href="#"><ion-icon name="create"></ion-icon>Edit</a>
+                                            <a @click="handleGotoBilling()"><ion-icon name="create"></ion-icon>Edit</a>
                                         </i-col>
                                     </Row>                                    
                                 </div>
@@ -67,12 +67,16 @@
                                 <p>{{$store.state.billing.country}}</p>
 
                                 <div class="tandc group-margin">
+                                    <Form ref="summary_form" :model="summaryForm" :rules="validation_rules" @submit.native.prevent>
                                     <!-- I REALLY hate trying to get checkboxs to align with labels.
                                     I can't believe this is still a thing in 2018-->
-                                    <label for="tandc_check">
-                                        <input type="checkbox" v-model="accept_tandc" name="tandc_check"/>
-                                        <span>I have read and agree to the <a href="#">Terms and Conditions</a></span>
-                                    </label>
+                                    <FormItem prop="tandc"> 
+                                        <label for="tandc_check">
+                                            <input type="checkbox" v-model="input_accept_tandc" name="tandc_check"/>
+                                            <span>I have read and agree to the <a href="#">Terms and Conditions</a></span>
+                                        </label>
+                                    </FormItem>
+                                    </Form>
                                 </div>
 
                                 <div class="group-margin">
@@ -99,10 +103,28 @@
 
     export default {
         data() {
+            const validateTandC = (rule, value, callback) => {
+                if (value === true)
+                {
+                    callback();
+                }
+                else
+                {
+                    callback(new Error('You must agree to the terms specified in the EULA to proceed.'));
+                }                
+            };
+
             return {
                 loading: false,
                 page_title: 'Symphony - Review Your Purchase',
-                accept_tandc: false
+                summaryForm: {
+                    accept_tandc: false
+                },
+                validation_rules: {
+                    tandc: [
+                        { validator: validateTandC, trigger: 'change' }
+                    ]
+                }
             }
         },
         head() {
@@ -116,68 +138,78 @@
         },
         mounted: function() {
             // TEMP REMOVE ME 
-            this.$store.commit('SET_EMAIL', 'kevinmcgr@gmail.com')
-            this.$store.commit('SET_FNAME', 'Kevin')
-            this.$store.commit('SET_LNAME', 'McGrath')
-            this.$store.commit('SET_PHONE', '+1 (610)-328-9985')
-            this.$store.commit('SET_COMPANY', 'Ghostbusters')
-            this.$store.commit('SET_INDUSTRY', 'Supernatural Investigations and Eliminations')
-            this.$store.commit('SET_ADD1', '14 North Moore Street')
-            this.$store.commit('SET_ADD2', 'First Floor')
-            this.$store.commit('SET_CITY', 'New York')
-            this.$store.commit('SET_BILLING_STATE', 'New York')
-            this.$store.commit('SET_ZIP', '10013')
-            this.$store.commit('SET_COUNTRY', 'United States')
+            this.summaryForm.accept_tandc = this.$store.state.legal.terms_accepted
         },
         computed: {
+            input_accept_tandc: {
+                get () {
+                    return this.$store.state.legal.terms_accepted
+                },
+                set (value) {
+                    this.summaryForm.accept_tandc = value
+                    this.$store.commit('SET_TANDC', value)
+                }
+            }
         },
         methods: {
+            handleGotoContact() { 
+                this.$router.push({ name: "contact", query: { sseid: this.$store.state.status.guid }})
+            },
+            handleGotoCompany() { 
+                this.$router.push({ name: "company", query: { sseid: this.$store.state.status.guid }})
+            },
+            handleGotoBilling() { 
+                this.$router.push({ name: "billing", query: { sseid: this.$store.state.status.guid }})
+            },
             handleGotoThankyou() {
-                this.loading = true
-                //NOTE: You cannot rebind "arrow functions"
-                //console.log(JSON.stringify(this.$store.state))
-                axios.post('/api/purchase-submit', this.$store.state)
-                .then(function(response) {
+                this.$refs['summary_form'].validate((valid) => {
+                    this.loading = true
+                    //NOTE: You cannot rebind "arrow functions"
+                    //console.log(JSON.stringify(this.$store.state))
+                    axios.post('/api/purchase-submit', this.$store.state)
+                    .then(function(response) {
 
-                    console.log('Success (Summary Page)')
-                    console.log('Response Code: ' + response.status)
+                        console.log('Success (Summary Page)')
+                        console.log('Response Code: ' + response.status)
 
-                    this.$store.commit('SET_PAGE_COMPLETE', 'summary')
-                    //this.$router.push({name: "thankyou"}); 
-
-
-                }.bind(this))
-                .catch(function(error) {
-                    this.loading = false
-
-                    console.error('Failed to POST')
-                    console.error(error)
-
-                    if (error.response)
-                    {
-                        console.error('Response Code: ' + error.response.status)
-                        console.error('Response Text: ' + error.response.statusText)
-                        console.error('Response Body: ' + error.response.data)
-                        console.error('Response Headers: ' + error.response.headers)
-
-                        res.json( { success: false, message: 'HTTP Error' })
-                    }
-                    else if (error.request)
-                    {
-                        // Request was made but no response was received
-                        console.error(error.request)
-
-                        res.json( { success: false, message: 'System Error' })
-                    }
-                    else
-                    {
-                        console.error('Unknown Error: ' + error.message)
-
-                        res.json( { success: false, message: 'Unknown Error' })
-                    }
+                        this.$store.commit('SET_PAGE_COMPLETE', 'summary')
+                        this.$router.push({name: "thankyou"}); 
 
 
-                }.bind(this))                               
+                    }.bind(this))
+                    .catch(function(error) {
+                        this.loading = false
+
+                        console.error('Failed to POST')
+                        console.error(error)
+
+                        if (error.response)
+                        {
+                            /* console.error('Response Code: ' + error.response.status)
+                            console.error('Response Text: ' + error.response.statusText)
+                            console.error('Response Body: ' + error.response.data)
+                            console.error('Response Headers: ' + error.response.headers) */
+
+                            res.json( { success: false, message: 'HTTP Error' })
+                        }
+                        else if (error.request)
+                        {
+                            // Request was made but no response was received
+                            console.error(error.request)
+
+                            res.json( { success: false, message: 'System Error' })
+                        }
+                        else
+                        {
+                            console.error('Unknown Error: ' + error.message)
+
+                            res.json( { success: false, message: 'Unknown Error' })
+                        }
+
+
+                    }.bind(this))   
+                })
+                                            
             }
         },
         components: {

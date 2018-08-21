@@ -6,8 +6,8 @@
                 <i-col span="8">
                     <span class="big-item">{{total_seats}} Seats</span>
                 </i-col>
-                <i-col span="4" offset="12">
-                    <span class="big-item align-right">{{formatted_monthly_seat_cost}}</span>
+                <i-col :span="priceColSize" :offset="priceColOffset">
+                    <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div>
                 </i-col>
             </Row>
             <Row>
@@ -15,7 +15,7 @@
                     <span class="small-item">{{formatted_pupm}} /user/month</span>
                 </i-col>
                 <i-col span="4" offset="12">
-                    <span class="small-item align-right">monthly</span>
+                    <div class="small-item align-right">monthly</div>
                 </i-col>
             </Row>
             <Row>
@@ -28,8 +28,8 @@
         <div class="billing-group">
             <Row class="summary-row">
                 <i-col span="10">Today's Total</i-col>
-                <i-col span="4" offset="9">
-                    <span class="align-right">{{formatted_annual_seat_cost}}</span>
+                <i-col :span="totalColSize" :offset="totalColOffset">
+                    <div class="align-right">{{formatted_annual_seat_cost}}</div>
                 </i-col>
             </Row>
             <p class="small-item">
@@ -44,12 +44,20 @@
         data() {            
 
             return {
-
+                // Leaving this for now, though changing the internal containers to divs and right aligning 
+                // made it kinda moot.
+                priceColSize: 6, //4
+                priceColOffset: 10, //12
+                totalColSize: 8,
+                totalColOffset: 6
             }
+        },
+        mounted: function() {
+            console.log('Billing component loaded')
         },
         methods: {
             formatCurrencyValue(input_val) {
-                if (this.$store.state.user.country_code == 'us')
+                if (['us','US','USA','usa','United States', 'America', 'United States of America'].includes(this.$store.state.user.country_code))// == 'us')
                     return `$${input_val}`
                 else
                     return `${input_val} USD`

@@ -19,7 +19,7 @@
                             <div class="timeline-spacer"></div> 
                             <div class="timeline-content" style="height:700px;">
                                 <p class="timeline-billing-subgroup">Card Info</p>
-                                <Form ref="billingForm" :model="billingForm" :rules="validation_rules">
+                                <Form ref="billing_form" :model="billingForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
                                         Name on Card<br/>
                                         <FormItem prop="fullname"> 
@@ -27,22 +27,29 @@
                                         </FormItem>
                                     </div>
 
+                                    <div v-bind:class="{hide_stripe: has_stripe_token}">
                                     <div class="lite-container-row stripe-container"> 
                                         Card Number<br/>
-                                        <div id="stripe-card-number" class="field empty"></div>
+                                        <div ref="vue_stripe_card_number" id="stripe-card-number" class="field empty"></div>
                                     </div>
 
                                     <div class="lite-container-row stripe-container"> 
                                         <Row :gutter=6>
                                             <i-col span="12">
                                                 Expiration Date<br/>
-                                                <div id="stripe-card-exp" class="field empty"></div>
+                                                <div ref="vue_stripe_card_exp" id="stripe-card-exp" class="field empty"></div>
                                             </i-col>
                                             <i-col span="12">
                                                 Security Code<br/>
-                                                <div id="stripe-card-cvc" class="field empty"></div>
+                                                <div ref="vue_stripe_card_cvc" id="stripe-card-cvc" class="field empty"></div>
                                             </i-col>
                                         </Row>
+                                    </div>
+                                    </div>
+
+                                    <div style="font-weight:bold; margin-bottom: 15px;" v-bind:class="{hide_stripe: !has_stripe_token}">
+                                        <p>Credit card information securely stored. Use this link to reset the entry fields.</p>
+                                        <a @click="ResetStripePanel()">Change Card Details</a>
                                     </div>
 
                                     <p class="timeline-billing-subgroup">Billing Address</p>
@@ -82,7 +89,7 @@
                                         <Row :gutter="8">
                                             <i-col span=12>
                                                 State<br/>
-                                                <FormItem prop="country"> 
+                                                <FormItem prop="state"> 
                                                     <i-input v-model="input_state"></i-input>
                                                 </FormItem>
                                             </i-col>
@@ -98,7 +105,8 @@
                                     <!-- <symphony-country-state /> -->
 
                                     <div>
-                                        <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoSummary()">Next</button>
+                                        <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
+                                            class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoReview()">Next</button>
                                     </div>
 
                                 </Form>
@@ -118,16 +126,25 @@
         </div>       
     </div>  
 </template>
-   
+<!--<script src="https://js.stripe.com/v3/"></script>-->
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
     //import SymphonyCountryState from '~/components/SymphonyCountryState.vue'
+
+    // Moved these declarations to the global scope to avoid problems later. 
+    // May not be necessary. Then again, it may not be necessary to keep 
+    // stuff off the data object. 
+    let stripe = undefined
+    let stripe_elements = undefined
+    
+    let cardNumber = undefined
+    let cardExp = undefined
+    let cardCVC = undefined
 
     export default {
         data() {
             return {
                 loading: false,
-                stripe_elements: null,
                 page_title: 'Symphony - Billing Details',
                 billingForm: {
                     fullname: '',
@@ -169,7 +186,7 @@
         },
         mounted: function() {
 
-            this.billingForm.fullname = this.$store.state.billing.fullname
+            this.billingForm.fullname = this.$store.state.billing.card_fullname
             this.billingForm.address1 = this.$store.state.billing.address1
             this.billingForm.address2 = this.$store.state.billing.address2
             this.billingForm.city = this.$store.state.billing.city
@@ -177,15 +194,31 @@
             this.billingForm.zip_code = this.$store.state.billing.zip_code
             this.billingForm.country_code = this.$store.state.user.country_code
 
+            stripe = Stripe('pk_test_gUJYd9BdGY6XdYL9RltHkmRe');
+
+            stripe_elements = stripe.elements({
+                fonts: [
+                    {cssSrc: 'https://fonts.googleapis.com/css?family=Lato'}
+                ]
+            });
+
             this.MountStripeElements();
         },
         computed: {
+            has_stripe_token: {
+                get () {
+                    return this.$store.state.billing.stripe_token !== '' &&
+                        this.$store.state.billing.stripe_token !== {} &&
+                        this.$store.state.billing.stripe_token.hasOwnProperty('id')
+                }
+                
+            },
             input_fullname: {
                 get () {
-                    return this.$store.state.billing.fullname
+                    return this.$store.state.billing.card_fullname
                 },
                 set (value) {
-                    this.billingForm.fullname
+                    this.billingForm.fullname = value
                     this.$store.commit('SET_CARD_FULLNAME', value)
                 }
             },
@@ -250,35 +283,44 @@
                 }
             }
         },
-        methods: {            
-            handleGotoSummary () {
-                this.$refs['billingForm'].validate((valid) => {
+        methods: {
+            ResetStripePanel() { 
+                this.$store.commit('SET_STRIPE_TOKEN', '')
+            },
+            handleGotoReview () {
+                console.log('Checking billing form')
+                this.$refs['billing_form'].validate((valid) => {
                     this.billingForm.stripeError = '';
-                    if (valid)
+                    
+                    if (valid && this.has_stripe_token)
+                    {
+                        this.$store.commit('SET_PAGE_COMPLETE', 'billing')
+                        this.$router.push({name: "summary", query: { sseid: this.$store.state.status.guid }});  
+                    }
+                    else if (valid)
                     {
                         this.loading = true
-
                         // The create token call takes a single element. You can apparently
                         // just submit one element of the collection and it will obtain the 
                         // the others automatically.
-                        stripe.createToken(this.stripe_elements[0]).then(function(result) {
+                        stripe.createToken(cardNumber).then(function(result) { 
+                            console.log('string token submitted')
                             if (result.token)
                             {
-                                //globalState.billing.stripe_token = result.token;
+                                console.log(result.token)
                                 this.$store.commit('SET_STRIPE_TOKEN', result.token)
 
                                 this.$store.commit('SET_PAGE_COMPLETE', 'billing')
-                                this.$router.push({name: "summary"});  
+                                this.$router.push({name: "summary", query: { sseid: this.$store.state.status.guid }});  
                             }
                             else if (result.error) {
-
                                 this.billingForm.stripeError = result.error;
                                 this.loading = false
-                                //console.error(result.error);
+                                console.error(result.error);
                             } else {
                                 this.billingForm.stripeError = 'Unable to validate your credit card info. Please contact Symphony.'
                                 this.loading = false
-                                //console.error('Failed to obtain token from Stripe.');
+                                console.error('Failed to obtain token from Stripe.');
                             }                   
 
                         //Needed to bind "this" in order to get this promise declaration to 
@@ -286,31 +328,22 @@
                         //need it to keep attached to the Vue instance
                         //https://stackoverflow.com/questions/39196501/vuejs-async-component-data-and-promises
                         }.bind(this)).catch(function (err) {
+                            this.loading = false
+                            console.error('stripe promise error')
                             console.error(err);
-                        });
+                        }.bind(this));
                     }
                     else
                     {
+                        this.loading = false
+                        console.log()
                         this.$Message.error();
                     }
                 })
 
                                               
             },
-            MountStripeElements() {
-                // Initialize the stripe elements using the public key
-                const stripe = Stripe('pk_test_gUJYd9BdGY6XdYL9RltHkmRe');
-
-                // Create the elements collection from which each individual element
-                // will be created.
-                // It's possible to use locale to localize the elements. 
-                this.stripe_elements = stripe.elements({
-                    fonts: [
-                        {cssSrc: 'https://fonts.googleapis.com/css?family=Lato'}
-                    ],
-                    //locale: auto
-                });
-                
+            MountStripeElements() {               
                 // Build the styles collection. The elements constructor takes an object 
                 // as a parameter that includes a fonts property for passing information
                 // about what fonts you wish to use. 
@@ -347,29 +380,34 @@
                 // Note that the objects are created from the elements collection
                 // and that each object has a mount method that takes the
                 // class id of a div on the page as it's target. 
-                const cardNumber = this.stripe_elements.create('cardNumber', {
+                cardNumber = stripe_elements.create('cardNumber', {
                     style: elementStyles,
                     classes: elementClasses
                 })
-                cardNumber.mount('#stripe-card-number')
+                cardNumber.mount(this.$refs.vue_stripe_card_number)
 
-                const cardExp = this.stripe_elements.create('cardExpiry', {
+                cardExp = stripe_elements.create('cardExpiry', {
                     style: elementStyles,
                     classes: elementClasses
                 })
-                cardExp.mount('#stripe-card-exp')
+                cardExp.mount(this.$refs.vue_stripe_card_exp)
 
-                const cardCVC = this.stripe_elements.create('cardCvc', {
+                cardCVC = stripe_elements.create('cardCvc', {
                     style: elementStyles,
                     classes: elementClasses
                 })
-                cardCVC.mount('#stripe-card-cvc')              
+                cardCVC.mount(this.$refs.vue_stripe_card_cvc)
+                
             }
         },
         components: {
             SymphonyBilling,
             //SymphonyCountryState
         }
+    }
+
+    function BuildElements() {
+
     }
 </script>
 <style scoped>
@@ -391,6 +429,14 @@
     .stripe-container .field:focus {
         border: 2px solid #0395a1;
     }*/
+
+    .hide_stripe {
+        display: none;
+    }
+
+    .show_stripe {
+        display: block;
+    }
 
 </style>
 
