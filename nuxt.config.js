@@ -1,10 +1,12 @@
 require('dotenv').config()
 
-console.log(process.env.SFDC_BASE_URL)
-console.log(process.env.SFDC_GAMMA_KEY)
-
 module.exports = {  
   dev: (process.env.NODE_ENV !== 'production'),
+  loading: { color: '#3B8070' },
+  css: [
+    '~/static/common.css'//,
+    //'vue-tel-input/dist/vue-tel-input.css' //2
+  ],
   head: {
     title: '{{title}}',
     meta: [
@@ -26,17 +28,30 @@ module.exports = {
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
     ]
   },
-  css: [
-    '~/static/common.css'//,
-    //'vue-tel-input/dist/vue-tel-input.css' //2
-  ],
+  
+  // Specifying custom routes to be included in the vue-router configuration
+  // I'm not sure this is going to work exactly the way I want - it doesn't 
+  // redirect the user... which is the say the URL in the omnibar doesn't change.
+  router: {
+    extendRoutes (routes, resolve) {
+      // I created an index.vue with a redirect in the fetch() method instead.
+      /*routes.push({
+        name: 'root',
+        path: '/',        
+        component: resolve(__dirname, 'pages/email.vue')
+        // redirect is coming in a later version
+      }) */
 
-  loading: { color: '#3B8070' },
+      routes.push({
+        name: 'unknown',
+        path: '*',
+        component: resolve(__dirname, 'pages/404.vue')
+      })
+    }
+  },
 
   build: {
-
     extractCSS: true,
-
     vendor: [
       'iview'//,
       //'vue-tel-input'      //1
@@ -45,9 +60,7 @@ module.exports = {
     extend (config, { isDev, isClient }) {
 
       if (isDev && isClient) {
-
         config.devtool = '#source-map'
-
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -56,13 +69,18 @@ module.exports = {
         })
       }
 
-
       config.module.rules.push({
         test: /\.vue$/,
         loader: 'iview-loader',
         options: {
           prefix: false
         }
+      })
+
+      config.module.rules.push({
+        test: /\.(txt|pdf|ttf)$/,
+        loader: 'file-loader',
+        options: {}
       })
 
       // 8/12/2018 - KJM - Added this to hopefully fix the 
@@ -76,13 +94,6 @@ module.exports = {
         loader: 'url-loader?limit=10000',
         options: {}
       })*/
-
-      config.module.rules.push({
-        test: /\.(txt|pdf|ttf)$/,
-        loader: 'file-loader',
-        options: {}
-      })
-
     }
   },
 

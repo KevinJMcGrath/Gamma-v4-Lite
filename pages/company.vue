@@ -133,11 +133,12 @@
             }
         },
         mounted: function() {
-            console.log('loaded company.vue')
             this.companyForm.companyname = this.$store.state.company.name
             this.companyForm.industry = this.$store.state.company.industry
             this.companyForm.seats = this.$store.state.service.seats
-            
+
+            // Clear page errors from the store
+            this.$store.dispatch('resetErrorState')            
         },
         computed: {
             input_company: {

@@ -1,0 +1,10 @@
+# System files
+.nuxt/
+.vscode/
+.editorconfig
+.eslintrc.js
+*.code-workspace
+
+# Archives
+archive/
+docs/

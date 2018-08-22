@@ -68,11 +68,8 @@
             
         },
         mounted: function() {
-                // I'm going to leave this here as a reminder. I'm pretty sure I was screwing up the flow
-                // by trying to set this value here after the fetch() method ran. Since I have the computed property
-                // defined, after the fetch() is called and the store is updated, the getter correctly populates the
-                // email address in the component body. 
-                //this.input_email = this.$store.state.email.email_address
+            // Clear page errors from the store
+            this.$store.dispatch('resetErrorState')
         },
         methods: {
             handleResendEmail() {

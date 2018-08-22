@@ -21,7 +21,7 @@ else {
 const port = process.env.PORT || 8080
 const host = process.env.HOST || '0.0.0.0'
 
-console.log(`Are the ENV Variables working?: ${process.env.SFDC_API_KEY}`)
+console.log(`Are the app.yaml ENV variables working?: ${process.env.SFDC_API_KEY}`)
 
 let serverState = process.env.NODE_ENV || 'development'
 console.log(`Server State detected as: ${serverState}`)
@@ -43,8 +43,8 @@ const app = express()
 const api = require('./api')
 
 // This should now work with the top level varible
-//const config = require('../nuxt.config.js')
-//const nuxt = new Nuxt(config)
+const config = require('../nuxt.config.js')
+const nuxt = new Nuxt(config)
 
 app.use(bodyParser.json())
 
@@ -52,30 +52,18 @@ app.use(bodyParser.json())
 // instead of specifying them manually
 app.use('/api', api)
 
-
 app.get('/_ah/health', (req, res) => {
 	res.status(200)
 	res.send()
 })
 
-
-app.get('/bob', (req, res) => { 
-	res.status(200).json({ message: "hello" })
-})
-
-/*app.get('*', (req, res) => {
-	console.log('Came here before moving on')
-})*/
-
-
-const config = require('../nuxt.config.js')
-
-const nuxt = new Nuxt(config) 
+//const config = require('../nuxt.config.js')
+//const nuxt = new Nuxt(config) 
 
 if (config.dev) {
 	const builder = new Builder(nuxt)
 	builder.build().catch((error) => {
-		console.error('Error detected in dev config section (line 72)')
+		console.error('Error detected in dev config section (line 66)')
 		console.error(error)
 		process.exit(1)
 	})
@@ -85,15 +73,7 @@ if (config.dev) {
 
 //app.use(nuxt.render)
 
-
-/*app.use(nuxt.render(req,res).then((req, res) => {
-	console.log(res)
-}))*/
-
-
 //Or here. nuxt.render is technically middleware, but it's not using the express server
-
-
 
 //Production error handler
 /*app.use((err, req, res, next) => {
@@ -111,7 +91,6 @@ if (config.dev) {
 		error: {}
 	})
 })*/
-
 
 app.use(nuxt.render)
 app.listen(port, host)

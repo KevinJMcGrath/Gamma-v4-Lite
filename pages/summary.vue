@@ -137,8 +137,10 @@
             }
         },
         mounted: function() {
-            // TEMP REMOVE ME 
             this.summaryForm.accept_tandc = this.$store.state.legal.terms_accepted
+
+            // Clear page errors from the store
+            this.$store.dispatch('resetErrorState')
         },
         computed: {
             input_accept_tandc: {
@@ -169,9 +171,6 @@
                     axios.post('/api/purchase-submit', this.$store.state)
                     .then(function(response) {
 
-                        console.log('Success (Summary Page)')
-                        console.log('Response Code: ' + response.status)
-
                         this.$store.commit('SET_PAGE_COMPLETE', 'summary')
                         this.$router.push({name: "thankyou"}); 
 
@@ -180,31 +179,15 @@
                     .catch(function(error) {
                         this.loading = false
 
-                        console.error('Failed to POST')
-                        console.error(error)
-
-                        if (error.response)
-                        {
-                            /* console.error('Response Code: ' + error.response.status)
-                            console.error('Response Text: ' + error.response.statusText)
-                            console.error('Response Body: ' + error.response.data)
-                            console.error('Response Headers: ' + error.response.headers) */
-
-                            res.json( { success: false, message: 'HTTP Error' })
+                        err_msg = {
+                            message: 'There was a problem submitting your request.',
+                            code: 'SUM-01'
                         }
-                        else if (error.request)
-                        {
-                            // Request was made but no response was received
-                            console.error(error.request)
 
-                            res.json( { success: false, message: 'System Error' })
-                        }
-                        else
-                        {
-                            console.error('Unknown Error: ' + error.message)
+                        store.dispatch('sendErrorReport', error)
+                        store.dispatch('setErrorState', err_msg)
 
-                            res.json( { success: false, message: 'Unknown Error' })
-                        }
+                        redirect('/error')
 
 
                     }.bind(this))   

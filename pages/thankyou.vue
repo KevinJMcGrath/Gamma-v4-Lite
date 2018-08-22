@@ -46,7 +46,8 @@
             }
         },
         mounted: function() {
-                
+            // Clear page errors from the store
+            this.$store.dispatch('resetErrorState')
         },
         methods: {
 

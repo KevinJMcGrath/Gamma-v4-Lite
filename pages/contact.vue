@@ -104,56 +104,45 @@
             return new Promise((resolve, reject) => {
                 if(!store.state.status.guid)
                 {
-                    console.log("loading guid")
                     //Load query parameters
                     if (query.hasOwnProperty('sseid') && query.sseid)
                     {
                         store.commit('SET_GUID', query.sseid)
-                        axios.post(process.env.BASE_URL + '/api/confirm', { guid: query.sseid }).then(function(response) {
+                        axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
 
-                            let email_address = response.data.user_email
-                            store.commit('SET_EMAIL', email_address)
+                            store.commit('SET_EMAIL', response.data.user_email)
                             store.commit('SET_VERIFIED', true)
                             resolve(true)
                         })
                         .catch((error) => {
-                            console.log('error in axios')
-
-                            if (error.response)
-                            {
-                                console.error('Error response from Express...')
-                                console.error('Response Code: ' + error.response.status)
-                                console.error('Response Text: ' + error.response.statusText)
-                                console.error('Response Body: ' + error.response.data)
-                            }
-                            else if (error.request)
-                            {
-                                // Request was made but no response was received
-                                console.error(error.request)
-
-                            }
-                            else
-                            {
-                                console.error('Unknown Error: ' + error.message)
-
-                            }
-                            reject()
                             
-                            console.log('redirecting 1')
-                            redirect('/email')
-                        })
+                            err_msg = {
+                                message: 'There was a problem validating your unique Id.',
+                                code: 'CONT-02'
+                            }
 
-                        
+                            store.dispatch('sendErrorReport', error)
+                            store.dispatch('setErrorState', err_msg)
+
+                            reject()
+                            redirect('/error')
+                        })
                     }
                     else
                     {
-                        //I might need to return an error here instead.
-                        reject()
-                        console.log('redirecting 2')
-                        redirect('/email')
-                    }
+                        let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
+                        msg += 'or you can re-register your email account.'
 
-                    
+                        err_msg = {
+                            message: msg,
+                            code: 'CONT-01'
+                        }
+
+                        store.dispatch('setErrorState', err_msg)
+
+                        reject()
+                        redirect('/error')
+                    }
                 }
                 else
                 {
@@ -163,24 +152,14 @@
             
         },
         mounted: function() {
-            this.$store.commit('SET_EMAIL', 'kevinmcgr@gmail.com')
-            this.$store.commit('SET_FNAME', 'Kevin')
-            this.$store.commit('SET_LNAME', 'McGrath')
-            this.$store.commit('SET_PHONE', '+1 (610)-328-9985')
-            this.$store.commit('SET_COMPANY', 'Ghostbusters')
-            this.$store.commit('SET_INDUSTRY', 'Healthcare, Pharma and Biotech')
-            this.$store.commit('SET_SEATS', 50)
-            this.$store.commit('SET_CARD_FULLNAME', 'Kevin J. McGrath')
-            this.$store.commit('SET_ADD1', '14 North Moore Street')
-            this.$store.commit('SET_ADD2', 'First Floor')
-            this.$store.commit('SET_CITY', 'New York')
-            this.$store.commit('SET_BILLING_STATE', 'New York')
-            this.$store.commit('SET_ZIP', '10013')
-            this.$store.commit('SET_COUNTRY', 'United States')
+            
             // Won't need this if the Properties tied to the Store work for validation
             this.contactForm.firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
             this.contactForm.phone = this.$store.state.user.phone
+            
+            // Clear page errors from the store
+            this.$store.dispatch('resetErrorState')
 
             //this.$els.phone-input
         },
@@ -225,21 +204,11 @@
                 this.$refs['contact_form'].validate((valid) => {
                     if (valid)
                     {
-                        //console.log('contact form is valid')
-                        //this.$store.commit('SET_FNAME', this.contactForm.firstname)
-                        //this.$store.commit('SET_LNAME', this.contactForm.lastname)
-                        //this.$store.commit('SET_PHONE', this.contactForm.phone)
                         this.$store.commit('SET_PAGE_COMPLETE', 'contact')
-
-                        //console.log('form valid, moving to company')
-                        
                         this.$router.push({ name: "company", query: { sseid: this.$store.state.status.guid } });   
-                        //console.log('did we get here? ')     
                     }
                     else
                     {
-                        console.log('contact form is NOT valid')
-                        console.log(this.$store.state.status.guid)
                         this.$Message.error();
                     }
 

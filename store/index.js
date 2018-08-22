@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import Vuex, {Payload, Store} from 'vuex'
 //import VuexPersistence from 'vuex-persist'
+import axios from 'axios'
 
 const moment = require('moment')
 
@@ -69,6 +70,10 @@ const store = () => new Vuex.Store({
 			onetime_fees: 500,
 			pupm: 20,
 			minimum_seats: 25		
+		},
+		error: {
+			code: '',
+			message: ''
 		},
 		page_state: [
 			{ index: 0, name: "contact", completed: false },
@@ -149,6 +154,12 @@ const store = () => new Vuex.Store({
 		SET_STRIPE_TOKEN(state, tokenObj) {
 			state.billing.stripe_token = tokenObj
 		},
+		SET_ERROR_MESSAGE(state, error_message) {			
+			state.error.message = error_message
+		},
+		SET_ERROR_CODE(state, error_code) {
+			state.error.code = error_code
+		},
 		SET_PAGE_COMPLETE(state, page_name) {
 			state.page_state.find(page => page.name === page_name).completed = true
 		}
@@ -210,6 +221,18 @@ const store = () => new Vuex.Store({
 				}
 			
 			return '30'
+		},
+		baseAppURL: (state) => {
+			if (process.env.NODE_ENV !== 'production')
+				return process.env.DEV_BASE_URL || 'http://localhost:8080'
+			else
+				return process.env.BASE_URL
+		},
+		baseSFDCURL: (state) => {
+			if (process.env.NODE_ENV !== 'production')
+				return process.env.SFDC_DEV_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
+			else
+				return process.env.SFDC_BASE_URL
 		}
 
 	},	
@@ -223,6 +246,46 @@ const store = () => new Vuex.Store({
 
 			console.log('_____________------------**********nuxtServerInit**********------------_____________')			
 			
+		},
+		resetErrorState({ commit }) {
+			commit('SET_ERROR_MESSAGE', '')
+			commit('SET_ERROR_CODE', '')
+		},
+		setErrorState({ commit }, user_message, user_code)
+		{
+			commit('SET_ERROR_MESSAGE', user_message)
+			commit('SET_ERROR_CODE', user_code)
+		},
+		sendErrorReport({ commit }, error)
+		{
+			const error_path = store.getters.baseAppURL + '/api/error'
+			let err_obj = CreateErrorObject(error, state.status.guid)
+
+			axios.post( error_path, err_obj ).then(function(response) {
+				console.log('Error submitted to Salesforce')
+				console.log(error_obj)
+			})
+			.catch((error) => {
+				if (error.response)
+				{
+					console.error('Error response from Express...')
+					console.error('Response Code: ' + error.response.status)
+					console.error('Response Text: ' + error.response.statusText)
+					console.error('Response Body: ' + error.response.data)
+				}
+				else if (error.request)
+				{
+					// Request was made but no response was received
+					console.error('Failed to receive resonse from error handler...')
+					console.error(error.request)
+
+				}
+				else
+				{
+					console.error('Unknown Error: ' + error.message)
+				}
+			})
+					
 		}
 
 		
@@ -238,6 +301,50 @@ function SetLog(logActivity)
 	console.log(moment().format('MM-DD-YYYY HH:mm:ss.SSS Z') + ' | ' + logActivity + ' | ' + processExe)
 }
 
+function CreateErrorObject(error, guid)
+{
+	error_obj = {
+		guid: guid,
+		type: '',
+		message: '',
+		response: {
+			status: '',
+			message: '',
+			data: {}
+		}
+	}
+
+	if (error)
+	{
+		if (error.response)
+		{
+			error_obj.type = 'http',
+			error_obj.message = (error.message ? error.message : 'HTTP error')
+			error_obj.response.status = error.response.status
+			error_obj.response.message = error.response.message
+			error_obj.response.data = error.response.data
+		}
+		else if (error.request)
+		{
+			error_obj.type = 'request'
+			error_obj.message = error.message
+			error_obj.response.message = 'Request was sent but no response was received.'
+			error_obj.response.data = error.request
+		}
+		else
+		{
+			error_obj.type = 'system'
+			error_obj.message = (error.message ? error.message : 'Unknown error')
+		}
+	}
+	else
+	{
+		error_obj.type = 'unknown'
+		error_obj.message = 'Error was dispatched but the error object was null.'
+	}
+
+	return error_obj
+}
 
 
 //DON'T FORGET THIS PART

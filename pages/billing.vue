@@ -28,6 +28,7 @@
                                     </div>
 
                                     <div v-bind:class="{hide_stripe: has_stripe_token}">
+                                    <p style="color: #ED3F14; font-size: 0.9em;">{{billingForm.stripeError.message}}</p>
                                     <div class="lite-container-row stripe-container"> 
                                         Card Number<br/>
                                         <div ref="vue_stripe_card_number" id="stripe-card-number" class="field empty"></div>
@@ -126,7 +127,6 @@
         </div>       
     </div>  
 </template>
-<!--<script src="https://js.stripe.com/v3/"></script>-->
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
     //import SymphonyCountryState from '~/components/SymphonyCountryState.vue'
@@ -203,6 +203,9 @@
             });
 
             this.MountStripeElements();
+
+            // Clear page errors from the store
+            this.$store.dispatch('resetErrorState')
         },
         computed: {
             has_stripe_token: {
@@ -288,10 +291,9 @@
                 this.$store.commit('SET_STRIPE_TOKEN', '')
             },
             handleGotoReview () {
-                console.log('Checking billing form')
                 this.$refs['billing_form'].validate((valid) => {
                     this.billingForm.stripeError = '';
-                    
+
                     if (valid && this.has_stripe_token)
                     {
                         this.$store.commit('SET_PAGE_COMPLETE', 'billing')
@@ -329,15 +331,8 @@
                         //https://stackoverflow.com/questions/39196501/vuejs-async-component-data-and-promises
                         }.bind(this)).catch(function (err) {
                             this.loading = false
-                            console.error('stripe promise error')
                             console.error(err);
                         }.bind(this));
-                    }
-                    else
-                    {
-                        this.loading = false
-                        console.log()
-                        this.$Message.error();
                     }
                 })
 
