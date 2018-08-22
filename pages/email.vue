@@ -10,7 +10,7 @@
                     </div>
                     <div class="lite-container-row">
                         Business Email
-                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent prevents Enter from submitting-->
+                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
                             <FormItem prop="email">
                                 <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" ></i-input>
                             </FormItem> 
@@ -103,26 +103,12 @@
             handleValidateEmail() {
                 this.loading = true
 
-                console.log('(handleValidateEmail) axios default baseURL: ' + axios.default.baseURL)
-
                 this.$refs['email_form'].validate((valid) => {
-                    
-                    /*if (this.test_flag)
-                    {   
-                        let enc = btoa(this.input_email).replace(/=/g, '-')
-                        this.$router.push({name: "email-thankyou", query:{qid: enc}})
-                    }
-                    else*/ 
                     if (valid)
                     {
                         let doVerify = false
                         
                         axios.post('/api/domain-check', { email_address: this.input_email }).then(function(response) {
-/*                             console.log('email.vue - axios debugging')
-                            console.log(response.data)
-                            console.log(response.headers)
-                            console.log(response.config) */
-
                             doVerify = response.data.success
 
                             if (response.data.server_code && response.data.server_code === 11)
@@ -141,8 +127,6 @@
                             }                           
 
                         }.bind(this)).then(function(response) {
-                            console.log('Starting SFDC verification...')
-                            console.log('doVerify: ' + doVerify)
                             if (doVerify)
                             {
                                 axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
@@ -150,7 +134,6 @@
                                     this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
 
                                 }.bind(this)).catch(function (error) {
-                                    console.error(error.response);
                                     this.loading = false
 
                                     let d = 'There was a problem completing your verification request. '
@@ -180,8 +163,16 @@
                                 }.bind(this))
                             }
                         }.bind(this)).catch(function (error) {
-                            console.error(error)
-                            console.error(error.response);
+                            err_msg = {
+                                message: 'There was a problem verifying your email.',
+                                code: 'EMAIL-01'
+                            }
+
+                            store.dispatch('sendErrorReport', error)
+                            store.dispatch('setErrorState', err_msg)
+
+
+                            redirect('/error')
                             this.loading = false
                         }.bind(this))
                     }                    
