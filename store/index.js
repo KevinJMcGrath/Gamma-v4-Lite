@@ -305,7 +305,7 @@ function CreateErrorObject(error, guid)
 {
 	error_obj = {
 		guid: guid,
-		type: '',
+		type: 90,
 		message: '',
 		response: {
 			status: '',
@@ -318,7 +318,7 @@ function CreateErrorObject(error, guid)
 	{
 		if (error.response)
 		{
-			error_obj.type = 'http',
+			error_obj.type = 91,
 			error_obj.message = (error.message ? error.message : 'HTTP error')
 			error_obj.response.status = error.response.status
 			error_obj.response.message = error.response.message
@@ -326,20 +326,20 @@ function CreateErrorObject(error, guid)
 		}
 		else if (error.request)
 		{
-			error_obj.type = 'request'
+			error_obj.type = 92
 			error_obj.message = error.message
 			error_obj.response.message = 'Request was sent but no response was received.'
 			error_obj.response.data = error.request
 		}
 		else
 		{
-			error_obj.type = 'system'
+			error_obj.type = 93
 			error_obj.message = (error.message ? error.message : 'Unknown error')
 		}
 	}
 	else
 	{
-		error_obj.type = 'unknown'
+		error_obj.type = 99
 		error_obj.message = 'Error was dispatched but the error object was null.'
 	}
 

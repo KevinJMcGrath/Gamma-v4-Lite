@@ -152,6 +152,27 @@ router.post('/confirm', function(req, res, next) {
 	})
 })
 
+router.post('/error', function(req, res, next) {
+	const payload = res.body
+	
+	const config = {
+		baseURL: process.env.SFDC_BASE_URL,
+		headers: {
+			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
+		}
+	}
+
+	axios.post('/symphony/sse-error', payload, config)
+	.then((response) => {
+		res.status(204).send(null)
+	})
+	.catch((error) => {		
+		console.log(error.response.data)
+		//console.log(error.message)
+		res.status(500).json({success: false, message: error.message, error_data: error.response.data})
+	})
+})
+
 router.post('/test-post', function(req, res, next) {
 	console.log('server reports: test succeeded')
 	res.json({ success: true })
