@@ -80,7 +80,8 @@
                                 </div>
 
                                 <div class="group-margin">
-                                    <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoThankyou()">
+                                    <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1" 
+                                        style="height: 32px; width: 100px;" @click="handleGotoThankyou()">
                                         <ion-icon name="checkmark" style="color: white;"></ion-icon>Submit
                                     </button>
                                 </div>
@@ -164,33 +165,18 @@
                 this.$router.push({ name: "billing", query: { sseid: this.$store.state.status.guid }})
             },
             handleGotoThankyou() {
+                loading = true
                 this.$refs['summary_form'].validate((valid) => {
-                    this.loading = true
-                    //NOTE: You cannot rebind "arrow functions"
-                    //console.log(JSON.stringify(this.$store.state))
-                    axios.post('/api/purchase-submit', this.$store.state)
-                    .then(function(response) {
-
-                        this.$store.commit('SET_PAGE_COMPLETE', 'summary')
-                        this.$router.push({name: "thankyou"}); 
-
-
-                    }.bind(this))
-                    .catch(function(error) {
-                        this.loading = false
-
-                        err_msg = {
-                            message: 'There was a problem submitting your request.',
-                            code: 'SUM-01'
-                        }
-
-                        store.dispatch('sendErrorReport', error)
-                        store.dispatch('setErrorState', err_msg)
-
-                        redirect('/error')
-
-
-                    }.bind(this))   
+                    if (valid)
+                    {
+                        this.$store.dispatch('submitPurchase')
+                        this.$router.push({name: "thankyou"}) 
+                    }
+                    else
+                    {
+                        //this.$Message.error()
+                        loading = false
+                    }
                 })
                                             
             }

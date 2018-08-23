@@ -31,7 +31,8 @@ const store = () => new Vuex.Store({
 		status: {
 			guid: '',
 			current: false,
-			test_flag: false
+			test_flag: false,
+			submit_in_progress: false
 		},
 		email: {
 			email_address: '',
@@ -93,6 +94,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_GUID(state, guid) {
 			state.status.guid = guid
+		},
+		SET_SUBMIT_IN_PROGRESS(state, in_progress) {
+			state.status.submit_in_progress = in_progress
 		},
 		SET_EMAIL(state, email) {
 			state.email.email_address = email
@@ -286,18 +290,56 @@ const store = () => new Vuex.Store({
 				}
 			})
 					
-		}
+		},
+		async submitPurchase({ commit, dispatch })
+		{
+			if (!state.status.in_progress)
+			{
+				await axios.post('/api/purchase-submit', state)
+				.then(function(response) {
+					commit('SET_IN_PROGRESS', false)
+					commit('SET_PAGE_COMPLETE', 'summary')
+				})
+				.catch(function(error) {
+					commit('SET_IN_PROGRESS', false)
 
-		
+					err_msg = {
+						message: 'There was a problem submitting your request.',
+						code: 'SUM-01'
+					}
+
+					dispatch('sendErrorReport', error)
+					dispatch('setErrorState', err_msg)
+				}) 
+			}			
+		},
+		async testDispatch(context) {
+			let val = 'waiting'
+			console.log(SetLog('Testing async exeuction - Start'))
+			val = await testPromise()
+			console.log(SetLog('Testing async exeuction - End'))
+
+			return val;
+		}
 	},
 	//plugins: [vuexPersist.plugin]
 	//plugins: process.browser ? [vuexPersist.plugin] : []
 
 })
 
+function testPromise() {
+	return new Promise(resolve => {
+		console.log(Date.now() + ' - Starting countdown')
+		setTimeout(() => {
+			console.log(Date.now() + ' - Ending countdown')
+			resolve('DONE!')
+		}, 10000)		
+	})
+}
+
 function SetLog(logActivity)
 {
-	const processExe = (process.server ? 'Server-side' : 'Client-side')
+	const processExe = 'Running on: ' + (process.server ? 'Server-side' : 'Client-side')
 	console.log(moment().format('MM-DD-YYYY HH:mm:ss.SSS Z') + ' | ' + logActivity + ' | ' + processExe)
 }
 
