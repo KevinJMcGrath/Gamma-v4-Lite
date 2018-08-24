@@ -66,7 +66,6 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-        
     </div>  
 </template>
 <script>
@@ -132,13 +131,40 @@
                 
             }
         },
+        fetch({store, query}) {
+            if(!store.state.status.guid)
+            {
+                //Load query parameters
+                if (query.hasOwnProperty('sseid') && query.sseid)
+                {
+                    store.commit('SET_GUID', query.sseid)
+                }
+            }
+        },
         mounted: function() {
+
             this.companyForm.companyname = this.$store.state.company.name
             this.companyForm.industry = this.$store.state.company.industry
             this.companyForm.seats = this.$store.state.service.seats
 
             // Clear page errors from the store
             this.$store.dispatch('resetErrorState')            
+            
+            // Check to make sure the contact page was completed first. 
+            // This prevents people from using the URLs directly to skip through the flow.
+            if (!this.$store.getters.getPageState('contact'))
+            {
+                this.$Modal.error({
+                    title: 'Missing Information',
+                    content: 'Required information is missing from the previous page. Click ok to go back.',
+                    onOk: () => {
+                        this.prior_page_Ok()
+                    }, 
+                    okText: 'Ok'
+                })
+            }
+
+            
         },
         computed: {
             input_company: {
@@ -170,6 +196,9 @@
             }
         },
         methods: {
+            prior_page_Ok() {
+                this.$router.push({name: "contact", query: { sseid: this.$store.state.status.guid }});  
+            },
             handleGotoBilling () {
                 this.$refs['company_form'].validate((valid) => {
                     if (valid) 

@@ -184,6 +184,16 @@
                 
             }
         },
+        fetch({store, query}) {
+            if(!store.state.status.guid)
+            {
+                //Load query parameters
+                if (query.hasOwnProperty('sseid') && query.sseid)
+                {
+                    store.commit('SET_GUID', query.sseid)
+                }
+            }
+        },
         mounted: function() {
 
             this.billingForm.fullname = this.$store.state.billing.card_fullname
@@ -206,6 +216,31 @@
 
             // Clear page errors from the store
             this.$store.dispatch('resetErrorState')
+
+            if (!this.$store.getters.getPageState('contact'))
+            {
+                this.$Modal.error({
+                    title: 'Missing Information',
+                    content: 'We need more of Your Information. Click Ok to go back to that page.',
+                    onOk: () => {
+                        console.log('Mising contact data')
+                        this.prior_page_Ok('contact')
+                    }, 
+                    okText: 'Ok'
+                })
+                
+            }
+            else if (!this.$store.getters.getPageState('company'))
+            {
+                this.$Modal.error({
+                    title: 'Missing Information',
+                    content: 'We need more information about your Company. Click Ok to go back to that page.',
+                    onOk: () => {
+                        this.prior_page_Ok('company')
+                    }, 
+                    okText: 'Ok'
+                })
+            }
         },
         computed: {
             has_stripe_token: {
@@ -287,6 +322,9 @@
             }
         },
         methods: {
+            prior_page_Ok(page_name) {
+                this.$router.push({name: page_name, query: { sseid: this.$store.state.status.guid }})
+            },
             ResetStripePanel() { 
                 this.$store.commit('SET_STRIPE_TOKEN', '')
             },

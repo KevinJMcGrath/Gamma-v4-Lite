@@ -5,7 +5,7 @@
                 <i-col span=10 class="lite-col" >
                     <p class="info-header">We encountered an error.</p>
                     <div class="lite-container-row">
-                        Message: {{ $store.state.error.message}} 
+                        <b>Message</b>: {{ $store.state.error.message.message}} 
                     </div>
                 </i-col>
             </Row>
@@ -27,6 +27,17 @@
                     { hid: 'description', name: 'description', content: 'There was an error.' }
                 ]
                 
+            }
+        },
+        mounted() {
+            try
+            {
+                console.log('Error page loaded')
+            }
+            catch (error)
+            {
+                console.error('error on error page')
+                console.error(error)
             }
         }
     }

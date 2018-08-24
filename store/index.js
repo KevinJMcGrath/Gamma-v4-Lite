@@ -175,8 +175,11 @@ const store = () => new Vuex.Store({
 		// (x) => (y) => {} is called "curried" notation
 		// https://en.wikipedia.org/wiki/Currying
 		// 
+		isInterviewComplete: (state) => {
+			return getters.page_state('contact').completed && getters.page_state('company').completed && getters.page_state('billing').completed
+		},
 		getPageState: (state) => (page_name) => {
-			return state.page_state.find(page => page.name === page_name)
+			return state.page_state.find(page => page.name === page_name).completed
 		},
 		getEmailDomain: (state) => {
 
@@ -320,6 +323,24 @@ const store = () => new Vuex.Store({
 			console.log(SetLog('Testing async exeuction - End'))
 
 			return val;
+		},
+		loadTestData({commit}) {
+			commit('SET_GUID', 'abaf9368-16a3-c59e-9d70-72916f97fba2')
+			commit('SET_FNAME', 'Kevin')
+			commit('SET_LNAME', 'McGrath')
+			commit('SET_EMAIL', 'kevinmcgr@gmail.com')
+			commit('SET_PHONE', '610-328-99985')
+			commit('SET_COUNTRYCODE', 'USA')
+			commit('SET_COMPANY', 'Test Co. Inc.')
+			commit('SET_INDUSTRY', 'Other')
+			commit('SET_SEATS', 50)
+			commit('SET_CARD_FULLNAME', 'Homer J. Simpson')
+			commit('SET_ADD1', '123 Evergreen Terrace')
+			commit('SET_ADD2', 'First Bedroom')
+			commit('SET_CITY', 'Springfield')
+			commit('SET_BILLING_STATE', 'PA')
+			commit('SET_ZIP', '19064')
+
 		}
 	},
 	//plugins: [vuexPersist.plugin]

@@ -137,11 +137,55 @@
                 
             }
         },
+        fetch({store, query}) {
+            if(!store.state.status.guid)
+            {
+                //Load query parameters
+                if (query.hasOwnProperty('sseid') && query.sseid)
+                {
+                    store.commit('SET_GUID', query.sseid)
+                }
+            }
+        },
         mounted: function() {
             this.summaryForm.accept_tandc = this.$store.state.legal.terms_accepted
 
             // Clear page errors from the store
             this.$store.dispatch('resetErrorState')
+
+            if (!this.$store.getters.getPageState('contact'))
+            {
+                this.$Modal.error({
+                    title: 'Missing Information',
+                    content: 'We need more of Your Information. Click Ok to go back to that page.',
+                    onOk: () => {
+                        this.prior_page_Ok('contact')
+                    }, 
+                    okText: 'Ok'
+                })
+            }
+            else if (!this.$store.getters.getPageState('company'))
+            {
+                this.$Modal.error({
+                    title: 'Missing Information',
+                    content: 'We need more information about your Company. Click Ok to go back to that page.',
+                    onOk: () => {
+                        this.prior_page_Ok('company')
+                    }, 
+                    okText: 'Ok'
+                })
+            }
+            else if (!this.$store.getters.getPageState('billing'))
+            {
+                this.$Modal.error({
+                    title: 'Missing Information',
+                    content: 'You missed some fields on Billing Information. Click Ok to go back to that page.',
+                    onOk: () => {
+                        this.prior_page_Ok('billing')
+                    }, 
+                    okText: 'Ok'
+                })
+            }
         },
         computed: {
             input_accept_tandc: {
@@ -155,6 +199,9 @@
             }
         },
         methods: {
+            prior_page_Ok(page_name) {
+                this.$router.push({name: page_name, query: { sseid: this.$store.state.status.guid }})                
+            },
             handleGotoContact() { 
                 this.$router.push({ name: "contact", query: { sseid: this.$store.state.status.guid }})
             },
@@ -165,17 +212,26 @@
                 this.$router.push({ name: "billing", query: { sseid: this.$store.state.status.guid }})
             },
             handleGotoThankyou() {
-                loading = true
+                this.loading = true
                 this.$refs['summary_form'].validate((valid) => {
                     if (valid)
                     {
-                        this.$store.dispatch('submitPurchase')
-                        this.$router.push({name: "thankyou"}) 
+                        if (this.$store.getters.isInterviewComplete)
+                        {
+                            this.$store.dispatch('submitPurchase')
+                            this.$router.push({name: "thankyou"}) 
+                        }
+                        else
+                        {
+                            this.$Message.error('The form is missing information. ')
+                            this.loading = false
+                        }
+                        
                     }
                     else
                     {
                         //this.$Message.error()
-                        loading = false
+                        this.loading = false
                     }
                 })
                                             
