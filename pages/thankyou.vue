@@ -8,10 +8,11 @@
                             <img src="../assets/images/big-green-check.png" height="60px" />
                         </i-col>
                         <i-col span=16>
-                            <p class="info-header">Success!</p>
-                            <p class="info-header info-header-bottom">Thanks for joining Symphony.</p>
+                            <p class="info-header">You made it! Welcome.</p>
+                            <p class="info-header info-header-bottom">Now it's our turn to work.</p>
                             <div class="lite-container-row">
-                                We'll reach out soon with next steps for getting started.
+                                Thanks for joining Symphony. What’s next? A whole lot. Look for a confirmation 
+                                email shortly with important steps and info as we launch the custom-creation of your new pod!
                             </div>                            
                         </i-col>                    
                     </Row>

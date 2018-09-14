@@ -262,6 +262,7 @@
                 this.$refs['contact_form_ref'].validateField('phone', (err_msg) => { })
                 this.$store.commit('SET_COUNTRYCODE', country.iso2)
                 this.$store.commit('SET_PHONE_ISVALID', isValid)
+                this.$store.commit('SET_BILLING_COUNTRY', country.name)
             }
 
         }

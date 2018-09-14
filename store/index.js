@@ -156,7 +156,7 @@ const store = () => new Vuex.Store({
 		SET_ZIP(state, zip_code) {
 			state.billing.zip_code = zip_code
 		},
-		SET_COUNTRY(state, country) {
+		SET_BILLING_COUNTRY(state, country) {
 			state.billing.country = country
 		},
 		SET_STRIPE_TOKEN(state, tokenObj) {
@@ -345,6 +345,7 @@ const store = () => new Vuex.Store({
 			commit('SET_CITY', 'Springfield')
 			commit('SET_BILLING_STATE', 'PA')
 			commit('SET_ZIP', '19064')
+			commit('SET_BILLING_COUNTRY', 'United States')
 
 		}
 	},

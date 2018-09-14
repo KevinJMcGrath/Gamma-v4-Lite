@@ -18,22 +18,22 @@
                     <div class="small-item align-right">monthly</div>
                 </i-col>
             </Row>
-            <Row>
+            <!--<Row>
                 <i-col span="10">
                     <span class="small-item">{{formatted_annual_seat_cost}} billed yearly</span>
                 </i-col>
                 <i-col span="4" offset="10"></i-col>
-            </Row>            
+            </Row>--> 
         </div>
         <div class="billing-group">
             <Row class="summary-row">
-                <i-col span="10">Today's Total</i-col>
+                <i-col span="10">Annual Fee<sup>†</sup></i-col>
                 <i-col :span="totalColSize" :offset="totalColOffset">
                     <div class="align-right">{{formatted_annual_seat_cost}}</div>
                 </i-col>
             </Row>
             <p class="small-item">
-                We'll bill the yearly amount when your service is ready.
+                <sup>†</sup>We'll charge this amount to your card when your service is ready.
             </p>
         </div>
     </div>
@@ -57,7 +57,7 @@
         },
         methods: {
             formatCurrencyValue(input_val) {
-                if (['us','US','USA','usa','United States', 'America', 'United States of America'].includes(this.$store.state.user.country_code))// == 'us')
+                if (['us','US','USA','usa','United States', 'America', 'United States of America'].includes(this.$store.state.billing.country))
                     return `$${input_val}`
                 else
                     return `${input_val} USD`

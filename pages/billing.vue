@@ -202,7 +202,7 @@
             this.billingForm.city = this.$store.state.billing.city
             this.billingForm.state = this.$store.state.billing.billing_state
             this.billingForm.zip_code = this.$store.state.billing.zip_code
-            this.billingForm.country_code = this.$store.state.user.country_code
+            this.billingForm.country_code = this.$store.state.billing.country
 
             stripe = Stripe('pk_test_gUJYd9BdGY6XdYL9RltHkmRe');
 
@@ -312,12 +312,12 @@
             },
             input_country: {
                 get () {
-                    return this.$store.state.user.country_code
+                    return this.$store.state.billing.country
                 },
                 set (value)
                 {
                     this.billingForm.country_code = value
-                    this.$store.commit('SET_COUNTRYCODE', value)
+                    this.$store.commit('SET_BILLING_COUNTRY', value)
                 }
             }
         },
