@@ -42,7 +42,8 @@ const store = () => new Vuex.Store({
 			firstname: '',
 			lastname: '',
 			phone: '',
-			country_code: 'us'
+			country_code: 'us',
+			phone_isvalid: false
 		},
 		company: {
 			name: '',
@@ -112,6 +113,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_PHONE(state, phone) {
 			state.user.phone = phone
+		},
+		SET_PHONE_ISVALID(state, is_valid) {
+			state.user.phone_isvalid = is_valid
 		},
 		SET_COUNTRYCODE(state, country_code) {
 			state.user.country_code = country_code
@@ -329,8 +333,9 @@ const store = () => new Vuex.Store({
 			commit('SET_FNAME', 'Kevin')
 			commit('SET_LNAME', 'McGrath')
 			commit('SET_EMAIL', 'kevinmcgr@gmail.com')
-			commit('SET_PHONE', '610-328-99985')
-			commit('SET_COUNTRYCODE', 'USA')
+			commit('SET_PHONE', '+1 610-328-9985')
+			commit('SET_PHONE_ISVALID', true)
+			commit('SET_COUNTRYCODE', 'US')
 			commit('SET_COMPANY', 'Test Co. Inc.')
 			commit('SET_INDUSTRY', 'Other')
 			commit('SET_SEATS', 50)

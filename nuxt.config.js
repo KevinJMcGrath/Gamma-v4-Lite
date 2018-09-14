@@ -4,8 +4,11 @@ module.exports = {
   dev: (process.env.NODE_ENV !== 'production'),
   loading: { color: '#3B8070' },
   css: [
-    '~/static/common.css'//,
-    //'vue-tel-input/dist/vue-tel-input.css' //2
+    // Loads but with warnings about a missing fallback for --border-radius (undefined)
+    // Notably, it can find the node module CSS correctly here, but in the head object
+    // the URL shortcut ~ is needed. I think. It's not super clear.
+    //'vue-tel-input/dist/vue-tel-input.css',
+    '~/static/common.css'
   ],
   head: {
     title: '{{title}}',
@@ -17,13 +20,12 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://unpkg.com/iview@2.11.0/dist/styles/iview.css'},
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto'},
-      //{ rel: 'stylesheet', href: 'intl-tel-input/css/intlTelInput.css'},
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto'},      
+      { rel: 'stylesheet', href: '~/vue-tel-input/dist/vue-tel-input.css'},
       { rel: 'stylesheet', href: '/common.css'}
     ],
     script: [
-      { hid: 'stripe', src: 'https://js.stripe.com/v3/'},
-      //{ hid: 'intl-tel-input', src: 'intl-tel-input/js/intlTelInput.js'},
+      { hid: 'stripe', src: 'https://js.stripe.com/v3/'},      
       //https://ionicons.com/
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
     ]
@@ -53,8 +55,8 @@ module.exports = {
   build: {
     extractCSS: true,
     vendor: [
-      'iview'//,
-      //'vue-tel-input'      //1
+      'iview',
+      'vue-tel-input'
     ],
 
     extend (config, { isDev, isClient }) {
@@ -99,8 +101,8 @@ module.exports = {
 
   //Working - 3/31/2018
   plugins: [
-    { src: '~/plugins/iview.js', ssr: true}//,
-    //{ src: '~/plugins/vue-tele.js', ssr: true} //3
+    { src: '~/plugins/iview.js', ssr: true},
+    { src: '~/plugins/vue-tele.js', ssr: true} 
   ],
 
   modules: [

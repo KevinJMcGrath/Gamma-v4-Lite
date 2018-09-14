@@ -8,7 +8,7 @@
                             <p class="timeline-current-label">Your Information</p>
                             <div class="timeline-spacer"></div>
                             <div class="timeline-content" style="height:280px;">
-                            <Form ref="contact_form" :model="contactForm" :rules="validation_rules" @submit.native.prevent>
+                            <Form ref="contact_form_ref" :model="contactForm" :rules="validation_rules" @submit.native.prevent>
                                 <div class="lite-container-row" style="height: 40px;"> 
                                     Email Address<br/>
                                     <b>{{ input_email }}</b><br/>
@@ -32,9 +32,10 @@
                                 <div class="lite-container-row" > 
                                     Daytime Phone Number<br/>
                                     <FormItem prop="phone"> 
-                                        <i-input v-model="input_phone" style="width: 40%"></i-input>
+                                        <!--<i-input v-model="input_phone" style="width: 40%"></i-input>-->
                                         <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
-                                        <!--<vue-tel-input v-model="input_phone" @onInput="handlePhoneValidation" style="height:30px;width:50%;"></vue-tel-input>-->
+                                        <vue-tel-input v-model="input_phone" @onInput="updatePhoneValidation" style="height:30px;width:50%;"
+                                            :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                     </FormItem>
                                 </div>
                                 <div>
@@ -55,7 +56,7 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=8 class="lite-col">
+                <i-col span=6 class="lite-col">
                    
                 </i-col>
                 <i-col span=2></i-col>
@@ -64,16 +65,37 @@
     </div>  
 </template>
 <script>    
-    const axios = require('axios')    
+    const axios = require('axios')
+    import 'vue-tel-input/dist/vue-tel-input.css'
 
     export default {
         data() {
+            const validateCustomPhone = (rule, value, callback) => {
+                if (this.contactForm.phone_isvalid === true)
+                {
+                    callback('');
+                }
+                else
+                {
+                    callback(new Error('Please ensure your phone number is in the proper format for your country.'));
+                }                
+            };
+
             return {
                 page_title: 'Symphony - Contact',
                 contactForm: {
                     firstname: '',
                     lastname: '',
-                    phone: ''
+                    phone: '',
+                    phone_isvalid: false,
+                    country_detail: {
+                        areaCodes: null,
+                        dialCode: '',
+                        iso2: '',
+                        name: '',
+                        is_valid: false,
+                        number: ''
+                    }
                 },
                 validation_rules: { 
                     firstname: [
@@ -83,7 +105,8 @@
                         { required: true, message: 'Please enter your last name.', trigger: 'blur'}
                     ],
                     phone: [
-                        { required: true, message: 'Please enter your daytime phone number.', trigger: 'blur'}
+                        { required: true, message: 'Please enter your daytime phone number.', trigger: 'blur'},
+                        { validator: validateCustomPhone, trigger: 'change' }
                     ]
 
                 }
@@ -164,6 +187,12 @@
             this.contactForm.firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
             this.contactForm.phone = this.$store.state.user.phone
+            // Using this to get around the inability to call the vue-tel-intl validation
+            // method on pageload. Since the validation only runs after onInput or onBlur
+            // the custom validator code won't work until an action is taken. This will
+            // interfere with pre-loading the field from the store. 
+            this.contactForm.phone_isvalid = this.$store.state.user.phone_isvalid
+            
             
             // Clear page errors from the store
             this.$store.dispatch('resetErrorState')
@@ -208,27 +237,39 @@
         },
         methods: {
             handleGotoCompany () {
-                this.$refs['contact_form'].validate((valid) => {
+                this.$refs['contact_form_ref'].validate((valid) => {
                     if (valid)
                     {
                         this.$store.commit('SET_PAGE_COMPLETE', 'contact')
                         this.$router.push({ name: "company", query: { sseid: this.$store.state.status.guid } });   
                     }
-                    else
-                    {
-                        this.$Message.error();
-                    }
+
 
                 })
             },
-            handlePhoneValidation({number, isValid, country}) {
+            updatePhoneValidation({number, isValid, country}) {
                 console.log(number, isValid, country)
+                this.contactForm.country_detail = {
+                    areaCodes: country.areaCodes,
+                    dialCode: country.dialCode,
+                    iso2: country.iso2,
+                    name: country.name,
+                    is_valid: isValid,
+                    number: number
+                }
+
+                // Forces a validation of the field on the form level, which will show the error message if it needs to. 
+                this.$refs['contact_form_ref'].validateField('phone', (err_msg) => { })
+                this.$store.commit('SET_COUNTRYCODE', country.iso2)
+                this.$store.commit('SET_PHONE_ISVALID', isValid)
             }
 
         }
     }
 </script>
-<style scoped>
-
+<style>
+    .vue-tel-input ul {
+        z-index: 100;
+    }
 
 </style>

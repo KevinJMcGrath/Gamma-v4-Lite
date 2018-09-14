@@ -79,7 +79,7 @@
                 companyForm: {
                     companyname: '',
                     industry: '',
-                    seats: 10
+                    seats: 25
                 },
                 validation_rules: {
                     seats: [
