@@ -21,7 +21,7 @@
                     </Row>
                 </i-col>
                 <i-col span=8 class="lite-col">
-                    <symphony-edge/>
+                    
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
@@ -30,7 +30,6 @@
     </div>
 </template>
 <script>
-    import SymphonyEdge from '~/components/SymphonyEdge.vue'
     const axios = require('axios')
 
     export default {
@@ -111,9 +110,6 @@
                 this.$store.commit('SET_EMAIL', '')
                 this.$router.push({ name: "email" });
             }
-        },
-        components: {
-            SymphonyEdge
         },
         computed: {
             input_email: {

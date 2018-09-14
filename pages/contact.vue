@@ -1,9 +1,8 @@
 <template>
     <div class="lite-layout">
         <div class="lite-body">
-            <Row type="flex" justify="center">
-                <i-col span=4></i-col>
-                <i-col span=10 class="lite-col" style="border-right: 1px solid lightgray;">
+            <Row type="flex" justify="center">                
+                <i-col span=10 offset=4 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem>
                             <p class="timeline-current-label">Your Information</p>
@@ -57,15 +56,14 @@
                     </Timeline>
                 </i-col>
                 <i-col span=8 class="lite-col">
-                   <symphony-edge/>
+                   
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
         </div>
     </div>  
 </template>
-<script>
-    import SymphonyEdge from '~/components/SymphonyEdge.vue'
+<script>    
     const axios = require('axios')    
 
     export default {
@@ -227,9 +225,6 @@
                 console.log(number, isValid, country)
             }
 
-        },
-        components: {
-            SymphonyEdge
         }
     }
 </script>
