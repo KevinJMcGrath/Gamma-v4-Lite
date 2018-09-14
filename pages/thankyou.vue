@@ -9,10 +9,11 @@
                         </i-col>
                         <i-col span=16>
                             <p class="info-header">You made it! Welcome.</p>
-                            <p class="info-header info-header-bottom">Now it's our turn to work.</p>
+                            <br/>
+                            <p class="info-header info-header-bottom">Now it's our turn to deliver.</p>
                             <div class="lite-container-row">
-                                Thanks for joining Symphony. What’s next? A whole lot. Look for a confirmation 
-                                email shortly with important steps and info as we launch the custom-creation of your new pod!
+                                Thanks for joining Symphony. What’s next? Look for a confirmation 
+                                email shortly with important steps and info as we launch the custom creation of your new service!
                             </div>                            
                         </i-col>                    
                     </Row>
