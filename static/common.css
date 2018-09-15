@@ -91,7 +91,9 @@ body {
 
 .button-style-1 {
     border-radius: 4px;
-    background-color: #0395a1;
+    /*They keep changing their damn minds about the colors*/
+    /*background-color: #0395a1;*/
+    background-color: #006caf;
     color: white;
     border: none;
 }
