@@ -121,64 +121,55 @@
                 
             }
         },
-        async fetch({ store, params, query, redirect }) {
-            //return new Promise((resolve, reject) => {
-                console.log('Loading Contact fetch method')
-                if (query.hasOwnProperty('t') && !!query.t)
+        async fetch({ store, params, query, redirect }) {            
+            
+            if (query.hasOwnProperty('t') && !!query.t)
+            {
+                store.dispatch('loadTestData')
+                
+            }
+            else if(!store.state.status.guid)
+            {
+                console.log('GUID missing from store')
+                //Load query parameters
+                if (query.hasOwnProperty('sseid') && query.sseid)
                 {
-                    store.dispatch('loadTestData')
-                    //resolve(true)
-                }
-                else if(!store.state.status.guid)
-                {
-                    console.log('GUID missing from store')
-                    //Load query parameters
-                    if (query.hasOwnProperty('sseid') && query.sseid)
-                    {
-                        console.log('Getting GUID from query string: ' + query.sseid)
-                        store.commit('SET_GUID', query.sseid)
-                        await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
+                    console.log('Getting GUID from query string: ' + query.sseid)
+                    store.commit('SET_GUID', query.sseid)
+                    await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
 
-                            store.commit('SET_EMAIL', response.data.user_email)
-                            store.commit('SET_VERIFIED', true)
-                            //resolve(true)
-                        })
-                        .catch((error) => {
-                            
-                            err_msg = {
-                                message: 'There was a problem validating your unique Id.',
-                                code: 'CONT-02'
-                            }
-
-                            store.dispatch('sendErrorReport', error)
-                            store.dispatch('setErrorState', err_msg)
-
-                            //reject()
-                            redirect('/error')
-                        })
-                    }
-                    else
-                    {
-                        console.log('Could not find GUID in query parameter list')
-                        let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
-                        msg += 'or you can re-register your email account.'
-
-                        let err_msg = {
-                            message: msg,
-                            code: 'CONT-01'
+                        store.commit('SET_EMAIL', response.data.user_email)
+                        store.commit('SET_VERIFIED', true)                            
+                    })
+                    .catch((error) => {
+                        
+                        err_msg = {
+                            message: 'There was a problem validating your unique Id.',
+                            code: 'CONT-02'
                         }
 
+                        store.dispatch('sendErrorReport', error)
                         store.dispatch('setErrorState', err_msg)
-
-                        //reject()
+                        
                         redirect('/error')
-                    }
+                    })
                 }
-                /* else
+                else
                 {
-                    resolve(true)
-                } */
-            //})            
+                    console.log('Could not find GUID in query parameter list')
+                    let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
+                    msg += 'or you can re-register your email account.'
+
+                    let err_msg = {
+                        message: msg,
+                        code: 'CONT-01'
+                    }
+
+                    store.dispatch('setErrorState', err_msg)
+                    
+                    redirect('/error')
+                }
+            }          
             
         },
         mounted: function() {
