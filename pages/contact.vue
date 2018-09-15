@@ -66,7 +66,7 @@
 </template>
 <script>    
     const axios = require('axios')
-    import 'vue-tel-input/dist/vue-tel-input.css'
+    //import 'vue-tel-input/dist/vue-tel-input.css'
 
     export default {
         data() {

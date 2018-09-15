@@ -7,7 +7,7 @@ module.exports = {
     // Loads but with warnings about a missing fallback for --border-radius (undefined)
     // Notably, it can find the node module CSS correctly here, but in the head object
     // the URL shortcut ~ is needed. I think. It's not super clear.
-    //'vue-tel-input/dist/vue-tel-input.css',
+    '~/static/vue-tel-input-fixed.css',
     '~/static/common.css'
   ],
   head: {
@@ -21,7 +21,7 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://unpkg.com/iview@2.11.0/dist/styles/iview.css'},
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto'},      
-      { rel: 'stylesheet', href: '~/vue-tel-input/dist/vue-tel-input.css'},
+      //{ rel: 'stylesheet', href: '/vue-tel-input/dist/vue-tel-inputfixed.css'},
       { rel: 'stylesheet', href: '/common.css'}
     ],
     script: [
