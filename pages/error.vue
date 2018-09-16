@@ -3,10 +3,20 @@
         <div class="lite-body">
             <Row type="flex" justify="center">
                 <i-col span=10 class="lite-col" >
-                    <p class="info-header">We encountered an error.</p>
-                    <div class="lite-container-row">
-                        <b>Message</b>: {{ $store.state.error.message}} 
-                    </div>
+                    <Row>                        
+                        <i-col span=6>
+                            <img src="../assets/images/error_icon.svg" height="60px" />
+                        </i-col>
+                        <i-col span=16>
+                            <p class="info-header">We encountered an error.</p>
+                            <div class="lite-container-row">
+                                <p>
+                                    <b>Message</b>: {{ $store.state.error.message || "Unknown error."}} 
+                                </p>
+                                <p style="margin-top: 20px;">You can contact support here: <a href="mailto:support@symphony.com">support@symphony.com</a></p>
+                            </div>
+                        </i-col>
+                    </Row>
                 </i-col>
             </Row>
         </div>
