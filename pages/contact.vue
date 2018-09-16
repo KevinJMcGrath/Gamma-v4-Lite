@@ -179,7 +179,7 @@
                             code: 'CONT-02'
                         }
 
-                        store.dispatch('sendErrorReport', error)
+                        //store.dispatch('sendErrorReport', error)
                         store.dispatch('setErrorState', err_msg.message, err_msg.code)
                     })
                 }

@@ -19,7 +19,7 @@ function log_response(resp, isError)
 		console.error('HTTP error')
 		console.error('Response Code: ' + resp.status)
 		console.error('Response Text: ' + resp.statusText)
-		console.error('Response Body: ' + resp.data)
+		console.error('Response Body: ' + JSON.stringify(resp.data))
 
 	}
 	else
@@ -43,7 +43,7 @@ function axios_error(error)
 	{
 		log_response(error.response, true)
 
-		err_obj.status = error.respose.status
+		err_obj.status = error.status
 		err_obj.message = error.response.statusText
 		err_obj.data = error.response.data
 	}
@@ -144,7 +144,8 @@ router.post('/confirm', function(req, res, next) {
 	})
 	.catch((error) => {		
 		let err_obj = axios_error(error)
-		res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
+		//console.log(error.response)
+		res.status(error.response.status).json( { success: false, message: 'error here', data: {}}) // err_obj.message, data: err_obj.data })
 	})
 })
 
