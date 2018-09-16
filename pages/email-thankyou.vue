@@ -37,6 +37,7 @@
 
             return {
                 page_title: 'Symphony - Thank You',
+                error_state: false,
                 emailAddress: ''
             }
         },
@@ -49,26 +50,45 @@
                 
             }
         },
-        fetch({ store, params, query, redirect }) {
-            // console.log('email from vuex: ' + store.state.email.email_address)
+        asyncData({ store }) {
+            // Really only need this when I need to capture errors that occur in 
+            // fetch() AND when it's likely the user could come to the page
+            // first (since the vuex store will not have been instantiated yet)
+            return {
+                error_state: store.state.error.is_error_status
+            }
+        },
+        async fetch({ store, params, query, redirect, env }) {                     
             if(!store.state.email.email_address)
             {
-                //Load query parameters
-                if (query.hasOwnProperty('em') && query.em.length !== 0)
+                // A test bypass in case I need it
+                if (env.is_dev && query.hasOwnProperty('t') && query.t)
+                {
+                    let success = await store.dispatch('loadTestData', query.t)
+
+                    if (!success)
+                    {                        
+                        err_msg = {
+                            message: 'You did not supply a correct test code. Contact Biz Ops.',
+                            code: 'CONT-03'
+                        }
+                                                
+                        store.dispatch('setErrorState', err_msg.message, err_msg.code)
+                    }
+                }
+                else if (query.hasOwnProperty('em') && query.em.length !== 0)
                 {
                     store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
                 }
-                else
-                {
-                    //I might need to return an error here instead.
-                    redirect('/email')
-                }
+
             }
             
         },
         mounted: function() {
-            // Clear page errors from the store
-            this.$store.dispatch('resetErrorState')
+            if (this.$store.state.error.is_error_status)
+            {                
+                this.$router.push({ name: "error"})
+            }
         },
         methods: {
             handleResendEmail() {

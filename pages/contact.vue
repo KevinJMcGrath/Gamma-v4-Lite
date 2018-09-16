@@ -32,8 +32,6 @@
                                 <div class="lite-container-row" > 
                                     Daytime Phone Number<br/>
                                     <FormItem prop="phone"> 
-                                        <!--<i-input v-model="input_phone" style="width: 40%"></i-input>-->
-                                        <!--<input id="phone-input" v-el:phone-input type="tel" v-model="input_phone">-->
                                         <vue-tel-input v-model="input_phone" @onInput="updatePhoneValidation" style="height:30px;width:50%;"
                                             :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                     </FormItem>
@@ -66,7 +64,6 @@
 </template>
 <script>    
     const axios = require('axios')
-    //import 'vue-tel-input/dist/vue-tel-input.css'
 
     export default {
         data() {
@@ -83,6 +80,7 @@
 
             return {
                 page_title: 'Symphony - Contact',
+                error_state: false,
                 contactForm: {
                     firstname: '',
                     lastname: '',
@@ -121,20 +119,46 @@
                 
             }
         },
-        async fetch({ store, params, query, redirect }) {            
-            
-            if (query.hasOwnProperty('t') && !!query.t)
-            {
-                store.dispatch('loadTestData')
-                
+        asyncData({ store }) {
+            // Really only need this when I need to capture errors that occur in 
+            // fetch() AND when it's likely the user could come to the page
+            // first (since the vuex store will not have been instantiated yet)
+            return {
+                error_state: store.state.error.is_error_status
             }
-            else if(!store.state.status.guid)
+        },
+        async fetch({ store, params, query, redirect, env }) {
+            if(!store.state.status.guid)
             {
-                console.log('GUID missing from store')
-                //Load query parameters
-                if (query.hasOwnProperty('sseid') && query.sseid)
+                let err_msg = {}
+                // A test bypass in case I need it
+                if (env.is_dev && query.hasOwnProperty('t') && query.t)
                 {
-                    console.log('Getting GUID from query string: ' + query.sseid)
+                    let success = await store.dispatch('loadTestData', query.t)
+                    
+                    if (!success)
+                    {                        
+                        err_msg = {
+                            message: 'You did not supply a correct test code. Contact Biz Ops.',
+                            code: 'CONT-03'
+                        }
+                                                
+                        store.dispatch('setErrorState', err_msg.message, err_msg.code)                        
+                        // Because this is being called on server side, and I have the Persist plugin
+                        // in the store set to only load on client side, redirecting here will
+                        // prevent the error from being persisted in the store. 
+                        // Solution 1: I can commit the error to the store, then wait to redirect until
+                        // I get to the mounted() function in the page, thus instantiating the Persist
+                        // mechanism. This will ensure I have access to the error when I get to the error page
+                        // Solution 2: I can send the error as a query parameter to the error page and
+                        // add then send the error to Salesforce in the fetch or mounted functions of
+                        // the error page. 
+                        // redirect('/error')
+
+                    }
+                }
+                else if (query.hasOwnProperty('sseid') && query.sseid)
+                {
                     store.commit('SET_GUID', query.sseid)
                     await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
 
@@ -149,31 +173,31 @@
                         }
 
                         store.dispatch('sendErrorReport', error)
-                        store.dispatch('setErrorState', err_msg)
-                        
-                        redirect('/error')
+                        store.dispatch('setErrorState', err_msg.message, err_msg.code)
                     })
                 }
                 else
-                {
-                    console.log('Could not find GUID in query parameter list')
+                {                    
                     let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
                     msg += 'or you can re-register your email account.'
 
-                    let err_msg = {
+                    err_msg = {
                         message: msg,
                         code: 'CONT-01'
                     }
 
-                    store.dispatch('setErrorState', err_msg)
-                    
-                    redirect('/error')
+                    store.dispatch('setErrorState', err_msg.message, err_msg.code)
                 }
             }          
             
         },
         mounted: function() {
             
+            if (this.$store.state.error.is_error_status)
+            {                
+                this.$router.push({ name: "error"})
+            }
+
             // Won't need this if the Properties tied to the Store work for validation
             this.contactForm.firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
@@ -183,12 +207,7 @@
             // the custom validator code won't work until an action is taken. This will
             // interfere with pre-loading the field from the store. 
             this.contactForm.phone_isvalid = this.$store.state.user.phone_isvalid
-            
-            
-            // Clear page errors from the store
-            this.$store.dispatch('resetErrorState')
 
-            //this.$els.phone-input
         },
         computed: {
             // Using computed properties for two-way binding with Vuex
@@ -260,6 +279,7 @@
     }
 </script>
 <style>
+    /*This is necessary to ensure the dropdown is positioned on top of the stuff under it*/
     .vue-tel-input ul {
         z-index: 100;
     }

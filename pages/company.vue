@@ -131,24 +131,11 @@
                 
             }
         },
-        fetch({store, query}) {
-            if(!store.state.status.guid)
-            {
-                //Load query parameters
-                if (query.hasOwnProperty('sseid') && query.sseid)
-                {
-                    store.commit('SET_GUID', query.sseid)
-                }
-            }
-        },
         mounted: function() {
 
             this.companyForm.companyname = this.$store.state.company.name
             this.companyForm.industry = this.$store.state.company.industry
-            this.companyForm.seats = this.$store.state.service.seats
-
-            // Clear page errors from the store
-            this.$store.dispatch('resetErrorState')            
+            this.companyForm.seats = this.$store.state.service.seats         
             
             // Check to make sure the contact page was completed first. 
             // This prevents people from using the URLs directly to skip through the flow.
@@ -206,13 +193,8 @@
                         this.$store.commit('SET_PAGE_COMPLETE', 'company')
                         this.$router.push({name: "billing", query: { sseid: this.$store.state.status.guid }});        
                     }
-                    else
-                    {
-                        this.$Message.error();
-                    }
-                })
-                
-                
+
+                })                
             },
             getSelectOptionLabelByValue(val) {
                 if (this.industry_list && !!val) {

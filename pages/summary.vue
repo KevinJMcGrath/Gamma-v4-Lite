@@ -137,21 +137,9 @@
                 
             }
         },
-        fetch({store, query}) {
-            if(!store.state.status.guid)
-            {
-                //Load query parameters
-                if (query.hasOwnProperty('sseid') && query.sseid)
-                {
-                    store.commit('SET_GUID', query.sseid)
-                }
-            }
-        },
         mounted: function() {
             this.summaryForm.accept_tandc = this.$store.state.legal.terms_accepted
 
-            // Clear page errors from the store
-            this.$store.dispatch('resetErrorState')
 
             if (!this.$store.getters.getPageState('contact'))
             {
@@ -224,15 +212,11 @@
                         else
                         {
                             this.$Message.error('The form is missing information. ')
-                            this.loading = false
                         }
                         
                     }
-                    else
-                    {
-                        //this.$Message.error()
-                        this.loading = false
-                    }
+
+                    this.loading = false
                 })
                                             
             }

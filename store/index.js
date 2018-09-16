@@ -2,30 +2,58 @@
 
 import Vue from 'vue'
 import Vuex, {Payload, Store} from 'vuex'
-//import VuexPersistence from 'vuex-persist'
+import VuexPersistence from 'vuex-persist'
 import axios from 'axios'
 
 const moment = require('moment')
 
 Vue.use(Vuex)
 
-/*
+
 let vuexPersist
 if (process.browser)
 {
 	vuexPersist = new VuexPersistence({
-		strictMode: process.env.NODE_ENV !== 'production',
+		key: 'vuex',
+		storage: window.localStorage
+		//strictMode: process.env.NODE_ENV !== 'production',
 		//storage: window.sessionStorage,
 		// Function that passes the state and returns the state with only the objects you want to store.
 		// reducer: state => state,
 		// Function that passes a mutation and lets you decide if it should update the state in localStorage.
 		// filter: mutation => (true)
 	})
+}
+
+/*function AddVuexPlugins() {
+	let plugins = []
+
+	console.log('Adding Vuex plugins')
+
+	if (process.browser) {
+		console.log('Adding VuexPersist')
+		plugins.push(AddVuexPersistPlugin())
+	}
+}
+
+function AddVuexPersistPlugin() {
+	let vuexPersist = new VuexPersistence({
+		//strictMode: process.env.NODE_ENV !== 'production',
+		//storage: window.sessionStorage,
+		// Function that passes the state and returns the state with only the objects you want to store.
+		// reducer: state => state,
+		// Function that passes a mutation and lets you decide if it should update the state in localStorage.
+		// filter: mutation => (true)
+	})
+
+	return vuexPersist.plugin
 }*/
 
 
+
+
 const store = () => new Vuex.Store({
-	strict: process.env.NODE_ENV !== 'production',
+	//strict: process.env.NODE_ENV !== 'production',
 	//Establishing the fields for the store
 	state: {
 		status: {
@@ -74,6 +102,7 @@ const store = () => new Vuex.Store({
 			minimum_seats: 25		
 		},
 		error: {
+			is_error_status: false,
 			code: '',
 			message: ''
 		},
@@ -162,6 +191,9 @@ const store = () => new Vuex.Store({
 		SET_STRIPE_TOKEN(state, tokenObj) {
 			state.billing.stripe_token = tokenObj
 		},
+		SET_ERROR_STATUS(state, error_status) {
+			state.error.is_error_status = error_status
+		},
 		SET_ERROR_MESSAGE(state, error_message) {			
 			state.error.message = error_message
 		},
@@ -248,28 +280,37 @@ const store = () => new Vuex.Store({
 
 	},	
 	actions: {
-		async nuxtServerInit({ commit }, { req, res }) {
+		async nuxtServerInit({ commit, getters }, { req, res }) {
 
 			// The nuxtServerInit method is called before rendering the THE FIRST PAGE
 			// for a new request coming in to the server. It is NEVER called again.
 			// { commit } is "argument destructuring" of the context object,
 			// extracting the context.commit method.
 
-			console.log('_____________------------**********nuxtServerInit**********------------_____________')			
+			console.log('_____________------------**********nuxtServerInit**********------------_____________')
+
+			//console.log('Getters instantiated? ' + ' store.getters: ' + !!getters + ' baseAppURL: ' + getters.baseAppURL || false)
 			
 		},
 		resetErrorState({ commit }) {
-			commit('SET_ERROR_MESSAGE', '')
-			commit('SET_ERROR_CODE', '')
+			console.log('Resetting Error State...')
+			//commit('SET_ERROR_MESSAGE', '')
+			//commit('SET_ERROR_CODE', '')
+			commit('SET_ERROR_STATUS', false)
 		},
-		setErrorState({ commit }, user_message, user_code)
+		setErrorState({ commit, state }, user_message, user_code)
 		{
+			console.log('setErrorState: ' + user_message)
+			commit('SET_ERROR_STATUS', true)
 			commit('SET_ERROR_MESSAGE', user_message)
 			commit('SET_ERROR_CODE', user_code)
+			console.log('Post-commit: ' + state.error.message)
 		},
-		sendErrorReport({ commit }, error)
+		sendErrorReport({ getters }, error)
 		{
-			const error_path = store.getters.baseAppURL + '/api/error'
+			// REMEMBER: you need to tell the actions to give you the getters if you are
+			// deconstructing the store arguments
+			const error_path = getters.baseAppURL + '/api/error'
 			let err_obj = CreateErrorObject(error, state.status.guid)
 
 			axios.post( error_path, err_obj ).then(function(response) {
@@ -328,29 +369,48 @@ const store = () => new Vuex.Store({
 
 			return val;
 		},
-		loadTestData({commit}) {
-			commit('SET_GUID', 'abaf9368-16a3-c59e-9d70-72916f97fba2')
-			commit('SET_FNAME', 'Kevin')
-			commit('SET_LNAME', 'McGrath')
-			commit('SET_EMAIL', 'kevinmcgr@gmail.com')
-			commit('SET_PHONE', '+1 610-328-9985')
-			commit('SET_PHONE_ISVALID', true)
-			commit('SET_COUNTRYCODE', 'US')
-			commit('SET_COMPANY', 'Test Co. Inc.')
-			commit('SET_INDUSTRY', 'Other')
-			commit('SET_SEATS', 50)
-			commit('SET_CARD_FULLNAME', 'Homer J. Simpson')
-			commit('SET_ADD1', '123 Evergreen Terrace')
-			commit('SET_ADD2', 'First Bedroom')
-			commit('SET_CITY', 'Springfield')
-			commit('SET_BILLING_STATE', 'PA')
-			commit('SET_ZIP', '19064')
-			commit('SET_BILLING_COUNTRY', 'United States')
+		async loadTestData({ commit, getters }, code) {
+			// this might be executing before the store loads the getters
+			const endpoint = getters.baseAppURL + '/api/test-code' 
+			const body = { test_code: code }
+			let success = false
 
+			await axios.post(endpoint, body)
+			.then(function(response) {
+				if (response.valid) {
+					console.log('Loading test data to store...')
+					commit('SET_GUID', 'abaf9368-16a3-c59e-9d70-72916f97fba2')
+					commit('SET_FNAME', 'Kevin')
+					commit('SET_LNAME', 'McGrath')
+					commit('SET_EMAIL', 'kevinmcgr@gmail.com')
+					commit('SET_PHONE', '+1 610-328-9985')
+					commit('SET_PHONE_ISVALID', true)
+					commit('SET_COUNTRYCODE', 'US')
+					commit('SET_COMPANY', 'Test Co. Inc.')
+					commit('SET_INDUSTRY', 'Other')
+					commit('SET_SEATS', 50)
+					commit('SET_CARD_FULLNAME', 'Homer J. Simpson')
+					commit('SET_ADD1', '123 Evergreen Terrace')
+					commit('SET_ADD2', 'First Bedroom')
+					commit('SET_CITY', 'Springfield')
+					commit('SET_BILLING_STATE', 'PA')
+					commit('SET_ZIP', '19064')
+					commit('SET_BILLING_COUNTRY', 'United States')
+
+					success = true
+				}
+			})
+			.catch(function(error) {
+				let err_msg = error.response.status + ' - ' + error.response.statusText + ' | ' + error.response.data.message
+				console.error(err_msg)				
+			})
+
+			return success
 		}
 	},
+	//plugins: AddVuexPlugins()
 	//plugins: [vuexPersist.plugin]
-	//plugins: process.browser ? [vuexPersist.plugin] : []
+	plugins: process.browser ? [vuexPersist.plugin] : []
 
 })
 

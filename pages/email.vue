@@ -85,15 +85,9 @@
             {
                 store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
             }
-
-            if (query.hasOwnProperty('tf') && query.tf === '1')
-            {
-                store.commit('SET_FLAG', true)
-            }
         },
         mounted: function() {
-            // Clear page errors from the store
-            this.$store.dispatch('resetErrorState')
+
         },
         methods: {
             toggleButtonActive() {
@@ -171,7 +165,7 @@
                             store.dispatch('setErrorState', err_msg)
 
 
-                            redirect('/error')
+                            this.$router.push({ name: "error" })
                             this.loading = false
                         }.bind(this))
                     }                    
@@ -192,14 +186,6 @@
                     // I'm intentionally adding side effects to make the validation rules work. Not ideal
                     this.emailForm.email = value;
                     this.$store.commit('SET_EMAIL', value)
-                }
-            },
-            test_flag: {
-                get () {
-                    return this.$store.state.status.test_flag
-                },
-                set (value) {
-                    this.$store.commit('SET_FLAG', value)
                 }
             }
         }

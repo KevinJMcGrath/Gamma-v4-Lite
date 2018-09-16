@@ -184,16 +184,6 @@
                 
             }
         },
-        fetch({store, query}) {
-            if(!store.state.status.guid)
-            {
-                //Load query parameters
-                if (query.hasOwnProperty('sseid') && query.sseid)
-                {
-                    store.commit('SET_GUID', query.sseid)
-                }
-            }
-        },
         mounted: function() {
 
             this.billingForm.fullname = this.$store.state.billing.card_fullname
@@ -204,7 +194,7 @@
             this.billingForm.zip_code = this.$store.state.billing.zip_code
             this.billingForm.country_code = this.$store.state.billing.country
 
-            stripe = Stripe('pk_test_gUJYd9BdGY6XdYL9RltHkmRe');
+            stripe = Stripe(process.env.stripe_public_key);
 
             stripe_elements = stripe.elements({
                 fonts: [
@@ -213,9 +203,6 @@
             });
 
             this.MountStripeElements();
-
-            // Clear page errors from the store
-            this.$store.dispatch('resetErrorState')
 
             if (!this.$store.getters.getPageState('contact'))
             {

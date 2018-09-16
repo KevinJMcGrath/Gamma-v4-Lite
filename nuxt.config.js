@@ -2,6 +2,12 @@ require('dotenv').config()
 
 module.exports = {  
   dev: (process.env.NODE_ENV !== 'production'),
+  env: {
+    // REMEMBER: variables here are replaced in the javascript verbatim
+    // this is not a secure place to store keys or magic strings
+    is_dev: process.env.NODE_ENV !== 'production',
+    stripe_public_key: 'pk_test_gUJYd9BdGY6XdYL9RltHkmRe'
+  },
   loading: { color: '#3B8070' },
   css: [
     // Using my version of the CSS to fix the issues with the --border-radius

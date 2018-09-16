@@ -5,7 +5,7 @@
                 <i-col span=10 class="lite-col" >
                     <p class="info-header">We encountered an error.</p>
                     <div class="lite-container-row">
-                        <b>Message</b>: {{ $store.state.error.message.message}} 
+                        <b>Message</b>: {{ $store.state.error.message}} 
                     </div>
                 </i-col>
             </Row>
@@ -29,16 +29,25 @@
                 
             }
         },
+        fetch({ store }) {
+            
+            //store.commit('SET_GUID', 'bob')
+        },
         mounted() {
             try
             {
                 console.log('Error page loaded')
+                console.log('Error State: ' + this.$store.state.error.message)
+                console.log(this.$store.state)
+                this.$store.dispatch('resetErrorState')
             }
             catch (error)
             {
                 console.error('error on error page')
                 console.error(error)
             }
+
+            
         }
     }
 </script>

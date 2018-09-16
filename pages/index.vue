@@ -6,7 +6,7 @@
         data() {
         },
         fetch({ redirect }) {
-            redirect('/email')
+            redirect('/start')
         }
     }
 </script>
