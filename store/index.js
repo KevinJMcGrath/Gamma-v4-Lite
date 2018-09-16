@@ -17,43 +17,15 @@ if (process.browser)
 		key: 'vuex',
 		storage: window.localStorage
 		//strictMode: process.env.NODE_ENV !== 'production',
-		//storage: window.sessionStorage,
 		// Function that passes the state and returns the state with only the objects you want to store.
 		// reducer: state => state,
 		// Function that passes a mutation and lets you decide if it should update the state in localStorage.
 		// filter: mutation => (true)
 	})
 }
-
-/*function AddVuexPlugins() {
-	let plugins = []
-
-	console.log('Adding Vuex plugins')
-
-	if (process.browser) {
-		console.log('Adding VuexPersist')
-		plugins.push(AddVuexPersistPlugin())
-	}
-}
-
-function AddVuexPersistPlugin() {
-	let vuexPersist = new VuexPersistence({
-		//strictMode: process.env.NODE_ENV !== 'production',
-		//storage: window.sessionStorage,
-		// Function that passes the state and returns the state with only the objects you want to store.
-		// reducer: state => state,
-		// Function that passes a mutation and lets you decide if it should update the state in localStorage.
-		// filter: mutation => (true)
-	})
-
-	return vuexPersist.plugin
-}*/
-
-
-
 
 const store = () => new Vuex.Store({
-	//strict: process.env.NODE_ENV !== 'production',
+	//strict: process.env.NODE_ENV !== 'production',	
 	//Establishing the fields for the store
 	state: {
 		status: {
@@ -118,6 +90,8 @@ const store = () => new Vuex.Store({
 	//Creating properties for updating the fields
 	mutations: {
 		// Required for vuex-persist in strict mode
+		// Adding this mutation caused issues, so I'm leaving it out and
+		// avoiding strict_mode for now. 
 		//RESTORE_MUTATION: (process.browser ? vuexPersist.RESTORE_MUTATION : function BLANK(state) {}),
 		SET_FLAG(state, flag) {
 			state.status.test_flag = flag
@@ -287,27 +261,19 @@ const store = () => new Vuex.Store({
 			// { commit } is "argument destructuring" of the context object,
 			// extracting the context.commit method.
 
-			console.log('_____________------------**********nuxtServerInit**********------------_____________')
-
-			//console.log('Getters instantiated? ' + ' store.getters: ' + !!getters + ' baseAppURL: ' + getters.baseAppURL || false)
-			
+			console.log('_____________------------**********nuxtServerInit**********------------_____________')			
 		},
-		resetErrorState({ commit }) {
-			console.log('Resetting Error State...')
+		resetErrorState({ commit }) {			
 			//commit('SET_ERROR_MESSAGE', '')
 			//commit('SET_ERROR_CODE', '')
 			commit('SET_ERROR_STATUS', false)
 		},
-		setErrorState({ commit, state }, user_message, user_code)
-		{
-			console.log('setErrorState: ' + user_message)
+		setErrorState({ commit, state }, user_message, user_code) {		
 			commit('SET_ERROR_STATUS', true)
 			commit('SET_ERROR_MESSAGE', user_message)
-			commit('SET_ERROR_CODE', user_code)
-			console.log('Post-commit: ' + state.error.message)
+			commit('SET_ERROR_CODE', user_code)			
 		},
-		sendErrorReport({ getters }, error)
-		{
+		sendErrorReport({ getters }, error) {
 			// REMEMBER: you need to tell the actions to give you the getters if you are
 			// deconstructing the store arguments
 			const error_path = getters.baseAppURL + '/api/error'
@@ -315,7 +281,7 @@ const store = () => new Vuex.Store({
 
 			axios.post( error_path, err_obj ).then(function(response) {
 				console.log('Error submitted to Salesforce')
-				console.log(error_obj)
+				//console.log(error_obj)
 			})
 			.catch((error) => {
 				if (error.response)
@@ -347,6 +313,12 @@ const store = () => new Vuex.Store({
 				.then(function(response) {
 					commit('SET_IN_PROGRESS', false)
 					commit('SET_PAGE_COMPLETE', 'summary')
+
+					//Clear the local storage
+					if (process.browser)
+					{
+						window.localStorage.removeItem('vuex')
+					}
 				})
 				.catch(function(error) {
 					commit('SET_IN_PROGRESS', false)
@@ -408,8 +380,6 @@ const store = () => new Vuex.Store({
 			return success
 		}
 	},
-	//plugins: AddVuexPlugins()
-	//plugins: [vuexPersist.plugin]
 	plugins: process.browser ? [vuexPersist.plugin] : []
 
 })
