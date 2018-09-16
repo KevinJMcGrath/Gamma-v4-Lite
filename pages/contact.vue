@@ -162,8 +162,15 @@
                     store.commit('SET_GUID', query.sseid)
                     await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
 
-                        store.commit('SET_EMAIL', response.data.user_email)
-                        store.commit('SET_VERIFIED', true)                            
+                        if (response.data.success) {
+                            store.commit('SET_EMAIL', response.data.user_email)
+                            store.commit('SET_VERIFIED', true) 
+                        }
+                        else {
+                            let msg = "Your verification link has expired. A new verification email has been issued - please check your inbox."
+                            store.dispatch('setErrorState', msg, 'CONT-04')
+                        }
+                                                   
                     })
                     .catch((error) => {
                         

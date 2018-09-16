@@ -124,12 +124,9 @@ router.post('/verify', function(req, res, next) {
 })
 
 router.post('/confirm', function(req, res, next) {
-	console.log('Entering /confirm')
-	//let email_address = req.body.email_address
 	let guid = req.body.guid	
 	
 	const payload = { 
-		//email_address: email_address,
 		guid: guid		
 	}
 	
@@ -143,7 +140,6 @@ router.post('/confirm', function(req, res, next) {
 	axios.post('/guid-verification', payload, config)
 	.then((response) => {
 		log_response(response)
-		//console.log(response.data)
 		res.json( { success: true, message: 'verified', user_email: response.data.user_state.user.email })
 	})
 	.catch((error) => {		
