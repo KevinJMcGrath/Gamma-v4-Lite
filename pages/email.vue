@@ -123,8 +123,12 @@
                             if (doVerify)
                             {
                                 axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
-
-                                    this.$router.push({name: "email-thankyou", query:{qid: response.data.encoded}})
+                                    if (response.status_code == 200) {
+                                        this.$router.push({name: 'email-thankyou', query: {cd: '1086453', em: response.data.encoded}})
+                                    }
+                                    else if (response.status_code == 204) {
+                                        this.$router.push({name: "email-thankyou", query:{em: response.data.encoded}})
+                                    }                                    
 
                                 }.bind(this)).catch(function (error) {
                                     this.loading = false

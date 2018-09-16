@@ -81,6 +81,8 @@
                     store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
                 }
 
+                
+
             }
             
         },
@@ -88,6 +90,14 @@
             if (this.$store.state.error.is_error_status)
             {                
                 this.$router.push({ name: "error"})
+            }
+
+            if (this.$query.hasOwnProperty('cd') && this.$query.cd == '1086453') {
+                this.$Notice.success({
+                    title: 'Email verification Re-sent',
+                    desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click Change Email to use a different address.',
+                    duration: 6
+                });
             }
         },
         methods: {
