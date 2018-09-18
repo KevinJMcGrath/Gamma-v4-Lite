@@ -78,21 +78,24 @@
                 }
                 else if (query.hasOwnProperty('em') && query.em.length !== 0)
                 {
-                    store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
+                    if (process.browser) {
+                        store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
+                    }
+                    else {
+                        let buff = new Buffer(query.em.replace(/-/g, '='), 'base64')
+                        store.commit('SET_EMAIL', buff.toString('ascii'))                        
+                    }
                 }
-
-                
-
-            }
-            
+            }            
         },
         mounted: function() {
             if (this.$store.state.error.is_error_status)
             {                
                 this.$router.push({ name: "error"})
             }
-
-            if (this.$query.hasOwnProperty('cd') && this.$query.cd == '1086453') {
+            
+            // ***To access the query parameters on the client side, use this.$route.query
+            if (this.$route.query.cd && this.$route.query.cd === '1086453') {
                 this.$Notice.success({
                     title: 'Email verification Re-sent',
                     desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click Change Email to use a different address.',
@@ -138,7 +141,7 @@
             },
             handleChangeEmail() {
                 this.$store.commit('SET_EMAIL', '')
-                this.$router.push({ name: "email" });
+                this.$router.push({ name: "email" })
             }
         },
         computed: {

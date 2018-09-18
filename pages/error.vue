@@ -48,7 +48,7 @@
             {
                 console.log('Error page loaded')
                 console.log('Error State: ' + this.$store.state.error.message)
-                console.log(this.$store.state)
+                //console.log(this.$store.state)
                 this.$store.dispatch('resetErrorState')
             }
             catch (error)

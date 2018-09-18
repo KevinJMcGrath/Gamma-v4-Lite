@@ -104,22 +104,38 @@ router.post('/verify', function(req, res, next) {
 		}
 	}
 
+	console.log('Sending verification request to Salesforce')
 	axios.post('/email-verification', payload, config)
-	.then((response) => {		
-		log_response(response)
+	.then((response) => {	
+		try
+		{
+			
+			log_response(response)			
+			// btoa is not available server side 
+			//let encoded_email = btoa(email_address).replace(/=/g, '-')
+			let encoded_email = Buffer.from(email_address).toString('base64').replace(/=/g, '-')
+			let r_vcode = (response.data && response.data.vcode ? response.data.vcode : 'ver99')
+			let r_msg = (response.data && response.data.message ? response.data.message : 'Could not find message')
 
-		// btoa is not available server side 
-		//let encoded_email = btoa(email_address).replace(/=/g, '-')
-		let encoded_email = Buffer.from(email_address).toString('base64').replace(/=/g, '-')
-		res.json( { success: true, message: response.data, encoded: encoded_email })
+			console.log('VCode: ' + r_vcode)
+			console.log('Msg: ' + r_msg)
+
+
+			res.json( { success: true, message: r_msg, encoded: encoded_email, vcode: r_vcode })
+		}
+		catch (err) {			
+			console.log(error.message)
+			res.status(500).json({success: false, message: error.message})
+		}
+		
 	})
 	.catch((error) => {
 		//let err_obj = axios_error(error)
-		//res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
-
-		console.log(error.response.data)
-		//console.log(error.message)
-		res.status(500).json({success: false, message: error.message, error_data: error.response.data})
+				
+		let msg = (error.message ? error.message : 'Unknown error message')
+		let err_data = (error.response && error.response.data ? error.response.data : {})
+		
+		res.status(500).json({success: false, message: msg, error_data: err_data})
 	})
 })
 
@@ -145,7 +161,7 @@ router.post('/confirm', function(req, res, next) {
 	.catch((error) => {		
 		let err_obj = axios_error(error)
 		//console.log(error.response)
-		res.status(error.response.status).json( { success: false, message: 'error here', data: {}}) // err_obj.message, data: err_obj.data })
+		res.status(500).json( { success: false, message: err_obj.message, data: err_obj.data })
 	})
 })
 

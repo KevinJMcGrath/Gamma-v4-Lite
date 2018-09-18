@@ -73,6 +73,27 @@
 
     export default {
         data() {
+            const validateMaxSeats = (rule, value, callback) => {                
+                if (this.input_seats < 500)
+                {
+                    callback();
+                }
+                else
+                {
+                    this.$Modal.error({
+                        title: 'Invalid seat count',
+                        content: 'You can only purchase up to 499 seats using this form. To subscribe to our Enterprise tier, please contact us at:<br/><br/> 1-111-111-1111',
+                        onOk: () => {
+                            this.input_seats = 499        
+                        }, 
+                        okText: 'Ok'
+                    })
+
+                    
+                    callback();
+                }                
+            };
+
             return {
                 page_title: 'Symphony - Company',
                 pricing_window: false,
@@ -84,7 +105,8 @@
                 validation_rules: {
                     seats: [
                         //For some reason, I needed to specify the type for this rule to work consistently
-                        { required: true, type: 'number', message: 'Please enter a non-zero number of seats.', trigger: 'change' }
+                        { required: true, type: 'number', message: 'Please enter a non-zero number of seats.', trigger: 'change' },
+                        { validator: validateMaxSeats, trigger: 'change' } 
                     ],
                     companyname: [
                         { required: true, message: 'Please enter your company\'s legal name.', trigger: 'blur' }
@@ -130,6 +152,9 @@
                 ]
                 
             }
+        },
+        fetch({ store }) {
+            store.commit('SET_PAGE_STARTED', 'company')
         },
         mounted: function() {
 
@@ -184,7 +209,9 @@
         },
         methods: {
             prior_page_Ok() {
-                this.$router.push({name: "contact", query: { sseid: this.$store.state.status.guid }});  
+                let sid = this.$store.state.status.guid || this.$route.query.sseid
+
+                this.$router.push({name: "contact", query: { sseid: sid }});  
             },
             handleGotoBilling () {
                 this.$refs['company_form'].validate((valid) => {

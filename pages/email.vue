@@ -123,12 +123,31 @@
                             if (doVerify)
                             {
                                 axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
-                                    if (response.status_code == 200) {
-                                        this.$router.push({name: 'email-thankyou', query: {cd: '1086453', em: response.data.encoded}})
+                                    if (response.data && response.data.vcode) {
+                                        if (response.data.vcode === 'ver01') {
+                                            // Initial verification successfully sent.
+                                            this.$router.push({name: 'email-thankyou', query: {em: response.data.encoded}})
+                                        }
+                                        else if (response.data.vcode === 'ver02') {
+                                            // Re-verification sent. Include the 'cd' param to tell the 
+                                            // thank you page that it's a re-verification
+                                            this.$router.push({name: "email-thankyou", query:{cd: '1086453', em: response.data.encoded}})
+                                        }
+                                        else {
+                                            this.$Notice.error({
+                                                title: 'Error Verifying Email Address',
+                                                desc: 'There was an issue with this request. Error code: ' + response.data.vcode,
+                                                duration: 0
+                                            })
+                                        }
                                     }
-                                    else if (response.status_code == 204) {
-                                        this.$router.push({name: "email-thankyou", query:{em: response.data.encoded}})
-                                    }                                    
+                                    else {
+                                        this.$Notice.error({
+                                            title: 'Error Verifying Email Address',
+                                            desc: 'There was an issue with this request. VCode was not present.',
+                                            duration: 0
+                                        })
+                                    }
 
                                 }.bind(this)).catch(function (error) {
                                     this.loading = false

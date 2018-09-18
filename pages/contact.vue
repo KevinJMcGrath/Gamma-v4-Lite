@@ -32,7 +32,7 @@
                                 <div class="lite-container-row" > 
                                     Daytime Phone Number<br/>
                                     <FormItem prop="phone"> 
-                                        <vue-tel-input v-model="input_phone" @onInput="updatePhoneValidation" style="height:30px;width:50%;"
+                                        <vue-tel-input ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" style="height:30px;width:50%;"
                                             :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                     </FormItem>
                                 </div>
@@ -68,7 +68,8 @@
     export default {
         data() {
             const validateCustomPhone = (rule, value, callback) => {
-                if (this.contactForm.phone_isvalid === true)
+                console.log('Phone input state: ' + this.$refs['vuetel'].state)
+                if (this.$refs['vuetel'].state)
                 {
                     callback('');
                 }
@@ -85,7 +86,6 @@
                     firstname: '',
                     lastname: '',
                     phone: '',
-                    phone_isvalid: false,
                     country_detail: {
                         areaCodes: null,
                         dialCode: '',
@@ -128,12 +128,17 @@
             }
         },
         async fetch({ store, params, query, redirect, env }) {
+            // Using this as a hacky way to ensure the store is instantiated
+            // even if the user is jumping around.
+            store.commit('SET_PAGE_STARTED', 'contact')
+
             if(!store.state.status.guid)
             {
                 let err_msg = {}
                 // A test bypass in case I need it
                 if (env.is_dev && query.hasOwnProperty('t') && query.t)
-                {
+                {   
+                    //console.log('Checking test code...')
                     let success = await store.dispatch('loadTestData', query.t)
                     
                     if (!success)
@@ -159,6 +164,7 @@
                 }
                 else if (query.hasOwnProperty('sseid') && query.sseid)
                 {
+                    //console.log('Loading GUID: ' + query.sseid)
                     store.commit('SET_GUID', query.sseid)
                     await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
 
@@ -179,7 +185,6 @@
                             code: 'CONT-02'
                         }
 
-                        //store.dispatch('sendErrorReport', error)
                         store.dispatch('setErrorState', err_msg.message, err_msg.code)
                     })
                 }
@@ -198,22 +203,22 @@
             }          
             
         },
-        mounted: function() {
-            
+        mounted: function() {            
             if (this.$store.state.error.is_error_status)
             {                
                 this.$router.push({ name: "error"})
             }
 
             // Won't need this if the Properties tied to the Store work for validation
-            this.contactForm.firstname = this.$store.state.user.firstname
+            //this.contactForm.firstname = this.$store.state.user.firstname
+            this.input_firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
             this.contactForm.phone = this.$store.state.user.phone
             // Using this to get around the inability to call the vue-tel-intl validation
             // method on pageload. Since the validation only runs after onInput or onBlur
             // the custom validator code won't work until an action is taken. This will
             // interfere with pre-loading the field from the store. 
-            this.contactForm.phone_isvalid = this.$store.state.user.phone_isvalid
+            //this.contactForm.phone_isvalid = this.$store.state.user.phone_isvalid
 
         },
         computed: {
@@ -279,7 +284,7 @@
                 this.$refs['contact_form_ref'].validateField('phone', (err_msg) => { })
                 this.$store.commit('SET_COUNTRYCODE', country.iso2)
                 this.$store.commit('SET_PHONE_ISVALID', isValid)
-                this.$store.commit('SET_BILLING_COUNTRY', country.name)
+                this.$store.commit('SET_BILLING_COUNTRY', country.name)                
             }
 
         }

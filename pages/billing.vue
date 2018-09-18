@@ -184,9 +184,19 @@
                 
             }
         },
+        fetch({ store }) {
+            store.commit('SET_PAGE_STARTED', 'billing')
+        },
         mounted: function() {
 
-            this.billingForm.fullname = this.$store.state.billing.card_fullname
+            //this.billingForm.fullname = (this.$store.state.billing.card_fullname ? this.$store.state.billing.card_fullname : 
+            //    this.$store.state.user.firstname + ' ' + this.$store.state.user.lastname)
+
+            if (!this.input_fullname)
+                this.input_fullname = this.$store.state.user.firstname + ' ' + this.$store.state.user.lastname
+
+            this.billingForm.fullname = this.input_fullname
+
             this.billingForm.address1 = this.$store.state.billing.address1
             this.billingForm.address2 = this.$store.state.billing.address2
             this.billingForm.city = this.$store.state.billing.city

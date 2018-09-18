@@ -72,7 +72,7 @@
                                     I can't believe this is still a thing in 2018-->
                                     <FormItem prop="tandc"> 
                                         <label for="tandc_check">
-                                            <input type="checkbox" v-model="input_accept_tandc" name="tandc_check"/>
+                                            <input ref="tandc_cb" type="checkbox" v-model="input_accept_tandc" name="tandc_check"/>
                                             <span>I have read and agree to the <a href="#">Terms and Conditions</a></span>
                                         </label>
                                     </FormItem>
@@ -104,8 +104,8 @@
 
     export default {
         data() {
-            const validateTandC = (rule, value, callback) => {
-                if (value === true)
+            const validateTandC = (rule, value, callback) => {                
+                if (this.$refs['tandc_cb'].checked === true)
                 {
                     callback();
                 }
@@ -122,8 +122,8 @@
                     accept_tandc: false
                 },
                 validation_rules: {
-                    tandc: [
-                        { validator: validateTandC, trigger: 'change' }
+                    tandc: [ 
+                        { validator: validateTandC, trigger: 'change' } 
                     ]
                 }
             }
@@ -137,10 +137,10 @@
                 
             }
         },
+        fetch({ store }) {
+            store.commit('SET_PAGE_STARTED', 'summary')
+        },
         mounted: function() {
-            this.summaryForm.accept_tandc = this.$store.state.legal.terms_accepted
-
-
             if (!this.$store.getters.getPageState('contact'))
             {
                 this.$Modal.error({
@@ -206,6 +206,7 @@
                     {
                         if (this.$store.getters.isInterviewComplete)
                         {
+                            console.log('Interview is complete')
                             this.$store.dispatch('submitPurchase')
                             this.$router.push({name: "thankyou"}) 
                         }

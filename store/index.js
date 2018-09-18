@@ -2,27 +2,16 @@
 
 import Vue from 'vue'
 import Vuex, {Payload, Store} from 'vuex'
-import VuexPersistence from 'vuex-persist'
+import createPersistedState from 'vuex-persistedstate'
 import axios from 'axios'
 
 const moment = require('moment')
 
 Vue.use(Vuex)
 
+let priorState = null
 
-let vuexPersist
-if (process.browser)
-{
-	vuexPersist = new VuexPersistence({
-		key: 'vuex',
-		storage: window.localStorage
-		//strictMode: process.env.NODE_ENV !== 'production',
-		// Function that passes the state and returns the state with only the objects you want to store.
-		// reducer: state => state,
-		// Function that passes a mutation and lets you decide if it should update the state in localStorage.
-		// filter: mutation => (true)
-	})
-}
+
 
 const store = () => new Vuex.Store({
 	//strict: process.env.NODE_ENV !== 'production',	
@@ -50,7 +39,7 @@ const store = () => new Vuex.Store({
 			industry: ''
 		},
 		service: {
-			seats: 10,
+			seats: 25,
 			vanity_name: '',
 			promo_code: ''
 		},
@@ -79,20 +68,16 @@ const store = () => new Vuex.Store({
 			message: ''
 		},
 		page_state: [
-			{ index: 0, name: "contact", completed: false },
-			{ index: 1, name: "company", completed: false },
-			{ index: 2, name: "billing", completed: false },
-			{ index: 3, name: "summary", completed: false },
-			{ index: 4, name: "thank", completed: false }
+			{ index: 0, name: "contact", started: false, completed: false },
+			{ index: 1, name: "company", started: false, completed: false },
+			{ index: 2, name: "billing", started: false, completed: false },
+			{ index: 3, name: "summary", started: false, completed: false },
+			{ index: 4, name: "thank", started: false, completed: false }
 		]
 	},
 	
 	//Creating properties for updating the fields
 	mutations: {
-		// Required for vuex-persist in strict mode
-		// Adding this mutation caused issues, so I'm leaving it out and
-		// avoiding strict_mode for now. 
-		//RESTORE_MUTATION: (process.browser ? vuexPersist.RESTORE_MUTATION : function BLANK(state) {}),
 		SET_FLAG(state, flag) {
 			state.status.test_flag = flag
 		},
@@ -176,6 +161,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_PAGE_COMPLETE(state, page_name) {
 			state.page_state.find(page => page.name === page_name).completed = true
+		},
+		SET_PAGE_STARTED(state, page_name) {
+			state.page_state.find(page => page.name === page_name).started = true
 		}
 
 	},
@@ -185,11 +173,19 @@ const store = () => new Vuex.Store({
 		// (x) => (y) => {} is called "curried" notation
 		// https://en.wikipedia.org/wiki/Currying
 		// 
-		isInterviewComplete: (state) => {
-			return getters.page_state('contact').completed && getters.page_state('company').completed && getters.page_state('billing').completed
+		isInterviewComplete: (state, getters) => {
+			
+			let contact_comp = getters.getPageState('contact')			
+			let company_comp = getters.getPageState('company')			
+			let billing_comp = getters.getPageState('billing')			
+            let retval = contact_comp && company_comp && billing_comp
+            
+			return retval
 		},
 		getPageState: (state) => (page_name) => {
-			return state.page_state.find(page => page.name === page_name).completed
+			let retval = state.page_state.find(page => page.name === page_name).completed
+			
+			return retval
 		},
 		getEmailDomain: (state) => {
 
@@ -250,18 +246,23 @@ const store = () => new Vuex.Store({
 				return process.env.SFDC_DEV_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
 			else
 				return process.env.SFDC_BASE_URL
+		},
+		getPriorState: (state) => {
+			return priorState
 		}
 
 	},	
 	actions: {
-		async nuxtServerInit({ commit, getters }, { req, res }) {
+		async nuxtServerInit({ commit, store }, { req, res }) {
 
 			// The nuxtServerInit method is called before rendering the THE FIRST PAGE
 			// for a new request coming in to the server. It is NEVER called again.
 			// { commit } is "argument destructuring" of the context object,
 			// extracting the context.commit method.
 
-			console.log('_____________------------**********nuxtServerInit**********------------_____________')			
+			console.log('_____________------------**********nuxtServerInit**********------------_____________')
+
+			
 		},
 		resetErrorState({ commit }) {			
 			//commit('SET_ERROR_MESSAGE', '')
@@ -317,7 +318,8 @@ const store = () => new Vuex.Store({
 					//Clear the local storage
 					if (process.browser)
 					{
-						window.localStorage.removeItem('vuex')
+						console.log('Removing locally saved state')
+						//window.localStorage.removeItem('vuex')
 					}
 				})
 				.catch(function(error) {
@@ -349,7 +351,7 @@ const store = () => new Vuex.Store({
 
 			await axios.post(endpoint, body)
 			.then(function(response) {
-				if (response.valid) {
+				if (response.data.valid) {
 					console.log('Loading test data to store...')
 					commit('SET_GUID', 'abaf9368-16a3-c59e-9d70-72916f97fba2')
 					commit('SET_FNAME', 'Kevin')
@@ -379,8 +381,9 @@ const store = () => new Vuex.Store({
 
 			return success
 		}
-	},
-	plugins: process.browser ? [vuexPersist.plugin] : []
+    },
+    plugins: process.browser ? [createPersistedState()] : []
+	//plugins: process.browser ? [vuexPersist.plugin] : []
 
 })
 
@@ -444,7 +447,6 @@ function CreateErrorObject(error, guid)
 
 	return error_obj
 }
-
 
 //DON'T FORGET THIS PART
 export default store
