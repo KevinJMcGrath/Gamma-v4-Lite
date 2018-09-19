@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center">                
-                <i-col span=10 offset=4 class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=10 offset=4 class="lite-col" >
                     <Timeline>
                         <TimelineItem>
                             <p class="timeline-current-label">Your Information</p>
