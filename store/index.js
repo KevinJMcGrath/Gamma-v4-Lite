@@ -365,35 +365,6 @@ const store = () => new Vuex.Store({
             }
             
         },
-        verifyGUID({ commit, dispatch, getters, state }, guid) {
-            console.log('Verifying GUID with Salesforce...')
-            axios.post(getters.baseAppURL + '/api/confirm', { guid: guid }).then(function(response) {
-                console.log('response: ' + JSON.stringify(response))
-
-                if (response.data.success) {
-                    console.log('Verification successful')
-                    commit('SET_EMAIL', response.data.user_email)
-                    commit('SET_VERIFIED', true) 
-                }
-                else {
-                    console.error('Verification failed')
-                    let msg = "Your verification link has expired. A new verification email has been issued - please check your inbox."
-                    dispatch('setErrorState', msg, 'CONT-04')
-                }
-                                        
-            })
-            .catch((error) => {
-                console.error('Axios error verifying GUID: ' + error.message)
-                let err_msg = 'There was a problem validating your unique Id. Contact Symphony sales.'
-                let err_code = 'VER-02'
-                //dispatch('setErrorState', err_msg, 'CONT-02')
-
-                commit('SET_ERROR_STATUS', true)
-                commit('SET_ERROR_MESSAGE', err_msg)
-
-                console.log('Error Status (should be true): ' + state.error.is_error_status)
-            })
-        },
 		async submitPurchase({ commit, dispatch, state })
 		{
             if (state.status.submit_in_progress) { return -1}
