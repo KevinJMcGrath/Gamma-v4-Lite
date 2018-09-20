@@ -9,69 +9,74 @@ const moment = require('moment')
 
 Vue.use(Vuex)
 
+// The vuex constructor expects "state"  to reference a function
+// that returns an object. I'm creating an initial_state implicit function
+// to return the initial state so I can use it to reset the state later. 
+const initial_state = () => ({
+    status: {
+        guid: '',
+        current: false,
+        submit_in_progress: false,
+        submit_completed: false,
+        submit_completed_date: moment("1980-01-26")
+    },
+    email: {
+        email_address: '',
+        is_verified: false
+    },
+    user: {
+        firstname: '',
+        lastname: '',
+        phone: '',
+        country_code: 'us',
+        phone_isvalid: false
+    },
+    company: {
+        name: '',
+        industry: ''
+    },
+    service: {
+        seats: 25,
+        vanity_name: '',
+        promo_code: ''
+    },
+    legal: {
+        terms_accepted: false
+    },
+    billing: {
+        card_fullname: '',
+        payment_type: '',
+        address1: '',
+        address2: '',
+        city: '',
+        billing_state: '',
+        zip_code: '',
+        country: '',
+        stripe_token: {}
+    },
+    pricing: {
+        onetime_fees: 500,
+        pupm: 20,
+        minimum_seats: 25		
+    },
+    error: {
+        is_error_status: false,
+        code: '',
+        message: ''
+    },
+    page_state: [
+        { index: 0, name: "contact", started: false, completed: false },
+        { index: 1, name: "company", started: false, completed: false },
+        { index: 2, name: "billing", started: false, completed: false },
+        { index: 3, name: "summary", started: false, completed: false },
+        { index: 4, name: "thank", started: false, completed: false }
+    ]
+})
+
 const store = () => new Vuex.Store({
 	//strict: process.env.NODE_ENV !== 'production',	
 	//Establishing the fields for the store
-	state: {
-		status: {
-			guid: '',
-            current: false,
-            submit_in_progress: false,
-            submit_completed: false,
-            submit_completed_date: moment("1980-01-26")
-		},
-		email: {
-			email_address: '',
-			is_verified: false
-		},
-		user: {
-			firstname: '',
-			lastname: '',
-			phone: '',
-			country_code: 'us',
-			phone_isvalid: false
-		},
-		company: {
-			name: '',
-			industry: ''
-		},
-		service: {
-			seats: 25,
-			vanity_name: '',
-			promo_code: ''
-		},
-		legal: {
-			terms_accepted: false
-		},
-		billing: {
-			card_fullname: '',
-			payment_type: '',
-			address1: '',
-			address2: '',
-			city: '',
-			billing_state: '',
-			zip_code: '',
-			country: '',
-			stripe_token: {}
-		},
-		pricing: {
-			onetime_fees: 500,
-			pupm: 20,
-			minimum_seats: 25		
-		},
-		error: {
-			is_error_status: false,
-			code: '',
-			message: ''
-		},
-		page_state: [
-			{ index: 0, name: "contact", started: false, completed: false },
-			{ index: 1, name: "company", started: false, completed: false },
-			{ index: 2, name: "billing", started: false, completed: false },
-			{ index: 3, name: "summary", started: false, completed: false },
-			{ index: 4, name: "thank", started: false, completed: false }
-		]
-	},
+	state: initial_state(),
 	
 	//Creating properties for updating the fields
 	mutations: {
@@ -164,7 +169,11 @@ const store = () => new Vuex.Store({
 		},
 		SET_PAGE_STARTED(state, page_name) {
 			state.page_state.find(page => page.name === page_name).started = true
-		}
+        },
+        RESET_STATE(state) {
+            const reset_state = initial_state()
+            Object.keys(reset_state).forEach(key => { state[key] = initial[key] })
+        }
 
 	},
 	getters: {
@@ -303,7 +312,10 @@ const store = () => new Vuex.Store({
             })*/
             return
 					
-		},
+        },
+        clearPersistedStorage({ commit }){
+            commit('RESET_STATE')
+        },
 		async submitPurchase({ commit, dispatch, state })
 		{
             if (state.status.submit_in_progress) { return -1}
@@ -325,11 +337,13 @@ const store = () => new Vuex.Store({
                         //Clear the local storage
                         if (process.browser)
                         {
-                            console.log('Attempting to clear session state.')                    
-                            window.localStorage.removeItem('vuex-ps')
+                            console.log('Attempting to clear session state.')
+                            // removing the keys doesn't seem to work. The plugin just
+                            // recreates them from what's in memory. 
+                            //window.localStorage.removeItem('vuex-ps')
 
                             //remove the old key if it exists. 
-                            window.localStorage.removeItem('vuex')
+                            //window.localStorage.removeItem('vuex')
                         }
 
                         return 0

@@ -80,14 +80,23 @@
             }
         },
         fetch({ store, params, query, redirect, env }) {
-
-            if (query.hasOwnProperty('em') && query.em.length !== 0)
-            {
-                store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
-            }
+            
         },
         mounted: function() {
+            this.$store.commit('RESET_STATE')
 
+            if (this.$route.query.em)
+            {
+                let email_addy = this.$route.query.em
+
+                if (email_addy.indexOf('@') !== -1) {
+                    store.commit('SET_EMAIL', email_addy)
+                }
+                else {
+                    store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
+                }
+                
+            }
         },
         methods: {
             toggleButtonActive() {
