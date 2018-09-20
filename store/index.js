@@ -60,8 +60,7 @@ const initial_state = () => ({
         minimum_seats: 25		
     },
     error: {
-        is_error_status: false,
-        code: '',
+        is_error_status: false,        
         message: ''
     },
     page_state: [
@@ -160,9 +159,6 @@ const store = () => new Vuex.Store({
 		},
 		SET_ERROR_MESSAGE(state, error_message) {			
 			state.error.message = error_message
-		},
-		SET_ERROR_CODE(state, error_code) {
-			state.error.code = error_code
 		},
 		SET_PAGE_COMPLETE(state, page_name) {
 			state.page_state.find(page => page.name === page_name).completed = true
@@ -270,15 +266,12 @@ const store = () => new Vuex.Store({
 
 			
 		},
-		resetErrorState({ commit }) {			
-			//commit('SET_ERROR_MESSAGE', '')
-			//commit('SET_ERROR_CODE', '')
+		resetErrorState({ commit }) {
 			commit('SET_ERROR_STATUS', false)
 		},
 		setErrorState({ commit, state }, user_message, user_code) {		
 			commit('SET_ERROR_STATUS', true)
 			commit('SET_ERROR_MESSAGE', user_message || 'unknown')
-			commit('SET_ERROR_CODE', user_code)			
 		},
 		sendErrorReport({ getters }, error) {
 			// REMEMBER: you need to tell the actions to give you the getters if you are
@@ -411,7 +404,6 @@ const store = () => new Vuex.Store({
 
                 commit('SET_ERROR_STATUS', true)
                 commit('SET_ERROR_MESSAGE', err_msg)
-                commit('SET_ERROR_CODE', err_code)
 
                 console.log('Error Status (should be true): ' + state.error.is_error_status)
             })
