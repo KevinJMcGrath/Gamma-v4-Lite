@@ -306,20 +306,6 @@ const store = () => new Vuex.Store({
             return
 					
         },
-        clearPersistedStorage({ commit }){
-            try {
-                if (process.browser && window.localStorage['vuex'] || window.localStorage.vuex) {
-                    console.log('Attempting to clear outdated store item')
-                    window.localStorage.removeItem('vuex')
-                }
-                    
-            }
-            catch (error) {
-                console.error('Unable to clear old store item')
-                console.error(error)
-            }
-            
-        },
         async verifyGUIDAA({ commit, dispatch, getters, state }, guid) {
             console.log('(a/a) Verifying GUID with Salesforce...')
             let retVal = {

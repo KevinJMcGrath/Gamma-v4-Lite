@@ -84,9 +84,6 @@
             
         },
         mounted: function() {
-
-            this.$store.dispatch('clearPersistedStorage')
-
             if (this.$route.query.em)
             {
                 let email_addy = this.$route.query.em
