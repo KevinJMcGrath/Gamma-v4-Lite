@@ -327,6 +327,9 @@ const store = () => new Vuex.Store({
                         {
                             console.log('Attempting to clear session state.')                    
                             window.localStorage.removeItem('vuex-ps')
+
+                            //remove the old key if it exists. 
+                            window.localStorage.removeItem('vuex')
                         }
 
                         return 0

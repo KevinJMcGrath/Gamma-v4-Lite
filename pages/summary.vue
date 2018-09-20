@@ -207,8 +207,35 @@
                         if (this.$store.getters.isInterviewComplete)
                         {
                             console.log('Interview is complete')
-                            this.$store.dispatch('submitPurchase')
-                            this.$router.push({name: "thankyou"}) 
+                            let result = this.$store.dispatch('submitPurchase')
+
+                            if (result == 0) {
+                                this.$router.push({name: "thankyou"}) 
+                            }
+                            else if (result == -1) {
+                                this.$router.push({name: "thankyou"}) 
+                            }
+                            else if (result == -2) {
+                                this.$Modal.warn({
+                                    title: 'Submission Pending',
+                                    content: 'This account is already pending. You will receive a confirmation soon.',
+                                    onOk: () => {
+                                        
+                                    }, 
+                                    okText: 'Ok'
+                                })
+                            }
+                            else {
+                                this.$Modal.warn({
+                                    title: 'Error',
+                                    content: 'There was an error submitting your request. Please contact Symphony sales.',
+                                    onOk: () => {
+                                        
+                                    }, 
+                                    okText: 'Ok'
+                                })
+                            }
+                            
                         }
                         else
                         {
