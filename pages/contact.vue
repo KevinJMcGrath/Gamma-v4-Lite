@@ -164,7 +164,9 @@
                 }
                 else if (query.hasOwnProperty('sseid') && query.sseid)
                 {
-                    //console.log('Loading GUID: ' + query.sseid)
+                    if (store.state.status.guid && store.state.status.guid != query.sseid)
+                        store.commit('RESET_STATE')
+                    
                     store.commit('SET_GUID', query.sseid)
                     await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
 

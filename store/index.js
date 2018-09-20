@@ -172,7 +172,7 @@ const store = () => new Vuex.Store({
         },
         RESET_STATE(state) {
             const reset_state = initial_state()
-            Object.keys(reset_state).forEach(key => { state[key] = initial[key] })
+            Object.keys(reset_state).forEach(key => { state[key] = reset_state[key] })
         }
 
 	},
@@ -314,7 +314,18 @@ const store = () => new Vuex.Store({
 					
         },
         clearPersistedStorage({ commit }){
-            commit('RESET_STATE')
+            try {
+                if (process.browser && window.localStorage['vuex'] || window.localStorage.vuex) {
+                    console.log('Attempting to clear outdated store item')
+                    window.localStorage.removeItem('vuex')
+                }
+                    
+            }
+            catch (error) {
+                console.error('Unable to clear old store item')
+                console.error(error)
+            }
+            
         },
 		async submitPurchase({ commit, dispatch, state })
 		{

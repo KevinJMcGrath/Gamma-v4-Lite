@@ -72,7 +72,7 @@
             scaled_pupm: {
                 get () {
                     let seats = this.$store.state.service.seats
-                    let pupm = seats <= 50 ? 30 : 20
+                    let pupm = 20 // (seats <= 50 ? 30 : 20)
                     
                     return pupm
                 }
