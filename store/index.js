@@ -155,8 +155,8 @@ const store = () => new Vuex.Store({
 		SET_STRIPE_TOKEN(state, tokenObj) {
 			state.billing.stripe_token = tokenObj
 		},
-		SET_ERROR_STATUS(state, error_status) {
-			state.error.is_error_status = error_status
+		SET_ERROR_STATUS(state, error_status) {            
+            state.error.is_error_status = error_status
 		},
 		SET_ERROR_MESSAGE(state, error_message) {			
 			state.error.message = error_message
@@ -277,7 +277,7 @@ const store = () => new Vuex.Store({
 		},
 		setErrorState({ commit, state }, user_message, user_code) {		
 			commit('SET_ERROR_STATUS', true)
-			commit('SET_ERROR_MESSAGE', user_message)
+			commit('SET_ERROR_MESSAGE', user_message || 'unknown')
 			commit('SET_ERROR_CODE', user_code)			
 		},
 		sendErrorReport({ getters }, error) {
@@ -326,6 +326,95 @@ const store = () => new Vuex.Store({
                 console.error(error)
             }
             
+        },
+        async verifyGUIDAA({ commit, dispatch, getters, state }, guid) {
+            console.log('(a/a) Verifying GUID with Salesforce...')
+            let retVal = {
+                success: false,
+                message: '',
+                code: 0
+            }
+
+            try {
+                let resp = await axios.post(getters.baseAppURL + '/api/confirm', { guid: guid })
+
+                if (resp.data.success) {
+                    console.log('Verification successful')
+                    console.log(JSON.stringify(resp.data))
+                    commit('SET_EMAIL', resp.data.user_email)
+                    commit('SET_VERIFIED', true)
+
+                    retVal.success = true
+                    retVal.code = resp.data.vcode
+                }
+                else {
+                    console.error('Verification failed (expiration)')
+                    let err_msg = "Your verification link has expired. A new verification email has been issued - please check your inbox."
+                    commit('SET_ERROR_STATUS', true)
+                    commit('SET_ERROR_MESSAGE', err_msg)
+
+                    retVal.success = false
+                    retVal.message = err_msg
+                    retVal.code = resp.data.vcode
+                }
+            }
+            catch (error) {
+                if (error.response) {                    
+                    console.error('Axios error verifying GUID: ' + error.response.statusText)
+                    //console.error(error.response)
+
+                    let err_msg = 'There was a problem validating your unique Id. Contact Symphony sales.'
+                    commit('SET_ERROR_STATUS', true)
+                    commit('SET_ERROR_MESSAGE', err_msg)
+
+                    retVal.success = false
+                    retVal.message = err_msg
+                    retVal.code = error.response.data.vcode
+                }
+                else {
+                    console.error('Error without response: ' + error.message)
+                    commit('SET_ERROR_STATUS', true)
+                    commit('SET_ERROR_MESSAGE', error.message || 'Unknown error message')
+
+                    retVal.success = false
+                    retVal.message = error.message || 'Unknown error message'
+                    retVal.code = -7
+                }
+            }
+            finally {
+                return retVal
+            }
+            
+        },
+        verifyGUID({ commit, dispatch, getters, state }, guid) {
+            console.log('Verifying GUID with Salesforce...')
+            axios.post(getters.baseAppURL + '/api/confirm', { guid: guid }).then(function(response) {
+                console.log('response: ' + JSON.stringify(response))
+
+                if (response.data.success) {
+                    console.log('Verification successful')
+                    commit('SET_EMAIL', response.data.user_email)
+                    commit('SET_VERIFIED', true) 
+                }
+                else {
+                    console.error('Verification failed')
+                    let msg = "Your verification link has expired. A new verification email has been issued - please check your inbox."
+                    dispatch('setErrorState', msg, 'CONT-04')
+                }
+                                        
+            })
+            .catch((error) => {
+                console.error('Axios error verifying GUID: ' + error.message)
+                let err_msg = 'There was a problem validating your unique Id. Contact Symphony sales.'
+                let err_code = 'VER-02'
+                //dispatch('setErrorState', err_msg, 'CONT-02')
+
+                commit('SET_ERROR_STATUS', true)
+                commit('SET_ERROR_MESSAGE', err_msg)
+                commit('SET_ERROR_CODE', err_code)
+
+                console.log('Error Status (should be true): ' + state.error.is_error_status)
+            })
         },
 		async submitPurchase({ commit, dispatch, state })
 		{

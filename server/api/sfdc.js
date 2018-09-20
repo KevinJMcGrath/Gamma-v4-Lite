@@ -125,7 +125,7 @@ router.post('/verify', function(req, res, next) {
 		}
 		catch (err) {			
 			console.log(error.message)
-			res.status(500).json({success: false, message: error.message})
+			res.status(err.response.status).json({success: false, message: error.message})
 		}
 		
 	})
@@ -135,7 +135,7 @@ router.post('/verify', function(req, res, next) {
 		let msg = (error.message ? error.message : 'Unknown error message')
 		let err_data = (error.response && error.response.data ? error.response.data : {})
 		
-		res.status(500).json({success: false, message: msg, error_data: err_data})
+		res.status(error.response.status).json({success: false, message: msg, error_data: err_data})
 	})
 })
 
@@ -152,16 +152,37 @@ router.post('/confirm', function(req, res, next) {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
 	}
+	/*	Salesforce guid-verification codes:
+	*	Number - Desc - Success/Fail
+	*	0 - Email previously verified - Success
+	*	1 - Email verification successful - Success
+	*	-1 - GUID is valid but verification link is expired - Fail
+	*	-2 - GUID is invalid - Fail
+	*	-3 - GUID is blocked, too many attempts - Fail
+	* 	-4 - GUID is missing or null - Fail
+	*	-5 - Payload is missing from POST - Fail
+	* 	-6 - API Key is invalid - Fail
+	* 	-7 - Unknown server error; see logs - Fail
+	*/
 
 	axios.post('/guid-verification', payload, config)
 	.then((response) => {
 		log_response(response)
-		res.json( { success: true, message: 'verified', user_email: response.data.user_state.user.email })
+
+		let r_vcode = response.data.code
+		let u_email = response.data.user_state.user.email
+
+		res.json( { success: true, message: 'verified', user_email: u_email, vcode: r_vcode })
 	})
 	.catch((error) => {		
-		let err_obj = axios_error(error)
-		//console.log(error.response)
-		res.status(500).json( { success: false, message: err_obj.message, data: err_obj.data })
+		//let err_obj = axios_error(error)
+		
+		let err_msg = (error.response ? error.response.message : error.message)
+		let err_data = (error.response ? error.response.data : {})
+		let err_code = (error.response ? error.response.data.code : -99)
+
+		//error.response.status IS CORRECT. Verified 09/20/2018. 
+		res.status(error.response.status).json( { success: false, message: err_msg, vcode: err_code, data: err_data })
 	})
 })
 
@@ -181,7 +202,7 @@ router.post('/error', function(req, res, next) {
 	})
 	.catch((error) => {		
 		console.log(error.response.data)
-		//console.log(error.message)
+		
 		res.status(500).json({success: false, message: error.message, error_data: error.response.data})
 	})
 })

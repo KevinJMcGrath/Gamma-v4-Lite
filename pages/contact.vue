@@ -123,93 +123,47 @@
             // Really only need this when I need to capture errors that occur in 
             // fetch() AND when it's likely the user could come to the page
             // first (since the vuex store will not have been instantiated yet)
-            return {
+            console.log('asyncData - is_error_status: ' + store.state.error.is_error_status)
+            /*return {
                 error_state: store.state.error.is_error_status
-            }
+            }*/
         },
         async fetch({ store, params, query, redirect, env }) {
-            // Using this as a hacky way to ensure the store is instantiated
-            // even if the user is jumping around.
-            store.commit('SET_PAGE_STARTED', 'contact')
+            
+            if (query.sseid) {                        
+                let resp = await store.dispatch('verifyGUIDAA', query.sseid)
+                //resp => { success: (bool), message: (str), code: (int) }
 
-            if(!store.state.status.guid)
-            {
-                let err_msg = {}
-                // A test bypass in case I need it
-                if (env.is_dev && query.hasOwnProperty('t') && query.t)
-                {   
-                    //console.log('Checking test code...')
-                    let success = await store.dispatch('loadTestData', query.t)
-                    
-                    if (!success)
-                    {                        
-                        err_msg = {
-                            message: 'You did not supply a correct test code. Contact Biz Ops.',
-                            code: 'CONT-03'
-                        }
-                                                
-                        store.dispatch('setErrorState', err_msg.message, err_msg.code)                        
-                        // Because this is being called on server side, and I have the Persist plugin
-                        // in the store set to only load on client side, redirecting here will
-                        // prevent the error from being persisted in the store. 
-                        // Solution 1: I can commit the error to the store, then wait to redirect until
-                        // I get to the mounted() function in the page, thus instantiating the Persist
-                        // mechanism. This will ensure I have access to the error when I get to the error page
-                        // Solution 2: I can send the error as a query parameter to the error page and
-                        // add then send the error to Salesforce in the fetch or mounted functions of
-                        // the error page. 
-                        // redirect('/error')
-
-                    }
+                console.log('Verification response from store: ' + JSON.stringify(resp))
+                if (resp.success) {
+                    console.log('verification successful (fetch)')
                 }
-                else if (query.hasOwnProperty('sseid') && query.sseid)
-                {
-                    if (store.state.status.guid && store.state.status.guid != query.sseid)
-                        store.commit('RESET_STATE')
-                    
-                    store.commit('SET_GUID', query.sseid)
-                    await axios.post(store.getters.baseAppURL + '/api/confirm', { guid: query.sseid }).then(function(response) {
-
-                        if (response.data.success) {
-                            store.commit('SET_EMAIL', response.data.user_email)
-                            store.commit('SET_VERIFIED', true) 
-                        }
-                        else {
-                            let msg = "Your verification link has expired. A new verification email has been issued - please check your inbox."
-                            store.dispatch('setErrorState', msg, 'CONT-04')
-                        }
-                                                   
-                    })
-                    .catch((error) => {
-                        
-                        err_msg = {
-                            message: 'There was a problem validating your unique Id.',
-                            code: 'CONT-02'
-                        }
-
-                        store.dispatch('setErrorState', err_msg.message, err_msg.code)
-                    })
+                else {
+                    console.error('verification failed (fetch) - code: ' + resp.code)
+                    console.error('Store Error Status: ' + store.state.error.is_error_status)
+                    //redirect('/error')
                 }
-                else
-                {                    
-                    let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
-                    msg += 'or you can re-register your email account.'
+                
+            }
+            else
+            {                    
+                let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
+                msg += 'or you can re-register your email account.'
 
-                    err_msg = {
-                        message: msg,
-                        code: 'CONT-01'
-                    }
-
-                    store.dispatch('setErrorState', err_msg.message, err_msg.code)
-                }
-            }          
+                store.dispatch('setErrorState', err_msg.message, 'CONT-01')
+            }
             
         },
-        mounted: function() {            
+        mounted: function() {
+            console.log('State: ' )
+            console.log(this.$store.state)
+            console.log('Error status: ' + this.$store.state.error.is_error_status)
             if (this.$store.state.error.is_error_status)
             {                
                 this.$router.push({ name: "error"})
             }
+
+            this.pageSetup()
 
             // Won't need this if the Properties tied to the Store work for validation
             //this.contactForm.firstname = this.$store.state.user.firstname
@@ -270,6 +224,17 @@
 
 
                 })
+            },
+            pageSetup() {
+                console.log('Contact page started')
+                this.$store.commit('SET_PAGE_STARTED', 'contact')
+                
+                if (this.$store.state.status.guid && this.$store.state.status.guid != this.$route.query.sseid) {
+                    console.log('GUID Changed. Resetting state and updating GUID')
+                    this.$store.commit('RESET_STATE')                        
+                    this.$store.commit('SET_GUID', this.$route.query.sseid)                    
+                }
+                
             },
             updatePhoneValidation({number, isValid, country}) {
                 console.log(number, isValid, country)

@@ -81,9 +81,11 @@
         },
         fetch({ store, params, query, redirect, env }) {
             store.commit('RESET_STATE')
-            store.dispatch('clearPersistedStorage')
+            
         },
-        mounted: function() {            
+        mounted: function() {
+
+            this.$store.dispatch('clearPersistedStorage')
 
             if (this.$route.query.em)
             {
