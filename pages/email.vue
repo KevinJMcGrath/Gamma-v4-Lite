@@ -80,10 +80,9 @@
             }
         },
         fetch({ store, params, query, redirect, env }) {
-            
-        },
-        mounted: function() {
             this.$store.commit('RESET_STATE')
+        },
+        mounted: function() {            
 
             if (this.$route.query.em)
             {
