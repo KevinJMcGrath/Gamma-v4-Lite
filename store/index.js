@@ -9,19 +9,16 @@ const moment = require('moment')
 
 Vue.use(Vuex)
 
-let priorState = null
-
-
-
 const store = () => new Vuex.Store({
 	//strict: process.env.NODE_ENV !== 'production',	
 	//Establishing the fields for the store
 	state: {
 		status: {
 			guid: '',
-			current: false,
-			test_flag: false,
-			submit_in_progress: false
+            current: false,
+            submit_in_progress: false,
+            submit_completed: false,
+            submit_completed_date: moment("1980-01-26")
 		},
 		email: {
 			email_address: '',
@@ -78,15 +75,18 @@ const store = () => new Vuex.Store({
 	
 	//Creating properties for updating the fields
 	mutations: {
-		SET_FLAG(state, flag) {
-			state.status.test_flag = flag
-		},
 		SET_GUID(state, guid) {
 			state.status.guid = guid
-		},
-		SET_SUBMIT_IN_PROGRESS(state, in_progress) {
-			state.status.submit_in_progress = in_progress
-		},
+        },
+        SET_IN_PROGRESS(state, in_progress_flag) {
+            state.status.submit_in_progress = in_progress_flag
+        },
+        SET_SUBMIT_COMPLETE(state, is_submit_complete) {
+            state.status.submit_completed = is_submit_complete
+        },
+        SET_SUBMIT_COMPLETE_DATE(state, completed_date) {
+            state.status.submit_completed_date = completed_date
+        },
 		SET_EMAIL(state, email) {
 			state.email.email_address = email
 		},
@@ -246,9 +246,6 @@ const store = () => new Vuex.Store({
 				return process.env.SFDC_DEV_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
 			else
 				return process.env.SFDC_BASE_URL
-		},
-		getPriorState: (state) => {
-			return priorState
 		}
 
 	},	
@@ -277,7 +274,7 @@ const store = () => new Vuex.Store({
 		sendErrorReport({ getters }, error) {
 			// REMEMBER: you need to tell the actions to give you the getters if you are
 			// deconstructing the store arguments
-			const error_path = getters.baseAppURL + '/api/error'
+			/*const error_path = getters.baseAppURL + '/api/error'
 			let err_obj = CreateErrorObject(error, state.status.guid)
 
 			axios.post( error_path, err_obj ).then(function(response) {
@@ -303,37 +300,62 @@ const store = () => new Vuex.Store({
 				{
 					console.error('Unknown Error: ' + error.message)
 				}
-			})
+            })*/
+            return
 					
 		},
-		async submitPurchase({ commit, dispatch })
+		async submitPurchase({ commit, dispatch, state })
 		{
-			if (!state.status.in_progress)
-			{
-				await axios.post('/api/purchase-submit', state)
-				.then(function(response) {
-					commit('SET_IN_PROGRESS', false)
-					commit('SET_PAGE_COMPLETE', 'summary')
+            if (state.status.submit_in_progress) { return -1}
 
-					//Clear the local storage
-					if (process.browser)
-					{
-						console.log('Removing locally saved state')
-						//window.localStorage.removeItem('vuex')
-					}
-				})
-				.catch(function(error) {
-					commit('SET_IN_PROGRESS', false)
+            if (state.status.submit_completed) { return -2 }
 
-					err_msg = {
-						message: 'There was a problem submitting your request.',
-						code: 'SUM-01'
-					}
+            commit('SET_IN_PROGRESS', true)
 
-					dispatch('sendErrorReport', error)
-					dispatch('setErrorState', err_msg)
-				}) 
-			}			
+            try {
+                let resp = await axios.post('/api/purchase-submit', state)
+
+                if (resp && resp.status){ 
+                    if (Math.floor(resp.status / 100) == 2) { 
+                        commit('SET_IN_PROGRESS', false)
+                        commit('SET_PAGE_COMPLETE', 'summary')
+                        commit('SET_SUBMIT_COMPLETE', true)
+                        commit('SET_SUBMIT_COMPLETE_DATE', moment())
+
+                        //Clear the local storage
+                        if (process.browser)
+                        {
+                            console.log('Attempting to clear session state.')                    
+                            window.localStorage.removeItem('vuex-ps')
+                        }
+
+                        return 0
+                    }
+                    else {
+                        commit('SET_IN_PROGRESS', false)
+                        
+                        return resp.data.code
+                    }
+                }
+                else {
+                    return -101
+                }
+            }
+            catch (error)
+            {
+                commit('SET_IN_PROGRESS', false)
+
+                err_msg = {
+                    message: 'There was a problem submitting your request.',
+                    code: 'SUM-01'
+                }
+
+                dispatch('sendErrorReport', error)
+                dispatch('setErrorState', err_msg)
+
+                if (error.response)
+                    return error.response.code || -99
+            }		
 		},
 		async testDispatch(context) {
 			let val = 'waiting'
@@ -383,7 +405,6 @@ const store = () => new Vuex.Store({
 		}
     },
     plugins: process.browser ? [createPersistedState()] : []
-	//plugins: process.browser ? [vuexPersist.plugin] : []
 
 })
 

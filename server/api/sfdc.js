@@ -29,7 +29,7 @@ function log_response(resp, isError)
 			console.log('Success!')
 			console.log('Response Code: ' + resp.status)
 			console.log('Response Text: ' + resp.statusText)
-			//console.log('Response Body: ' + resp.data)
+			console.log('Response Body: ' + JSON.stringify(resp.data))
 		}		
 	}
 	
@@ -204,11 +204,19 @@ router.post('/purchase-submit', function(req, res, next) {
 	axios.post('/selfservice-submit', payload, config)
 	.then((response) => {
 		log_response(response)
-		res.json( { success: true, message: response.data })
+
+		res.json( { success: true, message: response.data.message, code: response.data.code })
 	})
 	.catch((error) => {		
 		let err_obj = axios_error(error)
-		res.status(err_obj.status).json( { success: false, message: err_obj.message, data: err_obj.data })
+
+		let err_code = -99
+
+		if (error.response && error.response.code) {
+			err_code = error.response.code
+		}
+
+		res.status(err_obj.status).json( { success: false, message: err_obj.message, code: err_code})
 	})
 })
 
