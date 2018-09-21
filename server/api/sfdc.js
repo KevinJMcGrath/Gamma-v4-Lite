@@ -19,7 +19,7 @@ function log_response(resp, isError)
 		console.error('HTTP error')
 		console.error('Response Code: ' + resp.status)
 		console.error('Response Text: ' + resp.statusText)
-		console.error('Response Body: ' + JSON.stringify(resp.data))
+		//console.error('Response Body: ' + JSON.stringify(resp.data))
 
 	}
 	else
@@ -29,7 +29,7 @@ function log_response(resp, isError)
 			console.log('Success!')
 			console.log('Response Code: ' + resp.status)
 			console.log('Response Text: ' + resp.statusText)
-			console.log('Response Body: ' + JSON.stringify(resp.data))
+			//console.log('Response Body: ' + JSON.stringify(resp.data))
 		}		
 	}
 	
@@ -202,7 +202,7 @@ router.post('/error', function(req, res, next) {
 	})
 	.catch((error) => {		
 		console.log(error.response.data)
-		
+
 		res.status(500).json({success: false, message: error.message, error_data: error.response.data})
 	})
 })
