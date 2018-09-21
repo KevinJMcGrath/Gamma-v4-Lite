@@ -53,7 +53,7 @@
             }
         },
         mounted: function() {
-            console.log('Billing component loaded')
+            
         },
         methods: {
             formatCurrencyValue(input_val) {
