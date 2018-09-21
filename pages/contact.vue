@@ -119,18 +119,11 @@
                 
             }
         },
-        asyncData({ store }) {
-            // Really only need this when I need to capture errors that occur in 
-            // fetch() AND when it's likely the user could come to the page
-            // first (since the vuex store will not have been instantiated yet)
-            console.log('asyncData - is_error_status: ' + store.state.error.is_error_status)
-            /*return {
-                error_state: store.state.error.is_error_status
-            }*/
-        },
         async fetch({ store, params, query, redirect, env }) {
             
-            if (query.sseid) {                        
+            if (query.sseid) {
+                store.commit('SET_GUID', query.sseid)
+
                 let resp = await store.dispatch('verifyGUIDAA', query.sseid)
                 //resp => { success: (bool), message: (str), code: (int) }
 
@@ -155,9 +148,7 @@
             
         },
         mounted: function() {
-            console.log('State: ' )
-            console.log(this.$store.state)
-            console.log('Error status: ' + this.$store.state.error.is_error_status)
+            
             if (this.$store.state.error.is_error_status)
             {                
                 this.$router.push({ name: "error"})
