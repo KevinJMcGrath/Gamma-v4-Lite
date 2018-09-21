@@ -1,0 +1,112 @@
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400" rel='stylesheet' type='text/css'>
+		<style>
+
+			.email-body {
+				background-color: white;
+                border: 1px solid lightgrey;
+				border-radius: 10px;
+                max-width: 700px;
+                min-height: 400px;
+                overflow:hidden;
+			}
+
+			.header {
+				color: white;
+				background-image: url('https://symphony--dev--c.cs4.content.force.com/servlet/servlet.ImageServer?id=015P0000000Rem9&oid=00DP00000002rTJ&lastMod=1537287414000');
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+				height: 100px;
+				width: 100%;
+                
+			}
+
+			.header-logo {
+				float: right;
+				font-family: 'Roboto';
+				font-size: 24px;
+                font-weight: 400;
+				margin: 35px 30px;
+				letter-spacing: 3px;
+			}
+
+			.body-box {
+				font-family: 'Roboto';
+				padding: 20px;
+				color: #333;
+                min-height: 300px;
+			}
+
+			.big-text {
+				font-size: 22px;
+				font-weight: bold;
+			}
+
+            .ob-list li {
+                margin-bottom: 10px;
+            }
+
+            .sym-link {
+                text-decoration: none;
+                color: #287d99;
+                font-weight: bold;
+            }
+
+            .footer {
+                padding-left: 10px;
+                font-size: 11px;
+                color: #aaa;
+                text-align: center;
+            }
+		</style>
+	</head>
+	<body >
+        <div class="email-body">
+            <div class="header">
+                <div class="header-logo">SYMPHONY</div>
+            </div>
+            <div class="body-box">
+                <p class="big-text">You made the right choice.</p>
+                <p>Hi {!Self_Service_Entry__c.User_First_Name__c},
+                    <br/><br/>
+                    Welcome to Symphony! Congratulations on choosing the leader in secure messaging and collaboration.
+                </p>
+                <p class="big-text">What's Next?</p>
+                <p>In the next 3-5 business days, you'll receive 2 important emails outlining your next steps.
+                    <br/>
+                    <ol class="ob-list">
+                        <li><b>Symphony Onboarding - Initial Setup Questions</b>
+                            <br/><br/>
+                            We'll ask for information about your business that will help us create your custom Symphony workspace.                            
+                        </li>
+                        <li><b>Your Symphony Workspace is Ready!</b>
+                            <br/><br/>
+                            You'll provide everything you need to get started with configuring your Symphony service.
+                        </li>
+                    </ol>                    
+                </p>
+                <p>
+                    After you've set up Symphony, we'll schedule time to review your new workspace and help you access the 
+                    administrative features, add users, configure sign-in, etc. 
+                </p>
+                <p>Get ready to experience secure collaboration on a new level!</p>
+                <p>Thank you,</p>
+                <p>Your Symphony Team</p>
+                <br/>
+                <br/>
+                <p>P.S. For your records, we have attached your purchase summary and our terms and conditions.</p>
+                <p>P.P.S. Eager to get started? Be sure to check out: 
+                    <br/><br/>
+                    <a class="sym-link" href="https://support.symphony.com/hc/en-us" target="_blank">Symphony Help Center</a>: Ramp up on all things Symphony, 
+                    whether you're a team admin or an end-user.
+                    <br/><br/>
+                    <a class="sym-link" href="https://symphony.direct/login" target="_blank">Symphony.Direct</a>: Get a jump start with pre-deployment planning,
+                    training videos and loads of other useful content.
+                </p>
+
+            </div>
+            <p class="footer">© 2018 Symphony Communication Services, LLC 1117 S California Ave Palo Alto CA 94304 USA</p>
+        </div>
+	</body>
+</html>
