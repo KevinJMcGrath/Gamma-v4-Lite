@@ -174,6 +174,9 @@
                     okText: 'Ok'
                 })
             }
+
+            // Clear the in-progress flag on page load.
+            this.$store.commit('SET_IN_PROGRESS', false)
         },
         computed: {
             input_accept_tandc: {
@@ -237,18 +240,19 @@
                                     })
                                 }
                             })
-
-                            
-                            
                         }
                         else
                         {
                             this.$Message.error('The form is missing information. ')
+                            this.loading = false
                         }
-                        
+                    }
+                    else
+                    {
+                        this.loading = false
                     }
 
-                    this.loading = false
+                    
                 })
                                             
             }
