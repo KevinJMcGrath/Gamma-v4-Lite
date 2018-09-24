@@ -70,7 +70,7 @@ function axios_error(error)
 
 router.post('/domain-check', function(req, res, next) {
 
-	let email_address = req.body.email_address
+	let email_address = req.body.email_address.toLowerCase()
 	domain_search.isForbiddenDomain(email_address).then((result) => {
 		if (result) {
 			let domain = domain_search.getDomain(email_address)
