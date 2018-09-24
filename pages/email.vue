@@ -38,9 +38,11 @@
                 if (value !== '' && value !== 'kevinmcgr@gmail.com')
                 {
                     var re = '[a-zA-Z_\\.-]+@((hotmail)|(yahoo)|(gmail))\\.[a-z]{2,4}';
-                    if (value.match(re))
+                    if (value.toLowerCase().match(re))
                     {
+                        this.loading = false
                         callback(new Error('We are not accepting freemail addresses at this time.'));    
+                        
                     }
                     else
                     {
@@ -102,9 +104,8 @@
 
             },
             handleValidateEmail() {
-                this.loading = true
-
                 this.$refs['email_form'].validate((valid) => {
+                    console.log('Button disabled 1: ' + this.loading)
                     if (valid)
                     {
                         let doVerify = false
@@ -125,11 +126,12 @@
                                     desc: msg,
                                     duration: 0
                                 })
-                            }                           
+                            }
 
                         }.bind(this)).then(function(response) {
                             if (doVerify)
                             {
+                                this.loading = true
                                 axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
                                     if (response.data && response.data.vcode) {
                                         if (response.data.vcode === 'ver01') {
@@ -142,6 +144,7 @@
                                             this.$router.push({name: "email-thankyou", query:{cd: '1086453', em: response.data.encoded}})
                                         }
                                         else {
+                                            this.loading = false
                                             this.$Notice.error({
                                                 title: 'Error Verifying Email Address',
                                                 desc: 'There was an issue with this request. Error code: ' + response.data.vcode,
@@ -150,16 +153,16 @@
                                         }
                                     }
                                     else {
+                                        this.loading = false
                                         this.$Notice.error({
                                             title: 'Error Verifying Email Address',
                                             desc: 'There was an issue with this request. VCode was not present.',
                                             duration: 0
                                         })
                                     }
-                                    this.loading = false
+                                    
 
                                 }.bind(this)).catch(function (error) {
-                                    this.loading = false
 
                                     let d = 'There was a problem completing your verification request. '
 
@@ -180,6 +183,7 @@
                                         }
                                     }                           
 
+                                    this.loading = false
                                     this.$Notice.error({
                                         title: 'Error Verifying Email Address',
                                         desc: d,
@@ -197,14 +201,8 @@
                             store.dispatch('setErrorState', err_msg)
 
 
-                            this.$router.push({ name: "error" })
-                            this.loading = false
+                            this.$router.push({ name: "error" })                            
                         }.bind(this))
-                    }                    
-                    else
-                    {
-                        this.$Message.error()
-                        this.loading = false
                     }
                 })                
             }
