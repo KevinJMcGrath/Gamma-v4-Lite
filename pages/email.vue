@@ -156,6 +156,7 @@
                                             duration: 0
                                         })
                                     }
+                                    this.loading = false
 
                                 }.bind(this)).catch(function (error) {
                                     this.loading = false
