@@ -143,7 +143,7 @@
                 let msg = 'You must have a link provided by the email registration flow. If your link has expired, you can obtain a new link from the email, '
                 msg += 'or you can re-register your email account.'
 
-                store.dispatch('setErrorState', err_msg.message, 'CONT-01')
+                store.dispatch('setErrorState', msg, 'CONT-01')
             }
             
         },
