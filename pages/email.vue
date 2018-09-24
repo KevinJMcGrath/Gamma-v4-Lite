@@ -98,6 +98,8 @@
                 }
                 
             }
+
+            this.emailForm.email = this.$store.state.email.email_address
         },
         methods: {
             toggleButtonActive() {
@@ -124,7 +126,7 @@
                                 this.$Notice.error({
                                     title: 'Error Verifying Email Address',
                                     desc: msg,
-                                    duration: 0
+                                    duration: 6
                                 })
                             }
 
@@ -148,7 +150,7 @@
                                             this.$Notice.error({
                                                 title: 'Error Verifying Email Address',
                                                 desc: 'There was an issue with this request. Error code: ' + response.data.vcode,
-                                                duration: 0
+                                                duration: 6
                                             })
                                         }
                                     }
@@ -157,7 +159,7 @@
                                         this.$Notice.error({
                                             title: 'Error Verifying Email Address',
                                             desc: 'There was an issue with this request. VCode was not present.',
-                                            duration: 0
+                                            duration: 6
                                         })
                                     }
                                     
@@ -187,7 +189,7 @@
                                     this.$Notice.error({
                                         title: 'Error Verifying Email Address',
                                         desc: d,
-                                        duration: 0
+                                        duration: 6
                                     })
                                 }.bind(this))
                             }
