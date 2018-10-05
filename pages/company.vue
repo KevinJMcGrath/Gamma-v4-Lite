@@ -70,6 +70,7 @@
 </template>
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
+    const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
         data() {
@@ -94,6 +95,15 @@
                 }                
             };
 
+            const validateNoHTML = (rule, value, callback) => {
+                if (htmlRe.test(value) === true) {
+                    callback(new Error('HTML tags are not permitted in this input field.'))
+                }
+                else {
+                    callback()
+                }
+            }
+
             return {
                 page_title: 'Symphony - Company',
                 pricing_window: false,
@@ -109,7 +119,8 @@
                         { validator: validateMaxSeats, trigger: 'change' } 
                     ],
                     companyname: [
-                        { required: true, message: 'Please enter your company\'s legal name.', trigger: 'blur' }
+                        { required: true, message: 'Please enter your company\'s legal name.', trigger: 'blur' },
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     industry: [
                         { required: true, message: 'Please select a primary industry from the dropdown.', trigger: 'blur'}

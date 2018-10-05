@@ -63,12 +63,13 @@
     </div>  
 </template>
 <script>    
-    const axios = require('axios')
+    const axios = require('axios')    
+    const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
         data() {
             const validateCustomPhone = (rule, value, callback) => {
-                console.log('Phone input state: ' + this.$refs['vuetel'].state)
+                //console.log('Phone input state: ' + this.$refs['vuetel'].state)
                 if (this.$refs['vuetel'].state)
                 {
                     callback('');
@@ -78,6 +79,15 @@
                     callback(new Error('Please ensure your phone number is in the proper format for your country.'));
                 }                
             };
+
+            const validateNoHTML = (rule, value, callback) => {
+                if (htmlRe.test(value) === true) {
+                    callback(new Error('HTML tags are not permitted in this input field.'))
+                }
+                else {
+                    callback()
+                }
+            }
 
             return {
                 page_title: 'Symphony - Contact',
@@ -97,10 +107,12 @@
                 },
                 validation_rules: { 
                     firstname: [
-                        { required: true, message: 'Please enter your first name.', trigger: 'blur'}
+                        { required: true, message: 'Please enter your first name.', trigger: 'blur'},
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     lastname: [
-                        { required: true, message: 'Please enter your last name.', trigger: 'blur'}
+                        { required: true, message: 'Please enter your last name.', trigger: 'blur'},
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     phone: [
                         { required: true, message: 'Please enter your daytime phone number.', trigger: 'blur'},

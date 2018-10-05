@@ -2,6 +2,7 @@ const { Router } = require('express')
 const axios = require('axios')
 const crypto = require('crypto')
 const domain_search = require('../lib/domain.js')
+const santize = require('sanitize-html')
 
 
 //Add logic for storing API keys here
@@ -68,9 +69,13 @@ function axios_error(error)
 	return err_obj
 }
 
+function clean_input(input_val) {
+	return santize(input_val, {allowedTags: [], allowedAttributes: []})
+}
+
 router.post('/domain-check', function(req, res, next) {
 
-	let email_address = req.body.email_address.toLowerCase()
+	let email_address = clean_input(req.body.email_address.toLowerCase())
 	domain_search.isForbiddenDomain(email_address).then((result) => {
 		if (result) {
 			let domain = domain_search.getDomain(email_address)

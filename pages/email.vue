@@ -107,11 +107,10 @@
             },
             handleValidateEmail() {
                 this.$refs['email_form'].validate((valid) => {
-                    console.log('Button disabled 1: ' + this.loading)
                     if (valid)
                     {
                         let doVerify = false
-                        
+
                         axios.post('/api/domain-check', { email_address: this.input_email }).then(function(response) {
                             doVerify = response.data.success
 

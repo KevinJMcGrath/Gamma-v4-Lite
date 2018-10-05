@@ -61,22 +61,7 @@
         async fetch({ store, params, query, redirect, env }) {                     
             if(!store.state.email.email_address)
             {
-                // A test bypass in case I need it
-                if (env.is_dev && query.hasOwnProperty('t') && query.t)
-                {
-                    let success = await store.dispatch('loadTestData', query.t)
-
-                    if (!success)
-                    {                        
-                        err_msg = {
-                            message: 'You did not supply a correct test code. Contact Biz Ops.',
-                            code: 'CONT-03'
-                        }
-                                                
-                        store.dispatch('setErrorState', err_msg.message, err_msg.code)
-                    }
-                }
-                else if (query.hasOwnProperty('em') && query.em.length !== 0)
+                if (query.hasOwnProperty('em') && query.em.length !== 0)
                 {
                     if (process.browser) {
                         store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
@@ -86,7 +71,10 @@
                         store.commit('SET_EMAIL', buff.toString('ascii'))                        
                     }
                 }
-            }            
+                else {
+                    redirect('/email')
+                }
+            }
         },
         mounted: function() {
             if (this.$store.state.error.is_error_status)

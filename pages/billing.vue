@@ -129,6 +129,7 @@
 </template>
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
+    const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
     //import SymphonyCountryState from '~/components/SymphonyCountryState.vue'
 
     // Moved these declarations to the global scope to avoid problems later. 
@@ -142,7 +143,17 @@
     let cardCVC = undefined
 
     export default {
+        
         data() {
+            const validateNoHTML = (rule, value, callback) => {
+                if (htmlRe.test(value) === true) {
+                    callback(new Error('HTML tags are not permitted in this input field.'))
+                }
+                else {
+                    callback()
+                }
+            }
+
             return {
                 loading: false,
                 page_title: 'Symphony - Billing Details',
@@ -158,19 +169,27 @@
                 },
                 validation_rules: {
                     fullname: [
-                        { required: true, message: 'Please provide the name as it appears on your credit card.', trigger: 'blur' }
+                        { required: true, message: 'Please provide the name as it appears on your credit card.', trigger: 'blur' },
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     address1: [
-                        { required: true, message: 'Please provide your street address.', trigger: 'blur' }
+                        { required: true, message: 'Please provide your street address.', trigger: 'blur' },
+                        { validator: validateNoHTML, trigger: 'blur' }
+                    ],
+                    address2: [
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     city: [
-                        { required: true, message: 'Please provide your city or town.', trigger: 'blur' }
+                        { required: true, message: 'Please provide your city or town.', trigger: 'blur' },
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     state: [
-                        { required: true, message: 'Please provide your state or province.', trigger: 'blur' }
+                        { required: true, message: 'Please provide your state or province.', trigger: 'blur' },
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     zip_code: [
-                        { required: true, message: 'Please provide your zip or postal code.', trigger: 'blur' }
+                        { required: true, message: 'Please provide your zip or postal code.', trigger: 'blur' },
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ]
                 }
             }

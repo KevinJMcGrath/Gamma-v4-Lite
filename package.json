@@ -28,10 +28,12 @@
     "less": "^3.0.2",
     "less-loader": "^2.2.3",
     "moment": "^2.22.2",
-    "nuxt": "^1.4.0",
+    "nuxt": "^1.4.2",
     "postcss-loader": "^2.1.6",
+    "sanitize-html": "^1.19.1",
     "vue": "^2.5.17",
     "vue-tel-input": "^2.0.6",
+    "vue-template-compiler": "^2.5.17",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
