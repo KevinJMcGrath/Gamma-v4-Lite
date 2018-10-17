@@ -142,6 +142,7 @@
                 console.log('Verification response from store: ' + JSON.stringify(resp))
                 if (resp.success) {
                     console.log('verification successful (fetch)')
+                    console.log('Email (SS2): ' + store.state.email.email_address)
                 }
                 else {
                     console.error('verification failed (fetch) - code: ' + resp.code)
@@ -167,6 +168,8 @@
             }
 
             this.pageSetup()
+
+            console.log('Email (CS): ' + this.$store.state.email.email_address)
 
             // Won't need this if the Properties tied to the Store work for validation
             //this.contactForm.firstname = this.$store.state.user.firstname
@@ -232,10 +235,13 @@
                 console.log('Contact page started')
                 this.$store.commit('SET_PAGE_STARTED', 'contact')
                 
-                if (this.$store.state.status.guid && this.$store.state.status.guid != this.$route.query.sseid) {
+                /*if (this.$store.state.status.guid && this.$store.state.status.guid != this.$route.query.sseid) {
                     console.log('GUID Changed. Resetting state and updating GUID')
-                    this.$store.commit('RESET_STATE')                        
-                    this.$store.commit('SET_GUID', this.$route.query.sseid)                    
+                    this.$store.commit('RESET_STATE')                                       
+                }*/
+
+                if (!this.$store.state.status.guid) {
+                    this.$store.commit('SET_GUID', this.$route.query.sseid) 
                 }
                 
             },

@@ -321,7 +321,9 @@ const store = () => new Vuex.Store({
                     console.log('Verification successful')
                     console.log(JSON.stringify(resp.data))
                     commit('SET_EMAIL', resp.data.user_email)
-                    commit('SET_VERIFIED', true)
+					commit('SET_VERIFIED', true)
+					
+					console.log('Email (SS): ' + state.email.email_address)
 
                     retVal.success = true
                     retVal.code = resp.data.vcode
