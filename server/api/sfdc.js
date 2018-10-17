@@ -95,7 +95,7 @@ router.post('/domain-check', function(req, res, next) {
 router.post('/verify', function(req, res, next) {
 
 	console.log('Entering /verify')
-	let email_address = req.body.email_address	
+	let email_address = clean_input(req.body.email_address.toLowerCase())
 	
 	const payload = { 
 		emailAddress: email_address,
@@ -145,7 +145,7 @@ router.post('/verify', function(req, res, next) {
 })
 
 router.post('/confirm', function(req, res, next) {
-	let guid = req.body.guid	
+	let guid = clean_input(req.body.guid.toLowerCase())
 	
 	const payload = { 
 		guid: guid		
@@ -216,6 +216,18 @@ router.post('/test-post', function(req, res, next) {
 	console.log('server reports: test succeeded')
 	res.json({ success: true })
 })
+
+router.post('/purchase-submit-test', function(req, res, next) {
+	var input = req.body
+
+	for (var property in input) {
+		if (input.hasOwnProperty(property)) {
+			input[property] = clean_input(input[property])
+		}
+	}
+
+	res.json({input: input})
+}) 
 
 router.post('/purchase-submit', function(req, res, next) {
 	
