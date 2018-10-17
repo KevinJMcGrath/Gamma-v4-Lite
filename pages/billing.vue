@@ -89,14 +89,14 @@
                                     <div class="lite-container-row"> 
                                         <Row :gutter="8">
                                             <i-col span=12>
-                                                State<br/>
+                                                {{state_label}}<br/>
                                                 <FormItem prop="state"> 
                                                     <i-input v-model="input_state"></i-input>
                                                 </FormItem>
                                             </i-col>
                                             <i-col span=12>
-                                                ZIP Code<br/>
-                                                <FormItem prop="city"> 
+                                                {{zip_label}}<br/>
+                                                <FormItem prop="zip_code"> 
                                                     <i-input v-model="input_zip"></i-input>
                                                 </FormItem>
                                             </i-col>                                    
@@ -145,6 +145,15 @@
     export default {
         
         data() {
+            const validateReqIfUs = (rule, value, callback) => {
+                if(this.is_country_us && !value.replace(/\s+/,'').length) {
+                    callback(new Error('Field is required.'))
+                }
+                else {
+                    callback()
+                }
+            }
+            
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
                     callback(new Error('HTML tags are not permitted in this input field.'))
@@ -184,11 +193,13 @@
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     state: [
-                        { required: true, message: 'Please provide your state or province.', trigger: 'blur' },
+                        //{ required: true, message: 'Please provide your state or province.', trigger: 'blur' },
+                        { validator: validateReqIfUs, trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     zip_code: [
-                        { required: true, message: 'Please provide your zip or postal code.', trigger: 'blur' },
+                        //{ required: true, message: 'Please provide your zip or postal code.', trigger: 'blur' },
+                        { validator: validateReqIfUs, trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ]
                 }
@@ -259,6 +270,22 @@
             }
         },
         computed: {
+            is_country_us: {
+                get () {
+                    console.log('Country Code: ' + this.$store.state.user.country_code)
+                    return this.$store.state.user.country_code.toLowerCase() === 'us'
+                }
+            },
+            state_label: {
+                get () {
+                    return (this.is_country_us ? 'State' : 'State/Provice')
+                }
+            },
+            zip_label: {
+                get () {
+                    return (this.is_country_us ? 'Zip Code' : 'Postal Code')
+                }
+            },
             has_stripe_token: {
                 get () {
                     return this.$store.state.billing.stripe_token !== '' &&
