@@ -49,6 +49,7 @@ export default {
     },
     methods: {
         handleGetStarted() {
+            this.$store.commit('RESET_STATE')
             this.$router.push({name: "email" })
         }
     }
