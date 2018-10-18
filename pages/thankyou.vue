@@ -48,7 +48,7 @@
             }
         },
         mounted: function() {
-
+            this.$store.commit('RESET_STATE')
         },
         methods: {
 
