@@ -187,6 +187,9 @@ const store = () => new Vuex.Store({
             
 			return retval
 		},
+		getPageCompleted: (state) => (page_name) => {
+			return state.page_state.find(page => page.name === page_name).completed
+		},
 		getPageState: (state) => (page_name) => {
 			let retval = state.page_state.find(page => page.name === page_name).completed
 			

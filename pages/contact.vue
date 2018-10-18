@@ -132,8 +132,14 @@
             }
         },
         async fetch({ store, params, query, redirect, env }) {
+
+            console.log('Is Page Completed: ' + store.getters.getPageState('contact'))
+            console.log('Company Name from Store: ' + store.state.company.name)
             
-            if (query.sseid) {
+            if (store.state.page_state.find(page => page.name === 'contact').completed) {
+                console.log('Do not re-verify')
+            }
+            else if (query.sseid) {
                 store.commit('SET_GUID', query.sseid)
 
                 let resp = await store.dispatch('verifyGUIDAA', query.sseid)
