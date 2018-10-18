@@ -1,20 +1,20 @@
 <template>
     <div>
-        <p class="symphony-edge-header">Symphony Business</p>
+        <p class="symphony-billing-header">Symphony Business</p>
         <div class="billing-group top-group">
             <Row>
                 <i-col span="8">
-                    <span class="big-item">{{total_seats}} Seats</span>
+                    <span class="big-item"><b>{{total_seats}}</b> Seats</span>
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
                     <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div>
                 </i-col>
             </Row>
             <Row>
-                <i-col span="8">
+                <i-col span="10">
                     <span class="small-item">{{formatted_pupm}} /user/month</span>
                 </i-col>
-                <i-col span="4" offset="12">
+                <i-col span="4" offset="10">
                     <div class="small-item align-right">monthly</div>
                 </i-col>
             </Row>
@@ -140,5 +140,10 @@
         font-weight: bold;
         font-size: 1.2em;
         padding: 5px;
+    }
+
+    .symphony-billing-header {
+        font-size: 1.4em;
+        font-weight: bold;
     }
 </style>
