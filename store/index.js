@@ -246,14 +246,35 @@ const store = () => new Vuex.Store({
 		baseAppURL: (state) => {
 			if (process.env.NODE_ENV !== 'production')
 				return process.env.DEV_BASE_URL || 'http://localhost:8080'
-			else
-				return process.env.BASE_URL
+			else {
+				if (process) {
+					console.log('ENV Test: Location - ' + (process.browser ? 'Client Side' : 'Server Side'))
+
+					if (process.env) {
+						if (process.env.BASE_URL) {
+							console.log('ENV Test: process.env.BASE_URL - ' + process.env.BASE_URL)
+						}
+						else {
+							console.log('ENV Test: Could not resolve process.env.BASE_URL')
+						}
+					}
+					else {
+						console.log('ENV Test: Could not resolve process.env')
+					}
+				}
+				else {
+					console.log('ENV Test: Could not resolve process')
+				}
+
+				return process.env.BASE_URL || ''
+			}
+				
 		},
 		baseSFDCURL: (state) => {
 			if (process.env.NODE_ENV !== 'production')
 				return process.env.SFDC_DEV_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
 			else
-				return process.env.SFDC_BASE_URL
+				return process.env.SFDC_BASE_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
 		}
 
 	},	
