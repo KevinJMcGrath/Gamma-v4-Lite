@@ -80,9 +80,14 @@
                                 </div>
 
                                 <div class="group-margin">
-                                    <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1" 
-                                        style="height: 32px; width: 100px;" @click="handleGotoThankyou()">
-                                        <ion-icon name="checkmark" style="color: white;"></ion-icon>Submit
+                                    <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1 button-dimensions" 
+                                        @click="testValidate()"> <!-- handleGotoThankyou()-->
+                                        <span v-bind:class="{hideOnLoading: loading}">
+                                            <ion-icon name="checkmark" style="color: white;"></ion-icon>Submit
+                                        </span>
+                                        <span v-bind:class="{showOnLoading: loading, hideOnLoading: !loading}">
+                                            <img class="spinner-image" src="../assets/images/blue-spinner.gif" />
+                                        </span>                                        
                                     </button>
                                 </div>
                             </div>
@@ -190,6 +195,12 @@
             }
         },
         methods: {
+            testValidate() {
+                this.loading = true;
+                setTimeout(() => {
+                    this.loading = false;
+                }, 3000);
+            },
             prior_page_Ok(page_name) {
                 this.$router.push({name: page_name, query: { sseid: this.$store.state.status.guid }})                
             },

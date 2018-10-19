@@ -243,23 +243,6 @@
         width: 50%;
     }
 
-    .button-dimensions {
-        height: 32px; 
-        width: 100px;
-    }
-
-    .spinner-image {
-        height:20px;
-        width:20px;
-        margin-top:2px;
-    }
-
-    .showOnLoading {
-        display: block;
-    }
-
-    .hideOnLoading {
-        display: none;
-    }
+    
 
  </style>
