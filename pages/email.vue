@@ -16,9 +16,15 @@
                             </FormItem> 
                         </Form>
                     </div>
-                    <div>
-                        <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1" 
-                            style="height: 32px; width: 100px;" @click="handleValidateEmail()">Get Started</button>
+                    <div > 
+                        <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
+                            class="button-style-1 button-dimensions" 
+                            @click="handleValidateEmail()">
+                            <span v-bind:class="{hideOnLoading: loading}">Get Started</span>
+                            <span v-bind:class="{showOnLoading: loading, hideOnLoading: !loading}">
+                                <img class="spinner-image" src="../assets/images/blue-spinner.gif" />
+                            </span>
+                        </button>
                     </div>
                 </i-col>
                 <i-col span=8 class="lite-col">
@@ -102,8 +108,11 @@
             this.emailForm.email = this.$store.state.email.email_address
         },
         methods: {
-            toggleButtonActive() {
-
+            testValidate() {
+                this.loading = true;
+                setTimeout(() => {
+                    this.loading = false;
+                }, 3000);
             },
             handleValidateEmail() {
                 this.$refs['email_form'].validate((valid) => {
@@ -233,4 +242,24 @@
     .email-input {
         width: 50%;
     }
-</style>
+
+    .button-dimensions {
+        height: 32px; 
+        width: 100px;
+    }
+
+    .spinner-image {
+        height:20px;
+        width:20px;
+        margin-top:2px;
+    }
+
+    .showOnLoading {
+        display: block;
+    }
+
+    .hideOnLoading {
+        display: none;
+    }
+
+ </style>
