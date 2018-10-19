@@ -81,7 +81,7 @@
 
                                 <div class="group-margin">
                                     <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1 button-dimensions" 
-                                        @click="testValidate()"> <!-- handleGotoThankyou()-->
+                                        @click="handleGotoThankyou()"> <!-- testValidate()-->
                                         <span v-bind:class="{hideOnLoading: loading}">
                                             <ion-icon name="checkmark" style="color: white;"></ion-icon>Submit
                                         </span>
