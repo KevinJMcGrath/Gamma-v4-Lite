@@ -96,6 +96,7 @@ body {
     background-color: #006caf;
     color: white;
     border: none;
+    cursor: pointer;
 }
 
 .button_disabled {
