@@ -173,7 +173,11 @@
                 this.$router.push({ name: "error"})
             }
 
-            this.pageSetup()
+            if (!this.$store.state.page_state.find(page => page.name === 'contact').completed) {
+                console.log('Initalize')
+                this.pageSetup()
+            }
+            
 
             console.log('Email (CS): ' + this.$store.state.email.email_address)
 
@@ -238,9 +242,18 @@
                 })
             },
             pageSetup() {
+
+                //Clearing state
+                // I need to do this to prevent the persistedstate plugin from 
+                // rehydrating blank values. This is very hacky and I don't like it. 
+                // I'm positive I'm not doing this properly. 
+                localStorage.removeItem('vuex')
+                localStorage.removeItem('vuexstate')
+
                 console.log('Contact page started')
                 this.$store.commit('SET_PAGE_STARTED', 'contact')
                 
+                console.log('Email here? ' + this.$store.state.email.email_address)
                 /*if (this.$store.state.status.guid && this.$store.state.status.guid != this.$route.query.sseid) {
                     console.log('GUID Changed. Resetting state and updating GUID')
                     this.$store.commit('RESET_STATE')                                       

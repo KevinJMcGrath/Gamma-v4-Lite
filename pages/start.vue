@@ -45,11 +45,13 @@ export default {
         }
     },
     mounted() {
-
+        this.$store.commit('RESET_STATE')
+        localStorage.removeItem('vuex')
+        localStorage.removeItem('vuexstate')
     },
     methods: {
         handleGetStarted() {
-            this.$store.commit('RESET_STATE')
+            
             this.$router.push({name: "email" })
         }
     }
