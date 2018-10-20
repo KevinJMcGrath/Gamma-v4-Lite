@@ -6,6 +6,7 @@ import cookie from 'cookie'
 // vuex automatically includes the createPersistedState function.... for some reason
 // This way, you no longer get the duplicated localStorage objects (vuex AND vuexstate)
 // You do NOT need to include this in the plugins property of the vuex store. Again, I don't know why.
+// https://github.com/nuxt/nuxt.js/issues/972#issuecomment-372223633
 export default ({store, req, isDev}) => {
     createPersistedState({
         key: 'vuexstate',
