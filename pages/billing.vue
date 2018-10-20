@@ -6,12 +6,12 @@
                     <Timeline>
                         <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
-                            <p class="timeline-completed-label">Your Information</p>
+                            <p class="timeline-completed-label">Your Information  <a @click="handleGotoContact()"><ion-icon name="create"></ion-icon>Edit</a></p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
                         <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
-                            <p class="timeline-completed-label">Company Information</p>
+                            <p class="timeline-completed-label">Company Information  <a @click="handleGotoCompany()"><ion-icon name="create"></ion-icon>Edit</a></p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
                         <TimelineItem>
@@ -119,7 +119,7 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=6 class="lite-col">
+                <i-col span=8 class="lite-col">
                     <symphony-billing />
                 </i-col>
                 <i-col span=2></i-col>
@@ -370,6 +370,12 @@
             },
             ResetStripePanel() { 
                 this.$store.commit('SET_STRIPE_TOKEN', '')
+            },
+            handleGotoContact() {
+                this.$router.push({ name: "contact", query: { sseid: this.$store.state.status.guid }})
+            },
+            handleGotoCompany() {
+                this.$router.push({ name: "company", query: { sseid: this.$store.state.status.guid }})
             },
             handleGotoReview () {
                 this.$refs['billing_form'].validate((valid) => {

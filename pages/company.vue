@@ -6,7 +6,7 @@
                     <Timeline>
                         <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
-                            <p class="timeline-completed-label">Your Information</p>
+                            <p class="timeline-completed-label">Your Information <a @click="handleGotoContact()"><ion-icon name="create"></ion-icon>Edit</a></p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
                         <TimelineItem>
@@ -60,7 +60,7 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=6 class="lite-col">
+                <i-col span=8 class="lite-col">
                     <symphony-billing />
                 </i-col>
                 <i-col span=2></i-col>
@@ -223,6 +223,9 @@
                 let sid = this.$store.state.status.guid || this.$route.query.sseid
 
                 this.$router.push({name: "contact", query: { sseid: sid }});  
+            },
+            handleGotoContact() {
+                this.$router.push({ name: "contact", query: { sseid: this.$store.state.status.guid }})
             },
             handleGotoBilling () {
                 this.$refs['company_form'].validate((valid) => {

@@ -94,7 +94,7 @@
                         </TimelineItem>
                     </Timeline>
                 </i-col>
-                <i-col span=6 class="lite-col">
+                <i-col span=8 class="lite-col">
                     <symphony-billing />
                 </i-col>
                 <i-col span=2></i-col>

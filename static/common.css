@@ -143,12 +143,18 @@ li.completed-icon > div {
     /*color="#0395a1"*/
 }
 
-p.timeline-completed-label {
+.timeline-completed-label {
     /*color: #0395a1;*/
     color: #006caf;
     font-size: 1.2em;
     position: absolute; 
     top: -3px;
+    width: 100%;
+}
+
+.timeline-completed-label > a {
+    font-weight: bold;
+    margin-left: 15px;    
 }
 
 p.timeline-current-label {
