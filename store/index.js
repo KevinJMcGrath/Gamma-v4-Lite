@@ -2,7 +2,7 @@
 
 import Vue from 'vue'
 import Vuex, {Payload, Store} from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+//import createPersistedState from 'vuex-persistedstate'
 import axios from 'axios'
 
 const moment = require('moment')
@@ -365,8 +365,7 @@ const store = () => new Vuex.Store({
             }
             catch (error) {
                 if (error.response) {                    
-                    console.error('Axios error verifying GUID: ' + error.response.statusText)
-                    //console.error(error.response)
+                    console.error('Axios error verifying GUID: ' + error.response.statusText)                    
 
                     let err_msg = 'There was a problem validating your unique Id. Contact Symphony sales.'
                     commit('SET_ERROR_STATUS', true)
@@ -408,18 +407,6 @@ const store = () => new Vuex.Store({
                         commit('SET_PAGE_COMPLETE', 'summary')
                         commit('SET_SUBMIT_COMPLETE', true)
                         commit('SET_SUBMIT_COMPLETE_DATE', moment())
-
-                        //Clear the local storage
-                        if (process.browser)
-                        {
-                            console.log('Attempting to clear session state.')
-                            // removing the keys doesn't seem to work. The plugin just
-                            // recreates them from what's in memory. 
-                            //window.localStorage.removeItem('vuex-ps')
-
-                            //remove the old key if it exists. 
-                            //window.localStorage.removeItem('vuex')
-                        }
 
                         return 0
                     }
@@ -495,8 +482,8 @@ const store = () => new Vuex.Store({
 
 			return success
 		}
-    },
-    plugins: process.browser ? [createPersistedState()] : []
+    }//,
+	//plugins: process.browser ? [createPersistedState()] : []
 
 })
 
