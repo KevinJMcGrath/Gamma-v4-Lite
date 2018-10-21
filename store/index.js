@@ -98,13 +98,13 @@ const store = () => new Vuex.Store({
 			state.email.is_verified = is_verified
 		},
 		SET_FNAME(state, firstname) {
-			state.user.firstname = firstname.replace( /\s\s+/g, ' ').trim()
+			state.user.firstname = firstname.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_LNAME(state, lastname) {
-			state.user.lastname = lastname.replace( /\s\s+/g, ' ').trim()
+			state.user.lastname = lastname.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_PHONE(state, phone) {
-			state.user.phone = phone.replace( /\s\s+/g, ' ').trim()
+			state.user.phone = phone.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_PHONE_ISVALID(state, is_valid) {
 			state.user.phone_isvalid = is_valid
@@ -113,7 +113,7 @@ const store = () => new Vuex.Store({
 			state.user.country_code = country_code
 		},
 		SET_COMPANY(state, company) {
-			state.company.name = company.replace( /\s\s+/g, ' ').trim()
+			state.company.name = company.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_INDUSTRY(state, industry) {
 			state.company.industry = industry
@@ -131,19 +131,19 @@ const store = () => new Vuex.Store({
 			state.legal.terms_accepted = terms_accepted
 		},
 		SET_CARD_FULLNAME(state, fullname) {
-			state.billing.card_fullname = fullname.replace( /\s\s+/g, ' ').trim()
+			state.billing.card_fullname = fullname.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_ADD1(state, address1) {
-			state.billing.address1 = address1.replace( /\s\s+/g, ' ').trim()
+			state.billing.address1 = address1.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_ADD2(state, address2) {
-			state.billing.address2 = address2.replace( /\s\s+/g, ' ').trim()
+			state.billing.address2 = address2.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_CITY(state, city) {
-			state.billing.city = city.replace( /\s\s+/g, ' ').trim()
+			state.billing.city = city.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_BILLING_STATE(state, billing_state) {
-			state.billing.billing_state = billing_state.replace( /\s\s+/g, ' ').trim()
+			state.billing.billing_state = billing_state.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_ZIP(state, zip_code) {
 			state.billing.zip_code = zip_code
