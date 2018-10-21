@@ -271,5 +271,7 @@
     }
 </script>
 <style >
-
+    .ivu-input-number-handler-wrap {
+        opacity: 1 !important;
+    }
 </style>
