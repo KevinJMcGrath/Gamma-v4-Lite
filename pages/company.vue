@@ -23,9 +23,9 @@
                                     <div class="lite-container-row"> 
                                         Industry<br/>
                                         <FormItem prop="industry">
-                                            <Select v-model="input_industry" placeholder="Select">
-                                                <Option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</Option>
-                                            </Select>
+                                            <i-select v-model="input_industry" placeholder="Select">
+                                                <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
+                                            </i-select>
                                         </FormItem>
                                     </div>
 
@@ -271,5 +271,5 @@
     }
 </script>
 <style >
-    
+
 </style>

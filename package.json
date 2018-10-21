@@ -23,7 +23,7 @@
     "country-state-city": "0.0.5",
     "css-loader": "^0.23.1",
     "express": "^4.16.3",
-    "iview": "^2.14.3",
+    "iview": "^3.1.1",
     "iview-loader": "^1.2.2",
     "js-cookie": "^2.2.0",
     "less": "^3.0.2",
