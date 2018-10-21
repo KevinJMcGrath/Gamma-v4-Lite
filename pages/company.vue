@@ -123,7 +123,7 @@
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     industry: [
-                        { required: true, message: 'Please select a primary industry from the dropdown.', trigger: 'blur'}
+                        { required: true, message: 'Please select a primary industry from the dropdown.', trigger: 'change'}
                     ]
 
                 },
