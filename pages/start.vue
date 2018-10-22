@@ -115,7 +115,7 @@ export default {
 
     .symphony-start-list li {
         margin: 10px 0;
-        font-size: 1em;
+        font-size: 1.2em;
     }
 
     .symphony-start-list li > div {
