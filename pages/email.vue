@@ -73,6 +73,7 @@
                     email: [
                         { required: true, message: 'Please provide your email address.', trigger: 'blur'},
                         { type: 'email', message: 'Incorrect email format', trigger: 'blur'},
+                        { type: 'string', 'min': 1, 'max': 100, message: 'Email address must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateFreemail, trigger: 'blur'}
                     ]
                 }

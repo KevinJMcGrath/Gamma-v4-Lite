@@ -130,6 +130,7 @@
                     ],
                     companyname: [
                         { required: true, message: 'Please enter your company\'s legal name.', trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     industry: [

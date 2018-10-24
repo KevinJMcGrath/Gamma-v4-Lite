@@ -179,27 +179,33 @@
                 validation_rules: {
                     fullname: [
                         { required: true, message: 'Please provide the name as it appears on your credit card.', trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 150, message: 'Full Name must be less than 150 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     address1: [
                         { required: true, message: 'Please provide your street address.', trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     address2: [
-                        { validator: validateNoHTML, trigger: 'blur' }
+                        { validator: validateNoHTML, trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
                     ],
                     city: [
                         { required: true, message: 'Please provide your city or town.', trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     state: [
                         //{ required: true, message: 'Please provide your state or province.', trigger: 'blur' },
                         { validator: validateReqIfUs, trigger: 'blur'},
+                        { type: 'string', 'min': 1, 'max': 50, message: 'State must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     zip_code: [
                         //{ required: true, message: 'Please provide your zip or postal code.', trigger: 'blur' },
                         { validator: validateReqIfUs, trigger: 'blur'},
+                        { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ]
                 }
