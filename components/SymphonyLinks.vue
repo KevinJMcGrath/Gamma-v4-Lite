@@ -1,7 +1,7 @@
 <template>
     <div class="sym-links">
-        Watch a quick <a href="https://www.youtube.com/watch?v=tRAmXi0uAio" target="_blank">video overview</a>.<br/>
-        Get the latest <a href="https://symphony.com/press/news" target="_blank">Symphony news</a>.<br/>
+        Watch a quick <a href="https://www.youtube.com/watch?v=tRAmXi0uAio" target="_blank">video overview</a><br/>
+        Get the latest <a href="https://symphony.com/press/news" target="_blank">Symphony news</a><br/>
         Browse our <a href="https://symphony.com/blog" target="_blank">blog</a>
     </div>
 </template>
@@ -20,7 +20,9 @@ export default {
     }
 
     .sym-links a:link {
-        color: #0395a1;
+        /*color: #0395a1;*/
+        color: #006caf;
+        text-decoration: underline !important;
     }
 
     .sym-links a:hover {

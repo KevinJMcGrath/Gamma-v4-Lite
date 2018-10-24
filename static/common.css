@@ -123,7 +123,9 @@ body {
 }
 
 .lite-link-button {
-    color: #0395a1;
+    /*color: #0395a1;*/
+    color: #006caf;
+    text-decoration: underline !important;
 }
 
 .timeline-content {
