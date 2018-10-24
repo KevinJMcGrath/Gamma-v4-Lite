@@ -20,7 +20,7 @@
                         <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
                             class="button-style-1 button-dimensions" 
                             @click="handleValidateEmail()">
-                            <span v-bind:class="{hideOnLoading: loading}">Get Started</span>
+                            <span v-bind:class="{hideOnLoading: loading}">Next</span>
                             <span v-bind:class="{showOnLoading: loading, hideOnLoading: !loading}">
                                 <img class="spinner-image" src="../assets/images/blue-spinner.gif" />
                             </span>
