@@ -101,7 +101,7 @@
                     })
 
                     
-                    callback();
+                    callback(new Error('Contact Symphony for more than 500 users.'));
                 }                
             };
 
