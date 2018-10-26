@@ -60,7 +60,7 @@
                 if (['us','US','USA','usa','United States', 'America', 'United States of America'].includes(this.$store.state.billing.country))
                     return `$${input_val}`
                 else
-                    return `${input_val} USD`
+                    return `US$ ${input_val}`
             }
         },
         computed: {
