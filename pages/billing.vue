@@ -28,22 +28,32 @@
                                     </div>
 
                                     <div v-bind:class="{hide_stripe: has_stripe_token}">
-                                    <p style="color: #ED3F14; font-size: 0.9em;">{{billingForm.stripeError.message}}</p>
-                                    <div class="lite-container-row stripe-container"> 
-                                        Card Number<br/>
-                                        <div ref="vue_stripe_card_number" id="stripe-card-number" class="field empty"></div>
-                                    </div>
+                                    <p style="color: #ED3F14; font-size: 0.9em;">{{billingForm.stripeError.message}}</p>                                    
+                                    <Row>
+                                        <i-col span=20>
+                                            <div class="lite-container-row stripe-container"> 
+                                                Card Number<br/>
+                                                <div ref="vue_stripe_card_number" id="stripe-card-number" class="field empty"></div>                                            
+                                            </div>
+                                        </i-col>
+                                        <i-col span=3>
+                                            <div class="helper-image"><img src="../assets/images/cc-front.png" /></div>
+                                        </i-col>
+                                    </Row>
 
                                     <div class="lite-container-row stripe-container"> 
                                         <Row :gutter=6>
-                                            <i-col span="12">
+                                            <i-col span="10">
                                                 Expiration Date<br/>
                                                 <div ref="vue_stripe_card_exp" id="stripe-card-exp" class="field empty"></div>
                                             </i-col>
-                                            <i-col span="12">
+                                            <i-col span="10">
                                                 Security Code<br/>
                                                 <div ref="vue_stripe_card_cvc" id="stripe-card-cvc" class="field empty"></div>
                                             </i-col>
+                                            <i-col span=3 >
+                                                <div class="helper-image"><img src="../assets/images/cc-back.png" /></div>
+                                            </i-col>   
                                         </Row>
                                     </div>
                                     </div>
@@ -513,6 +523,10 @@
         border: 1px solid #a3a3a3;
     }
 
+    .helper-image {
+        padding-top: 25px;
+    }
+ 
     /*.stripe-container .field.focus,
     .stripe-container .field:focus {
         border: 2px solid #0395a1;
