@@ -42,13 +42,13 @@
                             </Form>
                             </div>
                         </TimelineItem>
-                        <TimelineItem>
+                        <TimelineItem color="gray">
                             <p>Company Information</p>
                         </TimelineItem>
-                        <TimelineItem>
+                        <TimelineItem color="gray">
                             <p>Billing</p>
                         </TimelineItem>
-                        <TimelineItem>
+                        <TimelineItem color="gray">
                             <p>Review</p>
                         </TimelineItem>
 
