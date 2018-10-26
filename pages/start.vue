@@ -77,9 +77,9 @@ export default {
     }
 
     .asset-box {
-        width: 700px;
+        width: 710px;
         height: 240px;
-        margin: 0 auto;
+        margin: 0 auto;        
     }
 
     .asset-1 {
@@ -91,11 +91,11 @@ export default {
 
     .asset-2 {
         float: right;
-        height: 240px;
-        width: 250px;
+        height: 230px;        
+        width: 270px;
         background-color: white;
         color: #333333;
-        padding-left: 20px;
+        padding: 24px 32px;
         box-shadow: 4px 4px 15px 2px rgb(201, 201, 201, 0.5);
     }
 
@@ -105,12 +105,14 @@ export default {
         height: auto;
         width: auto;
         text-align: left;
+        margin-top: 0px;
     }
 
     .symphony-start-list {
         list-style: none;
-        margin-top: 15px;
-        margin-left: 10px;
+        /*margin-top: 15px;
+        margin-left: 10px;*/
+        
     }
 
     .symphony-start-list li {
