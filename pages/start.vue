@@ -11,11 +11,11 @@
                 <div class="asset-2">
                     <p class="symphony-start-header">With Symphony, you get:</p>
                     <ul class="symphony-start-list">
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/lock.svg" height="17px"/></div>Enterprise-grade security</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/lock.svg" height="16px"/></div>Enterprise-grade security</li>
                         <li><div class="icon-box"><img class="icon-image" src="../assets/images/web.svg" height="16px" /></div>Worldwide compliance</li>
                         <li><div class="icon-box"><img class="icon-image" style="margin-top:2px;" src="../assets/images/dudes.svg" height="12px" /></div>Better team collaboration</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/refresh.svg" height="20px" /></div>Top app integrations</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/expand.svg" height="14px" /></div>Custom, scalable setup</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/refresh.svg" height="16px" /></div>Top app integrations</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/expand.svg" height="15px" /></div>Custom, scalable setup</li>
                     </ul>
                 </div>
             </div>
