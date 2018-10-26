@@ -135,7 +135,7 @@
     }
 
     .summary-row {
-        background-color: lightgray;
+        background-color: #f7f6f9;
         color: #614989;
         font-weight: bold;
         font-size: 1.2em;
