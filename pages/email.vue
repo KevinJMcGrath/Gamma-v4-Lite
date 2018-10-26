@@ -12,7 +12,7 @@
                         Business Email
                         <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
                             <FormItem prop="email">
-                                <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" ></i-input>
+                                <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" v-on:on-keydown="key_handler" ></i-input>
                             </FormItem> 
                         </Form>
                     </div>
@@ -114,6 +114,11 @@
                 setTimeout(() => {
                     this.loading = false;
                 }, 3000);
+            },
+            key_handler(key_event) {               
+                if (key_event.keyCode === 32) {                    
+                    event.preventDefault()
+                }                
             },
             handleValidateEmail() {
                 this.$refs['email_form'].validate((valid) => {
@@ -220,12 +225,12 @@
         },
         computed: {
             input_email: {
-                get () {
+                get () {                    
                     return this.$store.state.email.email_address                    
                 },
                 set (value) {
                     // I'm intentionally adding side effects to make the validation rules work. Not ideal
-                    this.emailForm.email = value;
+                    this.emailForm.email = value
                     this.$store.commit('SET_EMAIL', value)
                 }
             }
