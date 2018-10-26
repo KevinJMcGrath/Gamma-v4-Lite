@@ -237,8 +237,14 @@
 
                 })
             },
-            updatePhoneValidation({number, isValid, country}) {
-                console.log(number, isValid, country)
+            updatePhoneValidation(phone_validator_event) { //{number, isValid, country}
+                //console.log(phone_validator_event)
+
+                let number = phone_validator_event.number
+                let isValid = phone_validator_event.isValid
+                let country = phone_validator_event.country
+
+                //console.log(number, isValid, country)
                 this.contactForm.country_detail = {
                     areaCodes: country.areaCodes,
                     dialCode: country.dialCode,
