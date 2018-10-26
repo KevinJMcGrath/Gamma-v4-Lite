@@ -88,7 +88,7 @@
                 if (this.input_seats < 500)
                 {
                     if (this.input_seats < 10) {
-                        callback(new Error('A minimum of 10 seats is requried.'))
+                        callback(new Error('10 users minimum'))
                     }
 
                     callback();
@@ -105,7 +105,7 @@
                     })
 
                     
-                    callback(new Error('Contact Symphony for more than 500 users.'));
+                    callback(new Error('499 users maximum'));
                 }                
             };
 
@@ -129,16 +129,16 @@
                 validation_rules: {
                     seats: [
                         //For some reason, I needed to specify the type for this rule to work consistently
-                        { required: true, type: 'number', message: 'Please enter a non-zero number of seats.', trigger: 'change' },
+                        { required: true, type: 'number', message: 'Required info', trigger: 'change' },
                         { validator: validateMaxSeats, trigger: 'change' } 
                     ],
                     companyname: [
-                        { required: true, message: 'Please enter your company\'s legal name.', trigger: 'blur' },
+                        { required: true, message: 'Required info', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     industry: [
-                        { required: true, message: 'Please select a primary industry from the dropdown.', trigger: 'change'}
+                        { required: true, message: 'Required info', trigger: 'change'}
                     ]
 
                 },

@@ -157,7 +157,7 @@
         data() {
             const validateReqIfUs = (rule, value, callback) => {
                 if(this.is_country_us && !value.replace(/\s+/,'').length) {
-                    callback(new Error('Field is required.'))
+                    callback(new Error('Required info'))
                 }
                 else {
                     callback()
@@ -188,12 +188,12 @@
                 },
                 validation_rules: {
                     fullname: [
-                        { required: true, message: 'Please provide the name as it appears on your credit card.', trigger: 'blur' },
+                        { required: true, message: 'Required info', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 150, message: 'Full Name must be less than 150 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     address1: [
-                        { required: true, message: 'Please provide your street address.', trigger: 'blur' },
+                        { required: true, message: 'Required info', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
@@ -202,7 +202,7 @@
                         { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
                     ],
                     city: [
-                        { required: true, message: 'Please provide your city or town.', trigger: 'blur' },
+                        { required: true, message: 'Required info', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],

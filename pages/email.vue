@@ -71,7 +71,7 @@
                 },
                 validation_rules: {
                     email: [
-                        { required: true, message: 'Please provide your email address.', trigger: 'blur'},
+                        { required: true, message: 'Required info', trigger: 'blur'},
                         { type: 'email', message: 'Incorrect email format', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 100, message: 'Email address must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateFreemail, trigger: 'blur'}
@@ -186,10 +186,10 @@
                                     {
                                         switch (error.response.data.error_data.errorDetail) {
                                             case '1':
-                                                d += 'Your email was previously submitted and blocked as freemail.'
+                                                d += 'Your email was previously submitted and is blocked. Contact Symphony if this is an error.'
                                                 break
                                             case '2':
-                                                d += 'Your email was previously submitted and blocked - your company is already on Symphony.'
+                                                d += 'Your company is already on Symphony. Contact your IT department for an account.'
                                                 break
                                             case '3':
                                                 d += 'An account with this email address already exists.'

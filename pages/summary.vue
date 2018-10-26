@@ -116,7 +116,7 @@
                 }
                 else
                 {
-                    callback(new Error('You must agree to the terms specified in the EULA to proceed.'));
+                    callback(new Error('We need your agreement to continue.'));
                 }                
             };
 
@@ -254,7 +254,7 @@
                         }
                         else
                         {
-                            this.$Message.error('The form is missing information. ')
+                            this.$Message.error('The form is missing information.')
                             this.loading = false
                         }
                     }

@@ -107,17 +107,17 @@
                 },
                 validation_rules: { 
                     firstname: [
-                        { required: true, message: 'Please enter your first name.', trigger: 'blur'},
+                        { required: true, message: 'Required info', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'First Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     lastname: [
-                        { required: true, message: 'Please enter your last name.', trigger: 'blur'},
+                        { required: true, message: 'Required info', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'Last Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     phone: [
-                        { required: true, message: 'Please enter your daytime phone number.', trigger: 'blur'},
+                        { required: true, message: 'Required info', trigger: 'blur'},
                         { validator: validateCustomPhone, trigger: 'change' }
                     ]
 
