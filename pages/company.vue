@@ -42,7 +42,7 @@
                                     <div class="lite-container-row2"> 
                                         Total Symphony Users<br/>
                                         <FormItem prop="seats" :show-message=true>
-                                            <InputNumber :min="10" :step="1" v-model="input_seats"></InputNumber>
+                                            <InputNumber :step="1" v-model="input_seats"></InputNumber>
                                             <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
                                             <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" cancel-text="Cancel">
                                                 <p>
@@ -87,6 +87,10 @@
             const validateMaxSeats = (rule, value, callback) => {                
                 if (this.input_seats < 500)
                 {
+                    if (this.input_seats < 10) {
+                        callback(new Error('A minimum of 10 seats is requried.'))
+                    }
+
                     callback();
                 }
                 else
