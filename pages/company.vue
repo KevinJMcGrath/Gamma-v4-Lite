@@ -9,7 +9,7 @@
                             <p class="timeline-completed-label">Your Information <a @click="handleGotoContact()"><ion-icon name="create"></ion-icon>Edit</a></p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
-                        <TimelineItem>
+                        <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Company Information</p>
                             <div class="timeline-spacer"></div>   
                             <div class="timeline-content" style="height:280px;">

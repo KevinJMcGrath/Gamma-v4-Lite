@@ -19,7 +19,7 @@
                             <p class="timeline-completed-label">Billing</p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
-                        <TimelineItem>
+                        <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Review</p>
                             <div class="timeline-spacer"></div> 
                             <div class="timeline-content" style="height:500px;">

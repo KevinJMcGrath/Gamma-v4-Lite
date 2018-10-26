@@ -142,13 +142,15 @@ ion-icon {
 breaks the ability to adjust the style on the timeline */
 li.completed-icon > div {
     background-color: transparent !important; 
-    color: #006caf;
+    color: #00557F;
+    /*color: #006caf;*/
     /*color="#0395a1"*/
 }
 
 .timeline-completed-label {
     /*color: #0395a1;*/
-    color: #006caf;
+    /*color: #006caf;*/
+    color: #00557F;
     font-size: 1.2em;
     position: absolute; 
     top: -3px;

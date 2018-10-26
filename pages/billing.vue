@@ -14,7 +14,7 @@
                             <p class="timeline-completed-label">Company Information  <a @click="handleGotoCompany()"><ion-icon name="create"></ion-icon>Edit</a></p>
                             <div class="timeline-spacer"></div>
                         </TimelineItem>
-                        <TimelineItem>
+                        <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Billing</p>
                             <div class="timeline-spacer"></div> 
                             <div class="timeline-content" style="height:700px;">

@@ -4,7 +4,7 @@
             <Row type="flex" justify="center">                
                 <i-col span=10 offset=4 class="lite-col" >
                     <Timeline>
-                        <TimelineItem>
+                        <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Your Information</p>
                             <div class="timeline-spacer"></div>
                             <div class="timeline-content" style="height:280px;">
