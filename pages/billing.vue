@@ -29,7 +29,7 @@
 
                                     <div v-bind:class="{hide_stripe: has_stripe_token}">
                                     <p style="color: #ED3F14; font-size: 0.9em;">{{billingForm.stripeError.message}}</p>                                    
-                                    <Row>
+                                    <Row :gutter=6>
                                         <i-col span=20>
                                             <div class="lite-container-row stripe-container"> 
                                                 Card Number<br/>
@@ -84,7 +84,8 @@
                                             <i-col span=12>
                                                 Country<br/>
                                                 <FormItem prop="country"> 
-                                                    <i-input v-model="input_country"></i-input>
+                                                    <!--<i-input v-model="input_country"></i-input>-->
+                                                    <country-dropdown />
                                                 </FormItem>
                                             </i-col>
                                             <i-col span=12>
@@ -113,13 +114,14 @@
                                         </Row>
                                     </div>
 
-                                    <!-- <symphony-country-state /> -->
+                                    
 
                                     <div>
                                         <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
                                             class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoReview()">Next</button>
                                     </div>
 
+                                    
                                 </Form>
                             </div>
                         </TimelineItem>
@@ -134,13 +136,17 @@
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
-        </div>       
+        </div>
+
+        
     </div>  
 </template>
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
     //import SymphonyCountryState from '~/components/SymphonyCountryState.vue'
+    //const countrylib = require('country-state-city')
+    import CountryDropdown from '~/components/CountryList.vue'
 
     // Moved these declarations to the global scope to avoid problems later. 
     // May not be necessary. Then again, it may not be necessary to keep 
@@ -500,6 +506,7 @@
         },
         components: {
             SymphonyBilling,
+            CountryDropdown
             //SymphonyCountryState
         }
     }
