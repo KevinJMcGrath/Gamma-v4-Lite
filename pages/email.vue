@@ -10,7 +10,7 @@
                     </div>-->
                     <div class="lite-container-row">
                         Business Email
-                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
+                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent-->
                             <FormItem prop="email">
                                 <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" v-on:on-keydown="key_handler" ></i-input>
                             </FormItem> 
@@ -118,7 +118,12 @@
             key_handler(key_event) {               
                 if (key_event.keyCode === 32) {                    
                     event.preventDefault()
-                }                
+                }
+                else if (key_event.keyCode === 13) {
+                    if (!this.loading) {
+                        this.handleValidateEmail()
+                    }
+                }
             },
             handleValidateEmail() {
                 this.$refs['email_form'].validate((valid) => {
