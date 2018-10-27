@@ -38,7 +38,7 @@ export default {
     computed: {
         selected_country: {
             get () {
-                console.log('Getting Country Code: ' + this.$store.state.user.country_code)
+                //console.log('Getting Country Code: ' + this.$store.state.user.country_code)
                 return this.$store.state.user.country_code
             },
             set (value) {                

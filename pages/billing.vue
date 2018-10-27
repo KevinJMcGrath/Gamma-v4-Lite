@@ -294,7 +294,7 @@
         computed: {
             is_country_us: {
                 get () {
-                    console.log('Country Code: ' + this.$store.state.user.country_code)
+                    //console.log('Country Code: ' + this.$store.state.user.country_code)
                     return this.$store.state.user.country_code.toLowerCase() === 'us'
                 }
             },

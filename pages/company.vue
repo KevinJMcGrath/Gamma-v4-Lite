@@ -29,16 +29,6 @@
                                         </FormItem>
                                     </div>
 
-                                    <!--<select id="pet-select" v-on:keyup.space="alert('hello');">
-                                        <option value="">--Please choose an option--</option>
-                                        <option value="dog">Dog</option>
-                                        <option value="cat">Cat</option>
-                                        <option value="hamster">Hamster</option>
-                                        <option value="parrot">Parrot</option>
-                                        <option value="spider">Spider</option>
-                                        <option value="goldfish">Goldfish</option>
-                                    </select>-->
-
                                     <div class="lite-container-row2"> 
                                         Total Symphony Users<br/>
                                         <FormItem prop="seats" :show-message=true>
