@@ -13,13 +13,15 @@ Vue.use(Vuex)
 // that returns an object. I'm creating an initial_state implicit function
 // to return the initial state so I can use it to reset the state later. 
 const initial_state = () => ({
+	global: {
+		phk_verified: false
+	},
     status: {
         guid: '',
         current: false,
         submit_in_progress: false,
         submit_completed: false,
-		submit_completed_date: moment("1980-01-26"),
-		phk_verified: false
+		submit_completed_date: moment("1980-01-26")		
     },
     email: {
         email_address: '',
@@ -99,7 +101,7 @@ const store = () => new Vuex.Store({
 			state.email.is_verified = is_verified
 		},
 		SET_PHK_VERIFIED(state, is_phk_verified) {
-			state.status.phk_verified = is_phk_verified
+			state.global.phk_verified = is_phk_verified
 		},
 		SET_FNAME(state, firstname) {
 			state.user.firstname = firstname.trim().replace( /\s\s+/g, ' ')

@@ -12,7 +12,7 @@ export default ({store, req, isDev}) => {
         key: 'vuexstate',
         reducer: (state) => {
             const state_filter = Object.assign({}, state)
-            const black_list = ['error']
+            const black_list = ['error', 'global']
 
             black_list.forEach((item) => {
                 delete state_filter[item]
