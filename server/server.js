@@ -21,11 +21,6 @@ else {
 const port = process.env.PORT || 8080
 const host = process.env.HOST || '0.0.0.0'
 
-console.log(`Are the app.yaml ENV variables working?: ${process.env.SFDC_API_KEY}`)
-
-let serverState = process.env.NODE_ENV || 'development'
-console.log(`Server State detected as: ${serverState}`)
-
 if (process.env.NODE_ENV === 'production') {
 	console.log('Initializing server - Production')
 }
@@ -57,9 +52,6 @@ app.get('/_ah/health', (req, res) => {
 	res.send()
 })
 
-//const config = require('../nuxt.config.js')
-//const nuxt = new Nuxt(config) 
-
 if (config.dev) {
 	const builder = new Builder(nuxt)
 	builder.build().catch((error) => {
@@ -68,12 +60,6 @@ if (config.dev) {
 		process.exit(1)
 	})
 }
-
-// Winston should either go here
-
-//app.use(nuxt.render)
-
-//Or here. nuxt.render is technically middleware, but it's not using the express server
 
 //Production error handler
 /*app.use((err, req, res, next) => {
