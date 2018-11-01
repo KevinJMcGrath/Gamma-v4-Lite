@@ -97,15 +97,12 @@ router.post('/domain-check', function(req, res, next) {
 			res.json( { success: true })
 		}
 
-	}).catch((error) => {
-		console.error(error.message)
+	}).catch((error) => {		
 		res.json( { success: false, message: 'Problem verifying email'})
 	})
 })
 
-router.post('/verify', function(req, res, next) {
-
-	console.log('Entering /verify')
+router.post('/verify', function(req, res, next) {	
 	let email_address = clean_input(req.body.email_address.toLowerCase())
 	
 	const payload = { 
@@ -133,14 +130,9 @@ router.post('/verify', function(req, res, next) {
 			let r_vcode = (response.data && response.data.vcode ? response.data.vcode : 'ver99')
 			let r_msg = (response.data && response.data.message ? response.data.message : 'Could not find message')
 
-			console.log('VCode: ' + r_vcode)
-			console.log('Msg: ' + r_msg)
-
-
 			res.json( { success: true, message: r_msg, encoded: encoded_email, vcode: r_vcode })
 		}
-		catch (err) {			
-			console.log(error.message)
+		catch (err) {
 			res.status(err.response.status).json({success: false, message: error.message})
 		}
 		
@@ -216,9 +208,7 @@ router.post('/error', function(req, res, next) {
 	.then((response) => {
 		res.status(204).send(null)
 	})
-	.catch((error) => {		
-		console.log(error.response.data)
-
+	.catch((error) => {
 		res.status(500).json({success: false, message: error.message, error_data: error.response.data})
 	})
 })
