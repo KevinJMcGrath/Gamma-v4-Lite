@@ -4,14 +4,9 @@ const crypto = require('crypto')
 const domain_search = require('../lib/domain.js')
 const santize = require('sanitize-html')
 
-
-//Add logic for storing API keys here
-
 const router = Router()
 
-//const baseURL = 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
 let baseURL = process.env.SFDC_BASE_URL
-//const baseURL = process.env.SFDC_BASE_URL
 
 function log_response(resp, isError)
 {
