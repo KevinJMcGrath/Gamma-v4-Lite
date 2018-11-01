@@ -9,7 +9,6 @@
   import SymphonyHeader from '~/components/SymphonyHeader.vue'
 
   export default {
-    middleware: 'phk',
     components: {
       SymphonyHeader
     }

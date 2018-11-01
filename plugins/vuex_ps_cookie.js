@@ -21,20 +21,16 @@ export default ({store, req, isDev}) => {
             return state_filter
         },
         storage: {
-            getItem: (key) => {
-                console.log('Calling getItem...')
-                if (process.browser) {
-                    console.log('Retrieving ' + key + ' on client side.')
+            getItem: (key) => {                
+                if (process.browser) {                    
                     return Cookies.getJSON(key)
                 } 
-                else {
-                    console.log('Retrieving ' + key + ' on server side.')
+                else {                    
                     return cookie.parse(req.headers.cookie || '')[key]
                 }
-                //process.browser ? Cookies.getJSON(key) : cookie.parse(req.headers.cookie || '')[key]
+                
             }, 
-            setItem: (key, value) => {
-                //console.log('Set State Item - key: ' + key + ' value: ' + value)
+            setItem: (key, value) => {                
                 Cookies.set(key, value, { expires: 30, secure: !isDev })
             },
             removeItem: (key) => Cookies.remove(key)

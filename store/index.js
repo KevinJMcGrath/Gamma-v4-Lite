@@ -18,7 +18,8 @@ const initial_state = () => ({
         current: false,
         submit_in_progress: false,
         submit_completed: false,
-        submit_completed_date: moment("1980-01-26")
+		submit_completed_date: moment("1980-01-26"),
+		phk_verified: false
     },
     email: {
         email_address: '',
@@ -96,6 +97,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_VERIFIED(state, is_verified) {
 			state.email.is_verified = is_verified
+		},
+		SET_PHK_VERIFIED(state, is_phk_verified) {
+			state.status.phk_verified = is_phk_verified
 		},
 		SET_FNAME(state, firstname) {
 			state.user.firstname = firstname.trim().replace( /\s\s+/g, ' ')
@@ -248,7 +252,7 @@ const store = () => new Vuex.Store({
 				return process.env.DEV_BASE_URL || 'http://localhost:8080'
 			else {
 				if (process) {
-					console.log('ENV Test: Location - ' + (process.browser ? 'Client Side' : 'Server Side'))
+					//console.log('ENV Test: Location - ' + (process.browser ? 'Client Side' : 'Server Side'))
 
 					if (process.env) {
 						if (process.env.BASE_URL) {
@@ -279,16 +283,14 @@ const store = () => new Vuex.Store({
 
 	},	
 	actions: {
-		async nuxtServerInit({ commit, store }, { req, res }) {
+		async nuxtServerInit({ store }, { req, res }) {
 
 			// The nuxtServerInit method is called before rendering the THE FIRST PAGE
 			// for a new request coming in to the server. It is NEVER called again.
 			// { commit } is "argument destructuring" of the context object,
 			// extracting the context.commit method.
 
-			console.log('_____________------------**********nuxtServerInit**********------------_____________')
-
-			
+			console.log('_____________------------**********nuxtServerInit**********------------_____________')			
 		},
 		resetErrorState({ commit }) {
 			commit('SET_ERROR_STATUS', false)
@@ -329,7 +331,44 @@ const store = () => new Vuex.Store({
             })*/
             return
 					
-        },
+		},
+		async verifyPHK({commit, getters}, phk) {
+			let retVal = false
+
+			try {
+				let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
+
+				if (resp.data.success) {
+					commit('SET_PHK_VERIFIED', true)
+					retVal = true
+				}
+			}
+			catch (error) {
+                if (error.response) {                    
+                    console.error('Axios error verifying PHK: ' + error.response.statusText)                    
+
+                    let err_msg = 'Unable to verify.'
+                    commit('SET_ERROR_STATUS', true)
+                    commit('SET_ERROR_MESSAGE', err_msg)
+
+                    retVal.success = false
+                    retVal.message = err_msg
+                    retVal.code = error.response.data.vcode
+                }
+                else {
+                    console.error('Error without response: ' + error.message)
+                    commit('SET_ERROR_STATUS', true)
+                    commit('SET_ERROR_MESSAGE', error.message || 'Unknown error message')
+
+                    retVal.success = false
+                    retVal.message = error.message || 'Unknown error message'
+                    retVal.code = -7
+                }
+			}
+			finally {
+				return retVal
+			}
+		},
         async verifyGUIDAA({ commit, dispatch, getters, state }, guid) {
             console.log('(a/a) Verifying GUID with Salesforce...')
             let retVal = {
@@ -342,12 +381,11 @@ const store = () => new Vuex.Store({
                 let resp = await axios.post(getters.baseAppURL + '/api/confirm', { guid: guid })
 
                 if (resp.data.success) {
-                    console.log('Verification successful')
-                    console.log(JSON.stringify(resp.data))
+                    //console.log('Verification successful')                    
                     commit('SET_EMAIL', resp.data.user_email)
 					commit('SET_VERIFIED', true)
 					
-					console.log('Email (SS): ' + state.email.email_address)
+					//console.log('Email (SS): ' + state.email.email_address)
 
                     retVal.success = true
                     retVal.code = resp.data.vcode

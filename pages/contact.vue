@@ -135,8 +135,8 @@
         },
         async fetch({ store, params, query, redirect, env }) {
 
-            console.log('Is Page Completed: ' + store.getters.getPageState('contact'))
-            console.log('Company Name from Store: ' + store.state.company.name)
+            // console.log('Is Page Completed: ' + store.getters.getPageState('contact'))
+            // console.log('Company Name from Store: ' + store.state.company.name)
             
             if (store.state.page_state.find(page => page.name === 'contact').completed) {
                 console.log('Do not re-verify')
@@ -157,7 +157,6 @@
                     console.error('Store Error Status: ' + store.state.error.is_error_status)
                     //redirect('/error')
                 }
-                
             }
             else
             {                    

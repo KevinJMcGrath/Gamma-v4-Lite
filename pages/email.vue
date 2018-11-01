@@ -4,10 +4,6 @@
             <Row type="flex" justify="center">
                 <i-col span=10 offset=4 class="lite-col">
                     <p class="info-header">First, let's confirm your email address.</p>
-                    <!--<div class="lite-container-row">
-                        We'll confirm your email to help protect your identity. Then we'll ask for your business and payment 
-                        information. 
-                    </div>-->
                     <div class="lite-container-row">
                         Business Email
                         <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent-->

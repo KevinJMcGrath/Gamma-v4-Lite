@@ -73,6 +73,17 @@ function clean_input(input_val) {
 	return santize(input_val, {allowedTags: [], allowedAttributes: []})
 }
 
+router.post('/private-check', function(req, res, next) {
+	let key = req.body.phk
+
+	if (key === 'ea318a8de35d490486b65d9bfc97ac4f') {
+		res.json({ success: true })
+	}
+	else {
+		res.json({ success: false })
+	}
+}) 
+
 router.post('/domain-check', function(req, res, next) {
 
 	let email_address = clean_input(req.body.email_address.toLowerCase())

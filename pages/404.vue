@@ -12,6 +12,7 @@
 <script>
 
     export default {
+        layout: 'error',
         data() {
             return {
                 page_title: 'Symphony - 404'
