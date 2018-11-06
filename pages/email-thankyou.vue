@@ -8,9 +8,9 @@
                             <img src="../assets/images/big-green-check.png" height="60px" />
                         </i-col>
                         <i-col span=16>
-                            <p class="info-header">Please check your inbox for next steps.</p>
+                            <p class="info-header">Check your inbox<br/>in a few minutes.</p>
                             <div class="lite-container-row">
-                                We sent a confirmation email to: <b>{{ input_email }}</b>
+                                We emailed next steps to: <b>{{ input_email }}</b>
                             </div>
                             <div class="lite-container-row">
                                 <a class="lite-link-button" @click="handleResendEmail()">Resend email</a>
