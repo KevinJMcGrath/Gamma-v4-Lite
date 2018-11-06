@@ -3,3 +3,8 @@
         <nuxt/>
     </div>
 </template>
+<script>
+export default {
+    middleware: 'phk'
+}
+</script>

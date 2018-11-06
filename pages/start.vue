@@ -45,9 +45,14 @@ export default {
         }
     },
     mounted() {
-        this.$store.commit('RESET_STATE')
-        localStorage.removeItem('vuex')
-        localStorage.removeItem('vuexstate')
+        if (this.$route.query.reset)
+        {
+            console.log('Clearing State')
+            this.$store.commit('RESET_STATE')
+            localStorage.removeItem('vuex')
+            localStorage.removeItem('vuexstate')
+        }
+        
     },
     methods: {
         handleGetStarted() {

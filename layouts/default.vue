@@ -2,16 +2,19 @@
   <div>
     <symphony-header/>
     <nuxt/>
+    <symphony-footer/>
   </div>
 </template>
 
 <script>
   import SymphonyHeader from '~/components/SymphonyHeader.vue'
+  import SymphonyFooter from '~/components/SymphonyFooter.vue'
 
   export default {
     middleware: 'phk',
     components: {
-      SymphonyHeader
+      SymphonyHeader,
+      SymphonyFooter
     }
   }
 </script>

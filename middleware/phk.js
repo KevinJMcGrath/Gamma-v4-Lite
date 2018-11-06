@@ -1,23 +1,30 @@
-export default async function ({store, query, redirect, isDev}) {
-    if (!isDev) {
-        if (query.phk) {
-            let resp = await store.dispatch('verifyPHK', query.phk)
-            console.log('PHK Response: ' + JSON.stringify(resp))
-            if (resp) {
-                console.log('PHK verified')
-            }
-            else {
-                console.log('PHK invalid')
-                redirect('https://www.symphony.com')
-            }
-        }
-        else {
-            console.log('PHK missing')
-            redirect('https://www.symphony.com')
+export default async function ({app, store, query, redirect, isDev}) {
+    let force_redirect = false
+
+    //console.log('running phk.js')
+
+    if (query.phk) {
+        let resp = await store.dispatch('verifyPHK', query.phk)
+        
+        if (!resp) {
+            console.log('PHK invalid')
+            force_redirect = true
         }
     }
     else {
-        console.log('Dev: bypassing PHK check')
+        console.log('PHK missing')
+        force_redirect = true
     }
-    
+
+    if (force_redirect) {
+        if (!isDev) {
+            redirect('https://www.symphony.com')
+        }
+        else {
+            console.log('Dev bypass of phk redirect')
+        }
+        
+    }
 }
+
+    

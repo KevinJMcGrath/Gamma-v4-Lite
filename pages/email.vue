@@ -85,10 +85,11 @@
             }
         },
         fetch({ store, params, query, redirect, env }) {
-            store.commit('RESET_STATE')
+            //store.commit('RESET_STATE')
             
         },
         mounted: function() {
+            console.log('PHK (email.vue): ' + this.$store.state.global.phk)
             if (this.$route.query.em)
             {
                 let email_addy = this.$route.query.em

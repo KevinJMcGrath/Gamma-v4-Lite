@@ -272,7 +272,13 @@
         },
         components: {
             SymphonyBilling
-        }
+        }/*,
+        beforeRouteLeave(to, from, next) {
+            console.log('beforeRouteLeave')
+            console.log(to)
+            console.log(from)
+            next()
+        }*/
     }
 </script>
 <style >

@@ -14,7 +14,7 @@ Vue.use(Vuex)
 // to return the initial state so I can use it to reset the state later. 
 const initial_state = () => ({
 	global: {
-		phk_verified: false
+		phk: ''
 	},
     status: {
         guid: '',
@@ -100,8 +100,8 @@ const store = () => new Vuex.Store({
 		SET_VERIFIED(state, is_verified) {
 			state.email.is_verified = is_verified
 		},
-		SET_PHK_VERIFIED(state, is_phk_verified) {
-			state.global.phk_verified = is_phk_verified
+		SET_PHK(state, phk) {
+			state.global.phk = phk
 		},
 		SET_FNAME(state, firstname) {
 			state.user.firstname = firstname.trim().replace( /\s\s+/g, ' ')
@@ -173,6 +173,7 @@ const store = () => new Vuex.Store({
 			state.page_state.find(page => page.name === page_name).started = true
         },
         RESET_STATE(state) {
+			console.log('RESETTING STATE!!!!')
             const reset_state = initial_state()
             Object.keys(reset_state).forEach(key => { state[key] = reset_state[key] })
         }
@@ -341,7 +342,7 @@ const store = () => new Vuex.Store({
 				let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
 
 				if (resp.data.success) {
-					commit('SET_PHK_VERIFIED', true)
+					commit('SET_PHK', phk)
 					retVal = true
 				}
 			}
