@@ -1,5 +1,5 @@
 <template>
-    <div class="footer-container">
+    <div v-bind:class="getFooterPositioningClass()"> <!-- class="footer-container"-->
         <Row type="flex" justify="center">
             <i-col>
                 <div class="footer-item"><a href="https://symphony.com/en-US/legal/privacy" target="_blank">Privacy Policy</a></div>
@@ -12,8 +12,32 @@
         </Row>
     </div>
 </template>
+<script>
+export default {
+    props: {
+        isAbsolute: Boolean
+    },
+    methods: {
+        getFooterPositioningClass() {
+            if (!!this.isAbsolute) {
+                return 'footer-container-abs'
+            }
+            else {
+                return 'footer-container-std'
+            }
+        }
+    }
+}
+</script>
+
 <style scoped>
-    .footer-container {
+    .footer-container-std {
+        border-top: 1px solid #d8d8d8;
+        margin-top: 20px;
+        padding: 20px 0;
+    }
+
+    .footer-container-abs {
         position: absolute;
         right: 0;
         bottom: 0;

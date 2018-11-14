@@ -66,19 +66,23 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
+        <symphony-footer v-bind:is-absolute="false"/>
     </div>  
 </template>
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
         data() {
             const validateMinSeats = (rule, value, callback) => {
                 if (this.input_seats < 10) {
-                        callback(new Error('10 users minimum'))
-                    }
-            }            
+                    callback(new Error('10 users minimum'))
+                }
+
+                callback()
+            }
 
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
@@ -214,6 +218,7 @@
                 this.$router.push({ name: "contact", query: { sseid: this.$store.state.status.guid }})
             },
             handleGotoBilling () {
+                console.log('WTF')
                 this.$refs['company_form'].validate((valid) => {
                     if (valid) 
                     {
@@ -252,14 +257,9 @@
             }
         },
         components: {
-            SymphonyBilling
-        }/*,
-        beforeRouteLeave(to, from, next) {
-            console.log('beforeRouteLeave')
-            console.log(to)
-            console.log(from)
-            next()
-        }*/
+            SymphonyBilling,
+            SymphonyFooter
+        }
     }
 </script>
 <style >

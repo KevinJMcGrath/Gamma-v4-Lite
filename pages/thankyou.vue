@@ -24,11 +24,12 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-        
+        <symphony-footer is-absolute/>
     </div>
 </template>
 <script>
     import SymphonyLinks from '~/components/SymphonyLinks.vue'
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'
 
     export default {
         data() {            
@@ -54,7 +55,8 @@
 
         },
         components: {
-            SymphonyLinks
+            SymphonyLinks,
+            SymphonyFooter
         }
     }
 </script>

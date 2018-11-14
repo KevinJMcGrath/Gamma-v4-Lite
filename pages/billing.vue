@@ -113,15 +113,10 @@
                                             </i-col>                                    
                                         </Row>
                                     </div>
-
-                                    
-
                                     <div>
                                         <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
                                             class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoReview()">Next</button>
-                                    </div>
-
-                                    
+                                    </div>                                   
                                 </Form>
                             </div>
                         </TimelineItem>
@@ -137,15 +132,13 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-
-        
+        <symphony-footer v-bind:is-absolute="false"/>
     </div>  
 </template>
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
-    //import SymphonyCountryState from '~/components/SymphonyCountryState.vue'
-    //const countrylib = require('country-state-city')
     import CountryDropdown from '~/components/CountryList.vue'
 
     // Moved these declarations to the global scope to avoid problems later. 
@@ -506,8 +499,8 @@
         },
         components: {
             SymphonyBilling,
+            SymphonyFooter,
             CountryDropdown
-            //SymphonyCountryState
         }
     }
 

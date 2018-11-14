@@ -26,11 +26,12 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-        
+        <symphony-footer is-absolute/>
     </div>
 </template>
 <script>
     const axios = require('axios')
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'
 
     export default {
         data() {            
@@ -141,6 +142,9 @@
                     this.$store.commit('SET_EMAIL', value)
                 }
             }
+        },
+        components: {
+            SymphonyFooter
         }
     }
 </script>

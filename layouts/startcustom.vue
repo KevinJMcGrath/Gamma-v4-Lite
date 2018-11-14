@@ -1,7 +1,7 @@
 <template>
     <div>
         <nuxt/>
-        <symphony-footer/>
+        <symphony-footer v-bind:is-absolute="true"/>
     </div>
 </template>
 <script>

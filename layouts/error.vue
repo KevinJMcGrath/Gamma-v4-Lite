@@ -2,7 +2,7 @@
   <div>
     <symphony-header/>
     <nuxt/>
-    <symphony-footer/>
+    <symphony-footer is-absolute/>
   </div>
 </template>
 

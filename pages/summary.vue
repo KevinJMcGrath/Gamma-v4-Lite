@@ -99,13 +99,15 @@
                 </i-col>
                 <i-col span=2></i-col>
             </Row>
-        </div>       
+        </div>
+        <symphony-footer v-bind:is-absolute="false"/>
     </div>    
 </template>
 <script>
     const axios = require('axios')
     const card_brand = require('~/plugins/payment-type.js')
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'
 
     export default {
         data() {
@@ -269,7 +271,8 @@
             }
         },
         components: {
-            SymphonyBilling
+            SymphonyBilling,
+            SymphonyFooter
         }
     }
 </script>

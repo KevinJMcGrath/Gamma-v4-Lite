@@ -60,10 +60,12 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
+        <symphony-footer v-bind:is-absolute="false"/>
     </div>  
 </template>
 <script>    
-    const axios = require('axios')    
+    const axios = require('axios')
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
@@ -260,6 +262,9 @@
                 this.$store.commit('SET_BILLING_COUNTRY', country.name)                
             }
 
+        },
+        components: {
+            SymphonyFooter
         }
     }
 </script>
