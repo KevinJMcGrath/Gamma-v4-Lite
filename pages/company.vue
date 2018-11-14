@@ -34,14 +34,34 @@
                                         <FormItem prop="seats" :show-message=true>
                                             <InputNumber :step="1" v-model="input_seats"></InputNumber>
                                             <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
-                                            <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" cancel-text="Cancel">
+                                            <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
                                                 <p>
-                                                    Standard business tier pricing: $240 per user, annually. <br/>
-                                                    Additionally, new clients are charged a one-time setup fee of $500. <br/>
+                                                    Symphony Business offers two pricing levels:<br/><br/>
+                                                    <Row>
+                                                        <i-col span=8>
+                                                            Subscriptions of <b>10-49 users</b>
+                                                        </i-col>
+                                                        <i-col span=7 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                                        <i-col span=8 offset=1>
+                                                            <b>$30 </b>per user, per month
+                                                        </i-col>
+                                                    </Row>
+                                                    <Row>
+                                                        <i-col span=10>
+                                                            Subscriptions of <b>50 or more users</b>
+                                                        </i-col>
+                                                        <i-col span=5 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                                        <i-col span=8 offset=1>
+                                                            <b>$20 </b>per user, per month
+                                                        </i-col>
+                                                    </Row>
                                                     <br/>
-                                                    Clients may provision users over their subscription amount; those additional users are billed as 'overage' at the standard rate, pro-rated for the number of days per month the client over their contracted user licenses. 
+                                                    Any subscription requres a 12-month commitment.<br/>
+                                                    You can add new users to your subscription anytime - we'll just add them to your bill.
                                                 </p>
+                                                <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->
                                             </Modal>
+
                                         </FormItem>
                                     </div>
                                     

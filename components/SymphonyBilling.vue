@@ -15,7 +15,7 @@
                     <span class="small-item">{{formatted_pupm}} /user/month</span>
                 </i-col>
                 <i-col span="4" offset="10">
-                    <div class="small-item align-right">monthly</div>
+                    <div class="small-item align-right">per month</div>
                 </i-col>
             </Row>
             <!--<Row>
