@@ -85,7 +85,7 @@
                                                 Country<br/>
                                                 <FormItem prop="country"> 
                                                     <!--<i-input v-model="input_country"></i-input>-->
-                                                    <country-dropdown />
+                                                    <country-dropdown v-on:country-changed="updateLabels()"/>
                                                 </FormItem>
                                             </i-col>
                                             <i-col span=12>
@@ -286,13 +286,12 @@
         },
         computed: {
             is_country_us: {
-                get () {
-                    //console.log('Country Code: ' + this.$store.state.user.country_code)
+                get () {                    
                     return this.$store.state.user.country_code.toLowerCase() === 'us'
                 }
             },
             state_label: {
-                get () {
+                get () {                    
                     return (this.is_country_us ? 'State' : 'State/Provice')
                 }
             },
@@ -380,6 +379,12 @@
             }
         },
         methods: {
+            updateLabels() {
+                // This method remains as an example of a working emitted
+                // event from a component (CountryList)
+                //console.log('Got to Update Labels')
+                //console.log(this.$store.state.user.country_code)
+            },
             prior_page_Ok(page_name) {
                 this.$router.push({name: page_name, query: { sseid: this.$store.state.status.guid }})
             },

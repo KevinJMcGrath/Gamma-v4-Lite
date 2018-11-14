@@ -31,8 +31,16 @@ export default {
             return 'flag-icon-' + iso_code.toLowerCase()
         },
         showOnChangeData(selected_item) {
-            console.log('Showing selected item object...')
-            console.log(selected_item)
+            //console.log('Showing selected item object...')
+            //console.log(selected_item)
+
+            // This emit call does correctly emit an event back out to 
+            // the parent compnent. 
+            //this.$emit('country-changed')
+
+            // I don't actually need the event. The problem was I was not setting the 
+            // country code in the Vuex Store when changing the option.
+            this.$store.commit('SET_COUNTRYCODE', selected_item)
         }
     },
     computed: {
