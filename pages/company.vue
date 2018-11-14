@@ -74,30 +74,11 @@
 
     export default {
         data() {
-            const validateMaxSeats = (rule, value, callback) => {                
-                if (this.input_seats < 500)
-                {
-                    if (this.input_seats < 10) {
+            const validateMinSeats = (rule, value, callback) => {
+                if (this.input_seats < 10) {
                         callback(new Error('10 users minimum'))
                     }
-
-                    callback();
-                }
-                else
-                {
-                    this.$Modal.error({
-                        title: 'Invalid seat count',
-                        content: 'You can only purchase up to 499 seats using this form. To subscribe to our Enterprise tier, please contact us at:<br/><br/> 1-111-111-1111',
-                        onOk: () => {
-                            this.input_seats = 499        
-                        }, 
-                        okText: 'Ok'
-                    })
-
-                    
-                    callback(new Error('499 users maximum'));
-                }                
-            };
+            }            
 
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
@@ -120,7 +101,7 @@
                     seats: [
                         //For some reason, I needed to specify the type for this rule to work consistently
                         { required: true, type: 'number', message: 'Required info', trigger: 'change' },
-                        { validator: validateMaxSeats, trigger: 'change' } 
+                        { validator: validateMinSeats, trigger: 'change' } 
                     ],
                     companyname: [
                         { required: true, message: 'Required info', trigger: 'blur' },
