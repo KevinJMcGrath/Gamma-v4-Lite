@@ -12,7 +12,7 @@
                         <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Company Information</p>
                             <div class="timeline-spacer"></div>   
-                            <div class="timeline-content" style="height:280px;">
+                            <div class="timeline-content" style="height:320px;">
                                 <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
                                         Company Legal Name<br/>
@@ -63,6 +63,11 @@
                                             </Modal>
 
                                         </FormItem>
+                                        
+                                    </div>
+
+                                    <div v-bind:class="seat_pricing_notice_class">
+                                        <Alert show-icon>Your total cost will be lower if you purchase 50 seats.</Alert>
                                     </div>
                                     
                                     <div class="lite-button-row">
@@ -200,6 +205,13 @@
             
         },
         computed: {
+            seat_pricing_notice_class () {
+                if (this.$store.state.service.seats >= 34 && this.$store.state.service.seats < 50) {
+                    return 'alert-row-visible'
+                }
+
+                return 'alert-row-hidden'
+            },
             input_company: {
                 get () {
                     return this.$store.state.company.name
@@ -285,5 +297,17 @@
 <style >
     .ivu-input-number-handler-wrap {
         opacity: 1 !important;
+    }
+
+    .alert-row-visible {
+        display: block;
+        width: 100%;
+        height: 25px;
+        margin-bottom: 30px;
+        font-size: 1em;
+    }
+
+    .alert-row-hidden {
+        display: none;
     }
 </style>
