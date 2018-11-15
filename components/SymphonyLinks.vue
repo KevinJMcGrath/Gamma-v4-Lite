@@ -1,8 +1,8 @@
 <template>
     <div class="sym-links">
-        Watch a quick <a href="https://www.youtube.com/watch?v=tRAmXi0uAio" target="_blank">video overview</a><br/>
-        Get the latest <a href="https://symphony.com/press/news" target="_blank">Symphony news</a><br/>
-        Browse our <a href="https://symphony.com/blog" target="_blank">blog</a>
+        See our unique <a href="https://www.youtube.com/watch?v=tRAmXi0uAio" target="_blank">security model</a>.<br/>
+        Get the latest <a href="https://symphony.com/press/news" target="_blank">Symphony news</a>.<br/>
+        Browse our <a href="https://symphony.com/blog" target="_blank">blog</a>.
     </div>
 </template>
 
