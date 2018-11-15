@@ -56,7 +56,7 @@
                                                         </i-col>
                                                     </Row>
                                                     <br/>
-                                                    Any subscription requres a 12-month commitment.<br/>
+                                                    Any subscription requres a 1 year commitment.<br/>
                                                     You can add new users to your subscription anytime - we'll just add them to your bill.
                                                 </p>
                                                 <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->

@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center" >
-                <i-col span=10 offset=4 class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=10 offset=2 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Row>                        
                         <i-col span=6>
                             <img src="../assets/images/big-green-check.png" height="60px" />
@@ -11,9 +11,11 @@
                             <p class="info-header">You are on your way.</p>
                             <br/>
                             <p class="info-header info-header-bottom">What's next?</p>
-                            <div class="lite-container-row">
-                                Look for a confirmation email as we <br/>
-                                set up your Symphony workspace.
+                            <div class="lite-container-row" style="font-size:16px;">
+                                Look for a confirmation email as we<br/>
+                                set up your Symphony workspace.<br/><br/>
+                                This email will also contain a receipt<br/> 
+                                and a copy of the <a href="/symphony_terms_conditions_winter_2018.pdf" target="_blank">Terms and Conditions</a>.
                             </div>                            
                         </i-col>                    
                     </Row>
@@ -70,5 +72,6 @@
     .info-header-bottom {
         margin-bottom: 20px;
         font-weight: normal;
+        color: #333;
     }
 </style>

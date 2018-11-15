@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center" >
-                <i-col span=10 offset=4 class="lite-col">
+                <i-col span=10 offset=2 class="lite-col">
                     <Row>                        
                         <i-col span=6>
                             <img src="../assets/images/big-green-check.png" height="60px" />
@@ -34,7 +34,7 @@
     import SymphonyFooter from '~/components/SymphonyFooter.vue'
 
     export default {
-        data() {            
+        data() {
 
             return {
                 page_title: 'Symphony - Thank You',
@@ -59,7 +59,7 @@
                 error_state: store.state.error.is_error_status
             }
         },
-        async fetch({ store, params, query, redirect, env }) {                     
+        async fetch({ store, params, query, redirect, env }) {
             if(!store.state.email.email_address)
             {
                 if (query.hasOwnProperty('em') && query.em.length !== 0)
