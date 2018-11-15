@@ -57,10 +57,12 @@
         },
         methods: {
             formatCurrencyValue(input_val) {
+                // Regex is used to add separator commas to large numbers
+                // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
                 if (['us','US','USA','usa','United States', 'America', 'United States of America'].includes(this.$store.state.billing.country))
-                    return `$${input_val}`
+                    return `$${input_val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
                 else
-                    return `US$ ${input_val}`
+                    return `US$ ${input_val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
             }
         },
         computed: {
@@ -72,7 +74,7 @@
             scaled_pupm: {
                 get () {
                     let seats = this.$store.state.service.seats
-                    let pupm = 20 // (seats <= 50 ? 30 : 20)
+                    let pupm = (seats < 50 ? 30 : 20)
                     
                     return pupm
                 }
