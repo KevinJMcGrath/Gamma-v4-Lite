@@ -38,19 +38,19 @@
                                                 <p>
                                                     Symphony Business offers two pricing levels:<br/><br/>
                                                     <Row>
-                                                        <i-col span=8>
-                                                            Subscriptions of <b>10-49 licenses</b>
+                                                        <i-col span=4>
+                                                            <b>10-49 licenses</b>
                                                         </i-col>
-                                                        <i-col span=7 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                                        <i-col span=10 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                                         <i-col span=8 offset=1>
                                                             <b>$30 </b>per license, per month
                                                         </i-col>
                                                     </Row>
                                                     <Row>
-                                                        <i-col span=10>
-                                                            Subscriptions of <b>50 or more licenses</b>
+                                                        <i-col span=6>
+                                                            <b>50 or more licenses</b>
                                                         </i-col>
-                                                        <i-col span=5 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                                        <i-col span=8 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                                         <i-col span=8 offset=1>
                                                             <b>$20 </b>per license, per month
                                                         </i-col>

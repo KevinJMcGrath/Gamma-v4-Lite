@@ -27,13 +27,14 @@
         </div>
         <div class="billing-group">
             <Row class="summary-row">
-                <i-col span="10">Annual Fee<sup>†</sup></i-col>
+                <i-col span="10">Annual Total</i-col>
                 <i-col :span="totalColSize" :offset="totalColOffset">
                     <div class="align-right">{{formatted_annual_seat_cost}}</div>
                 </i-col>
             </Row>
             <p class="small-item">
-                <sup>†</sup>We'll charge this amount to your card when your service is ready.
+                Requires a 1 year subscription.<br/>
+                We'll charge the first year's amount when your service is ready.
             </p>
         </div>
     </div>
