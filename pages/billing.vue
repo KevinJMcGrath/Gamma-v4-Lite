@@ -156,7 +156,7 @@
         data() {
             const validateReqIfUs = (rule, value, callback) => {
                 if(this.is_country_us && !value.replace(/\s+/,'').length) {
-                    callback(new Error('Required info'))
+                    callback(new Error('Required'))
                 }
                 else {
                     callback()
@@ -165,7 +165,7 @@
             
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
-                    callback(new Error('HTML tags are not permitted in this input field.'))
+                    callback(new Error('Invalid format.'))
                 }
                 else {
                     callback()
@@ -187,12 +187,12 @@
                 },
                 validation_rules: {
                     fullname: [
-                        { required: true, message: 'Required info', trigger: 'blur' },
+                        { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 150, message: 'Full Name must be less than 150 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     address1: [
-                        { required: true, message: 'Required info', trigger: 'blur' },
+                        { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
@@ -201,7 +201,7 @@
                         { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
                     ],
                     city: [
-                        { required: true, message: 'Required info', trigger: 'blur' },
+                        { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],

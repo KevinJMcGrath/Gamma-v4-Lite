@@ -45,7 +45,7 @@
                     if (value.toLowerCase().match(re))
                     {
                         this.loading = false
-                        callback(new Error('We are not accepting freemail addresses at this time.'));    
+                        callback(new Error('Business domain email addresses only.'));    
                         
                     }
                     else
@@ -69,8 +69,8 @@
                 },
                 validation_rules: {
                     email: [
-                        { required: true, message: 'Required info', trigger: 'blur'},
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur'},
+                        { required: true, message: 'Required', trigger: 'blur'},
+                        { type: 'email', message: 'Invalid email format', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 100, message: 'Email address must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateFreemail, trigger: 'blur'}
                     ]
@@ -136,7 +136,7 @@
                             if (response.data.server_code && response.data.server_code === 11)
                             {
                                 let domain = response.data.domain_name
-                                let msg = 'We do not accept freemail domains '
+                                let msg = 'Business domain email addresses only.'
 
                                 if (domain)
                                     msg += '(' + domain + ')'
@@ -167,7 +167,7 @@
                                             this.loading = false
                                             this.$Notice.error({
                                                 title: 'Error Verifying Email Address',
-                                                desc: 'There was an issue with this request. Error code: ' + response.data.vcode,
+                                                desc: 'There was a problem verifying your email. Try again later.',
                                                 duration: 6
                                             })
                                         }
@@ -176,7 +176,7 @@
                                         this.loading = false
                                         this.$Notice.error({
                                             title: 'Error Verifying Email Address',
-                                            desc: 'There was an issue with this request. VCode was not present.',
+                                            desc: 'There was a problem verifying your email. Try again later.',
                                             duration: 6
                                         })
                                     }
@@ -193,10 +193,10 @@
                                                 d += 'Your email was previously submitted and is blocked. Contact Symphony if this is an error.'
                                                 break
                                             case '2':
-                                                d += 'Your company is already on Symphony. Contact your IT department for an account.'
+                                                d += 'Your company is already uses Symphony. Contact your IT department for an account.'
                                                 break
                                             case '3':
-                                                d += 'An account with this email address already exists.'
+                                                d += 'A Symphony account with this email address already exists.'
                                                 break
                                             default:
                                                 break

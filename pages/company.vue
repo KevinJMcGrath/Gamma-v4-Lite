@@ -30,7 +30,7 @@
                                     </div>
 
                                     <div class="lite-container-row2"> 
-                                        Total Symphony Users<br/>
+                                        Total Symphony Licenses<br/>
                                         <FormItem prop="seats" :show-message=true>
                                             <InputNumber :step="1" v-model="input_seats"></InputNumber>
                                             <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
@@ -39,25 +39,25 @@
                                                     Symphony Business offers two pricing levels:<br/><br/>
                                                     <Row>
                                                         <i-col span=8>
-                                                            Subscriptions of <b>10-49 users</b>
+                                                            Subscriptions of <b>10-49 licenses</b>
                                                         </i-col>
                                                         <i-col span=7 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                                         <i-col span=8 offset=1>
-                                                            <b>$30 </b>per user, per month
+                                                            <b>$30 </b>per license, per month
                                                         </i-col>
                                                     </Row>
                                                     <Row>
                                                         <i-col span=10>
-                                                            Subscriptions of <b>50 or more users</b>
+                                                            Subscriptions of <b>50 or more licenses</b>
                                                         </i-col>
                                                         <i-col span=5 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                                         <i-col span=8 offset=1>
-                                                            <b>$20 </b>per user, per month
+                                                            <b>$20 </b>per license, per month
                                                         </i-col>
                                                     </Row>
                                                     <br/>
                                                     Any subscription requres a 1 year commitment.<br/>
-                                                    You can add new users to your subscription anytime - we'll just add them to your bill.
+                                                    You can add new licenses to your subscription anytime - we'll just add them to your bill.
                                                 </p>
                                                 <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->
                                             </Modal>
@@ -67,7 +67,7 @@
                                     </div>
 
                                     <div v-bind:class="seat_pricing_notice_class">
-                                        <Alert show-icon>Your total cost will be lower if you purchase 50 seats.</Alert>
+                                        <Alert show-icon>Your total cost will be lower if you purchase 50 licenses.</Alert>
                                     </div>
                                     
                                     <div class="lite-button-row">
@@ -103,7 +103,7 @@
         data() {
             const validateMinSeats = (rule, value, callback) => {
                 if (this.input_seats < 10) {
-                    callback(new Error('10 users minimum'))
+                    callback(new Error('Minimum of 10 licenses'))
                 }
 
                 callback()
@@ -111,7 +111,7 @@
 
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
-                    callback(new Error('HTML tags are not permitted in this input field.'))
+                    callback(new Error('Invalid format.'))
                 }
                 else {
                     callback()
@@ -129,16 +129,16 @@
                 validation_rules: {
                     seats: [
                         //For some reason, I needed to specify the type for this rule to work consistently
-                        { required: true, type: 'number', message: 'Required info', trigger: 'change' },
+                        { required: true, type: 'number', message: 'Required', trigger: 'change' },
                         { validator: validateMinSeats, trigger: 'change' } 
                     ],
                     companyname: [
-                        { required: true, message: 'Required info', trigger: 'blur' },
+                        { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     industry: [
-                        { required: true, message: 'Required info', trigger: 'change'}
+                        { required: true, message: 'Required', trigger: 'change'}
                     ]
 
                 },

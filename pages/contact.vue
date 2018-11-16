@@ -78,13 +78,13 @@
                 }
                 else
                 {
-                    callback(new Error('Please ensure your phone number is in the proper format for your country.'));
+                    callback(new Error('Invalid phone number format.'));
                 }                
             };
 
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
-                    callback(new Error('HTML tags are not permitted in this input field.'))
+                    callback(new Error('Invalid format.'))
                 }
                 else {
                     callback()
@@ -109,17 +109,17 @@
                 },
                 validation_rules: { 
                     firstname: [
-                        { required: true, message: 'Required info', trigger: 'blur'},
+                        { required: true, message: 'Required', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'First Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     lastname: [
-                        { required: true, message: 'Required info', trigger: 'blur'},
+                        { required: true, message: 'Required', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'Last Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     phone: [
-                        { required: true, message: 'Required info', trigger: 'blur'},
+                        { required: true, message: 'Required', trigger: 'blur'},
                         { validator: validateCustomPhone, trigger: 'change' }
                     ]
 
