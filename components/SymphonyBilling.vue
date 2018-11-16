@@ -4,7 +4,7 @@
         <div class="billing-group top-group">
             <Row>
                 <i-col span="8">
-                    <span class="big-item"><b>{{total_seats}}</b> Seats</span>
+                    <span class="big-item"><b>{{total_seats}}</b> Licenses</span>
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
                     <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div>
