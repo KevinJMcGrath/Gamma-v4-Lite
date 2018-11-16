@@ -32,6 +32,7 @@
 <script>
     import SymphonyLinks from '~/components/SymphonyLinks.vue'
     import SymphonyFooter from '~/components/SymphonyFooter.vue'
+    import * as Cookies from 'js-cookie'
 
     export default {
         data() {            
@@ -52,6 +53,8 @@
         },
         mounted: function() {
             this.$store.commit('RESET_STATE')
+            console.log('Deleting cookie...')
+            Cookies.remove('vuexstate');
         },
         methods: {
 

@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center" >
-                <i-col span=10 offset=2 class="lite-col">
+                <i-col span=10 offset=4 class="lite-col">
                     <Row>                        
                         <i-col span=6>
                             <img src="../assets/images/big-green-check.png" height="60px" />
