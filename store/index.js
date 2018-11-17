@@ -382,18 +382,16 @@ const store = () => new Vuex.Store({
 
             try {
                 let resp = await axios.post(getters.baseAppURL + '/api/confirm', { guid: guid })
-
-                if (resp.data.success) {
-                    //console.log('Verification successful')                    
+				
+                if (resp.data.success) {                    
                     commit('SET_EMAIL', resp.data.user_email)
 					commit('SET_VERIFIED', true)
-					
-					//console.log('Email (SS): ' + state.email.email_address)
 
                     retVal.success = true
                     retVal.code = resp.data.vcode
                 }
                 else {
+					// The expiration response is still HTTP200 but I send "false"
                     console.error('Verification failed (expiration)')
                     let err_msg = "Your verification link has expired. A new verification email has been issued - please check your inbox."
                     commit('SET_ERROR_STATUS', true)
