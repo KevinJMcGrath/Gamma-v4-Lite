@@ -249,8 +249,7 @@
             handleGotoContact() {
                 this.$router.push({ name: "contact", query: { sseid: this.$store.state.status.guid }})
             },
-            handleGotoBilling () {
-                console.log('WTF')
+            handleGotoBilling () {                
                 this.$refs['company_form'].validate((valid) => {
                     if (valid) 
                     {

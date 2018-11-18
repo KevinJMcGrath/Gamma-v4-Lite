@@ -102,7 +102,9 @@
                                             <i-col span=12>
                                                 {{state_label}}<br/>
                                                 <FormItem prop="state"> 
-                                                    <i-input v-model="input_state"></i-input>
+                                                    <!-- <i-input v-model="input_state"></i-input> -->
+                                                    <!-- I don't need the custom-event to trigger the reactivity changes -->
+                                                    <state-dropdown v-model="input_state"></state-dropdown> <!--v-on:custom-event="checkChanged"-->
                                                 </FormItem>
                                             </i-col>
                                             <i-col span=12>
@@ -139,7 +141,8 @@
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
     import SymphonyFooter from '~/components/SymphonyFooter.vue'
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
-    import CountryDropdown from '~/components/CountryList.vue'
+    import CountryDropdown from '~/components/CountryDropdown.vue'
+    import StateDropdown from '~/components/StateDropdown.vue'
 
     // Moved these declarations to the global scope to avoid problems later. 
     // May not be necessary. Then again, it may not be necessary to keep 
@@ -206,13 +209,11 @@
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     state: [
-                        //{ required: true, message: 'Please provide your state or province.', trigger: 'blur' },
                         { validator: validateReqIfUs, trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'State must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     zip_code: [
-                        //{ required: true, message: 'Please provide your zip or postal code.', trigger: 'blur' },
                         { validator: validateReqIfUs, trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
@@ -233,9 +234,6 @@
             store.commit('SET_PAGE_STARTED', 'billing')
         },
         mounted: function() {
-
-            //this.billingForm.fullname = (this.$store.state.billing.card_fullname ? this.$store.state.billing.card_fullname : 
-            //    this.$store.state.user.firstname + ' ' + this.$store.state.user.lastname)
 
             if (!this.input_fullname)
                 this.input_fullname = this.$store.state.user.firstname + ' ' + this.$store.state.user.lastname
@@ -348,13 +346,13 @@
                 }
             },
             input_state: {
-                get () {
+                get () {                    
                     return this.$store.state.billing.billing_state
                 },
                 set (value)
                 {
                     this.billingForm.state = value
-                    this.$store.commit('SET_BILLING_STATE', value)
+                    this.$store.commit('SET_BILLING_STATE', value)                    
                 }
             },
             input_zip: {
@@ -379,6 +377,10 @@
             }
         },
         methods: {
+            checkChanged(output_val){
+                console.log('billing.vue:382 checkChanged: ' + output_val)
+                console.log('billing.vue:383 input_state: ' + this.input_state)
+            },
             updateLabels() {
                 // This method remains as an example of a working emitted
                 // event from a component (CountryList)
@@ -505,7 +507,8 @@
         components: {
             SymphonyBilling,
             SymphonyFooter,
-            CountryDropdown
+            CountryDropdown,
+            StateDropdown
         }
     }
 

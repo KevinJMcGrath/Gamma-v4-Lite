@@ -173,7 +173,7 @@ router.post('/confirm', function(req, res, next) {
 		log_response(response)
 
 		let r_vcode = response.data.code
-		let u_email = response.data.user_state.user.email
+		let u_email = response.data.user_state
 
 		res.json( { success: true, message: 'verified', user_email: u_email, vcode: r_vcode })
 	})

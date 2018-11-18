@@ -1,5 +1,9 @@
 [
     {
+        "Code": "US",
+        "Name": "United States"
+    },
+    {
         "Code": "AF",
         "Name": "Afghanistan"
     },
@@ -938,11 +942,7 @@
     {
         "Code": "GB",
         "Name": "United Kingdom"
-    },
-    {
-        "Code": "US",
-        "Name": "United States"
-    },
+    },    
     {
         "Code": "UM",
         "Name": "United States Minor Outlying Islands"

@@ -149,6 +149,7 @@ const store = () => new Vuex.Store({
 			state.billing.city = city.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_BILLING_STATE(state, billing_state) {
+			console.log('STORE:152: ' + billing_state)			
 			state.billing.billing_state = billing_state.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_ZIP(state, zip_code) {

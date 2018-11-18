@@ -15,10 +15,8 @@ import 'flag-icon-css/css/flag-icon.css'
 
 export default {
     data() {
-
         return {
-            countries: []
-            
+            countries: []            
         }
     },
     mounted: function() {
