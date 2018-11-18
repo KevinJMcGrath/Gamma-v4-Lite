@@ -35,7 +35,7 @@
                                             <InputNumber :step="1" v-model="input_seats"></InputNumber>
                                             <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
                                             <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
-                                                <p>
+                                                <div>
                                                     Symphony Business offers two pricing levels:<br/><br/>
                                                     <Row>
                                                         <i-col span=4>
@@ -58,7 +58,7 @@
                                                     <br/>
                                                     Any subscription requres a 1 year commitment.<br/>
                                                     You can add new licenses to your subscription anytime - we'll just add them to your bill.
-                                                </p>
+                                                </div>
                                                 <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->
                                             </Modal>
 
