@@ -340,6 +340,7 @@ const store = () => new Vuex.Store({
 			let retVal = false
 
 			try {
+				console.log('Verifying PHK...')
 				let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
 
 				if (resp.data.success) {

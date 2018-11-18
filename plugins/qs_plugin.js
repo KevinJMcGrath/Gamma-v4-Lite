@@ -19,6 +19,7 @@ export default ({app, store, query}) => {
                 next({path: to.name, query: Object.assign({}, query, {phk: store.state.global.phk})})
             }
             else {
+                //console.log('qs_plugin:22 PHK qs exists. Moving on...')
                 next()
             }
             
