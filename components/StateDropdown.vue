@@ -27,10 +27,8 @@ export default {
     },
     props: {
         altered: String
-    }, 
-    //props: ['altered'],
+    },     
     mounted() {
-        //console.log('Got to mounted. Current State Value: ' + this.$store.state.billing.billing_state)
         this.states = state_list
     },
     methods: {
@@ -68,9 +66,7 @@ export default {
                 return (this.isCountryUS ? 'hide' : 'show')
             }
         }
-    }
-
- 
+    } 
 }
 </script>
 <style>
