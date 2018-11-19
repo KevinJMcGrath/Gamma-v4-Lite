@@ -70,8 +70,8 @@
                                     <Form ref="summary_form" :model="summaryForm" :rules="validation_rules" @submit.native.prevent>
                                     <!-- I REALLY hate trying to get checkboxs to align with labels.
                                     I can't believe this is still a thing in 2018-->
-                                    <FormItem prop="tandc"> 
-                                        <label for="tandc_check">
+                                    <FormItem prop="tandc" style="height:25px"> 
+                                        <label for="tandc_check" style="height:25px">
                                             <input ref="tandc_cb" type="checkbox" v-model="input_accept_tandc" name="tandc_check"/>
                                             <span> I have read and agree to the <a class="lite-link-button" href="/symphony_terms_conditions_winter_2018.pdf" target="_blank">Terms and Conditions</a></span>
                                         </label>
@@ -79,7 +79,7 @@
                                     </Form>
                                 </div>
 
-                                <div class="group-margin">
+                                <div class="submit-button">
                                     <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" class="button-style-1 button-dimensions" 
                                         @click="handleGotoThankyou()"> <!-- testValidate()-->
                                         <span v-bind:class="{hideOnLoading: loading}">
@@ -336,6 +336,10 @@
 
     .group-margin {
         margin-top: 20px;
+    }
+
+    .submit-button {
+        margin-top: 30px;
     }
 
 </style>
