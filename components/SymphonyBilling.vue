@@ -12,7 +12,7 @@
             </Row>
             <Row>
                 <i-col span="10">
-                    <span class="small-item">{{formatted_pupm}} /user/month</span>
+                    <span class="small-item">{{formatted_pupm}} /license/month</span>
                 </i-col>
                 <i-col span="4" offset="10">
                     <div class="small-item align-right">per month</div>
