@@ -15,7 +15,7 @@
                             <div class="timeline-content" style="height:320px;">
                                 <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
-                                        Company Legal Name<br/>
+                                        Legal Name of Business<br/>
                                         <FormItem prop="companyname"> 
                                             <i-input v-model="input_company"></i-input>
                                         </FormItem>
@@ -23,7 +23,7 @@
                                     <div class="lite-container-row"> 
                                         Industry<br/>
                                         <FormItem prop="industry" >
-                                            <i-select v-model="input_industry" placeholder="Select" >
+                                            <i-select v-model="input_industry" placeholder="Select Industry" >
                                                 <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
                                             </i-select>
                                         </FormItem>
