@@ -141,7 +141,7 @@
             // console.log('Company Name from Store: ' + store.state.company.name)
             
             if (store.state.page_state.find(page => page.name === 'contact').completed) {
-                console.log('Do not re-verify')
+                console.log('Verification completed.')
             }
             else if (query.sseid) {
                 store.commit('SET_GUID', query.sseid)
@@ -149,7 +149,7 @@
                 let resp = await store.dispatch('verifyGUIDAA', query.sseid)
                 //resp => { success: (bool), message: (str), code: (int) }
 
-                console.log('Verification response from store: ' + JSON.stringify(resp))
+                //console.log('Verification response from store: ' + JSON.stringify(resp))
                 if (resp.success) {
                     console.log('verification successful (fetch)')
                     console.log('Email (SS2): ' + store.state.email.email_address)
@@ -176,7 +176,7 @@
                 this.$router.push({ name: "error"})
             }            
 
-            console.log('Email (CS): ' + this.$store.state.email.email_address)
+            //console.log('Email (CS): ' + this.$store.state.email.email_address)
 
             // Won't need this if the Properties tied to the Store work for validation
             //this.contactForm.firstname = this.$store.state.user.firstname

@@ -253,28 +253,34 @@ const store = () => new Vuex.Store({
 			return '30'
 		},
 		baseAppURL: (state) => {
+			/*console.log('1 ' + process.env.NODE_ENV)
+			console.log('2 ' + process.env.DEV_BASE_URL)
+			console.log('3 ' + process.env.UAT_BASE_URL)
+			console.log('4 ' + process.env.BASE_URL)
+			console.log('5 ' + process.env.DEPLOY_TYPE)*/
+
+			// The .env variables are not available client side. 
+			// Variables that need to be exposed client side are
+			// defined again in the nuxt.config.js
 			if (process.env.NODE_ENV !== 'production')
-				return process.env.DEV_BASE_URL //|| 'http://localhost:8080'
+				return process.env.base_url_dev 
 			else {
-				if (process.env.DEPLOY_TYPE == 'production') {
-					return process.env.BASE_URL
-				}
-				else if (process.env.DEPLOY_TYPE == 'uat') {
-					return process.env.UAT_BASE_URL
+				if (!process.env.is_uat) {
+					return process.env.base_url_uat 
 				}
 				else {
-					console.log('ENV Test: Could not resolve process.env.BASE_URL')
-					return 'https://no.url.found.com/'
+					return process.env.base_url
 				}
 			}
 				
-		},
+		}/*,
 		baseSFDCURL: (state) => {
+			console.log('baseSFDCURL DEPLOY_TYPE: ' + process.env.DEPLOY_TYPE)
 			if (process.env.DEPLOY_TYPE == 'production')
 				return process.env.SFDC_BASE_URL 
 			else
 				return process.env.SFDC_UAT_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
-		}
+		}*/
 
 	},	
 	actions: {
