@@ -255,34 +255,24 @@ const store = () => new Vuex.Store({
 			if (process.env.NODE_ENV !== 'production')
 				return process.env.DEV_BASE_URL || 'http://localhost:8080'
 			else {
-				if (process) {
-					//console.log('ENV Test: Location - ' + (process.browser ? 'Client Side' : 'Server Side'))
-
-					if (process.env) {
-						if (process.env.BASE_URL) {
-							console.log('ENV Test: process.env.BASE_URL - ' + process.env.BASE_URL)
-						}
-						else {
-							console.log('ENV Test: Could not resolve process.env.BASE_URL')
-						}
-					}
-					else {
-						console.log('ENV Test: Could not resolve process.env')
-					}
+				if (process.env.DEPLOY_TYPE == 'production') {
+					return process.env.BASE_URL
+				}
+				else if (process.env.DEPLOY_TYPE == 'uat') {
+					return process.env.UAT_BASE_URL
 				}
 				else {
-					console.log('ENV Test: Could not resolve process')
+					console.log('ENV Test: Could not resolve process.env.BASE_URL')
+					return 'https://no.url.found.com/'
 				}
-
-				return process.env.BASE_URL || ''
 			}
 				
 		},
 		baseSFDCURL: (state) => {
-			if (process.env.NODE_ENV !== 'production')
-				return process.env.SFDC_DEV_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
+			if (process.env.DEPLOY_TYPE == 'production')
+				return process.env.SFDC_BASE_URL 
 			else
-				return process.env.SFDC_BASE_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
+				return process.env.SFDC_UAT_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
 		}
 
 	},	

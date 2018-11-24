@@ -8,6 +8,16 @@ const router = Router()
 
 let baseURL = process.env.SFDC_BASE_URL
 
+function getSFDCBaseURL() {
+	if (process.env.NODE_ENV === 'production' && process.env.DEPLOY_TYPE === 'production' && process.env.SFDC_BASE_URL) {
+		return process.env.SFDC_BASE_URL
+	}
+	else
+	{
+		return process.env.SFDC_UAT_URL || 'https://dev-symphonyinc.cs4.force.com/services/apexrest/symphony/'
+	}
+}
+
 function log_response(resp, isError)
 {
 	if (isError)
@@ -106,7 +116,7 @@ router.post('/verify', function(req, res, next) {
 	}
 	
 	const config = {
-		baseURL: process.env.SFDC_BASE_URL,
+		baseURL: getSFDCBaseURL(),
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
@@ -150,7 +160,7 @@ router.post('/confirm', function(req, res, next) {
 	}
 	
 	const config = {
-		baseURL: process.env.SFDC_BASE_URL,
+		baseURL: getSFDCBaseURL(),
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
@@ -193,7 +203,7 @@ router.post('/error', function(req, res, next) {
 	const payload = res.body
 	
 	const config = {
-		baseURL: process.env.SFDC_BASE_URL,
+		baseURL: getSFDCBaseURL(),
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
@@ -229,7 +239,7 @@ router.post('/purchase-submit', function(req, res, next) {
 	
 	const payload = req.body
 	const config = {
-		baseURL: process.env.SFDC_BASE_URL,
+		baseURL: getSFDCBaseURL(),
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
 		}
