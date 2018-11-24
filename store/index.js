@@ -7,6 +7,7 @@ import axios from 'axios'
 
 const moment = require('moment')
 
+
 Vue.use(Vuex)
 
 // The vuex constructor expects "state"  to reference a function
@@ -253,7 +254,7 @@ const store = () => new Vuex.Store({
 		},
 		baseAppURL: (state) => {
 			if (process.env.NODE_ENV !== 'production')
-				return process.env.DEV_BASE_URL || 'http://localhost:8080'
+				return process.env.DEV_BASE_URL //|| 'http://localhost:8080'
 			else {
 				if (process.env.DEPLOY_TYPE == 'production') {
 					return process.env.BASE_URL
@@ -475,47 +476,7 @@ const store = () => new Vuex.Store({
 
 			return val;
 		},
-		async loadTestData({ commit, getters }, code) {
-			// this might be executing before the store loads the getters
-			const endpoint = getters.baseAppURL + '/api/test-code' 
-			const body = { test_code: code }
-			let success = false
-
-			await axios.post(endpoint, body)
-			.then(function(response) {
-				if (response.data.valid) {
-					console.log('Loading test data to store...')
-					commit('SET_GUID', 'abaf9368-16a3-c59e-9d70-72916f97fba2')
-					commit('SET_FNAME', 'Kevin')
-					commit('SET_LNAME', 'McGrath')
-					commit('SET_EMAIL', 'kevinmcgr@gmail.com')
-					commit('SET_PHONE', '+1 610-328-9985')
-					commit('SET_PHONE_ISVALID', true)
-					commit('SET_COUNTRYCODE', 'US')
-					commit('SET_COMPANY', 'Test Co. Inc.')
-					commit('SET_INDUSTRY', 'Other')
-					commit('SET_SEATS', 50)
-					commit('SET_CARD_FULLNAME', 'Homer J. Simpson')
-					commit('SET_ADD1', '123 Evergreen Terrace')
-					commit('SET_ADD2', 'First Bedroom')
-					commit('SET_CITY', 'Springfield')
-					commit('SET_BILLING_STATE', 'PA')
-					commit('SET_ZIP', '19064')
-					commit('SET_BILLING_COUNTRY', 'United States')
-
-					success = true
-				}
-			})
-			.catch(function(error) {
-				let err_msg = error.response.status + ' - ' + error.response.statusText + ' | ' + error.response.data.message
-				console.error(err_msg)				
-			})
-
-			return success
-		}
-    }//,
-	//plugins: process.browser ? [createPersistedState()] : []
-
+    }
 })
 
 function testPromise() {

@@ -1,12 +1,14 @@
 require('dotenv').config()
 
+console.log('Stripe key: ' + process.env.STRIPE_PROD_KEY)
+
 module.exports = {  
   dev: (process.env.NODE_ENV !== 'production'),
   env: {
     // REMEMBER: variables here are replaced in the javascript verbatim
     // this is not a secure place to store keys or magic strings
     is_dev: process.env.NODE_ENV !== 'production',
-    stripe_public_key: 'pk_test_gUJYd9BdGY6XdYL9RltHkmRe'
+    stripe_public_key: (process.env.DEPLOY_TYPE === 'production' ? process.env.STRIPE_PROD_KEY : process.env.STRIPE_TEST_KEY) 
   },
   loading: { color: '#3B8070' },
   css: [
