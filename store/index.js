@@ -268,7 +268,13 @@ const store = () => new Vuex.Store({
 			// { commit } is "argument destructuring" of the context object,
 			// extracting the context.commit method.
 
-			console.log('_____________------------**********nuxtServerInit**********------------_____________')			
+			console.log('_____________------------**********nuxtServerInit**********------------_____________')
+
+			if (process.env.is_dev)
+			{
+				console.log('Base URL: ' + process.env.base_app_url)
+				console.log('SFDC Base URL: ' + process.env.SFDC_BASE_URL)
+			}
 		},
 		resetErrorState({ commit }) {
 			commit('SET_ERROR_STATUS', false)

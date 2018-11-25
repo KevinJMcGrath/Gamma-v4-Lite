@@ -1,7 +1,5 @@
 require('dotenv').config()
 
-console.log('Stripe key: ' + process.env.STRIPE_PROD_KEY)
-
 module.exports = {  
   dev: (process.env.NODE_ENV !== 'production'),
   env: {
@@ -116,6 +114,6 @@ module.exports = {
   ],
 
   modules: [
-    ['@nuxtjs/dotenv', {only: ['SFDC_BASE_URL','GAMMA_DEBUG']}]
+    ['@nuxtjs/dotenv', {only: ['STRIPE_PUBLIC_KEY']}]
   ]
 }

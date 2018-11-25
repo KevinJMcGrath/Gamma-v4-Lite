@@ -1,4 +1,4 @@
-import fs from 'fs';
+const fs = require('fs')
 
 fs.copyFile('.env_dev', '.env', (err) => {
     if (err) throw err;
