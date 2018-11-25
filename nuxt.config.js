@@ -109,8 +109,7 @@ module.exports = {
     { src: '~/plugins/iview.js', ssr: true},
     { src: '~/plugins/vue-tele.js', ssr: true},
     { src: '~/plugins/qs_plugin.js', ssr: true}, 
-    { src: '~/plugins/vuex_ps_cookie.js', ssr: true} 
-    //{ src: '~/plugins/vuex_ps_localStorage.js', ssr: false} 
+    { src: '~/plugins/vuex_ps_cookie.js', ssr: true}
   ],
 
   modules: [
