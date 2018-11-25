@@ -31,6 +31,7 @@ export default ({store, req, isDev}) => {
                 
             }, 
             setItem: (key, value) => {
+                //https://github.com/js-cookie/js-cookie/wiki/Frequently-Asked-Questions#expire-cookies-in-less-than-a-day
                 var inOneHour = 1/24
                 Cookies.set(key, value, { expires: inOneHour, secure: !isDev })
             },
