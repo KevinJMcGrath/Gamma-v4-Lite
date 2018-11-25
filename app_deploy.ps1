@@ -22,5 +22,4 @@ Write-Output "Replacing .env file..."
 Copy-Item -path $env_filename -Destination ".env" -Force
 
 Write-Output "Beginning deployment..."
-# gcloud app deploy $app_yaml --project $project_name
-gcloud info
+gcloud app deploy $app_yaml --project $project_name
