@@ -2,7 +2,6 @@
 
 import Vue from 'vue'
 import Vuex, {Payload, Store} from 'vuex'
-//import createPersistedState from 'vuex-persistedstate'
 import axios from 'axios'
 
 const moment = require('moment')
