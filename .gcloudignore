@@ -3,6 +3,7 @@
 .vscode/
 .editorconfig
 .eslintrc.js
+.eslintrc.yml
 *.code-workspace
 
 # Archives
@@ -11,3 +12,9 @@ docs/
 
 # Email Templates
 email/
+
+# Extras
+.env_old
+.env_dev
+.env_uat
+.env_prod

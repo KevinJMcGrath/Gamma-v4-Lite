@@ -5,6 +5,7 @@
   "author": "Kevin McGrath <kevin.mcgrath@symphony.com>",
   "private": true,
   "scripts": {
+    "predev": "node ./init_env.js",
     "dev": "node ./server/server.js",
     "build": "nuxt build",
     "start": "node ./server/server.js",

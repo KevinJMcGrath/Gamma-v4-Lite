@@ -18,6 +18,10 @@ archive
 credentials
 secrets.json
 .env
+.env_dev
+.env_uat
+.env_prod
+.env_old
 
 # Temp junk
 *.bak
