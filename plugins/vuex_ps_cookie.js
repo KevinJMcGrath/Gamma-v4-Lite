@@ -30,8 +30,9 @@ export default ({store, req, isDev}) => {
                 }
                 
             }, 
-            setItem: (key, value) => {                
-                Cookies.set(key, value, { expires: 30, secure: !isDev })
+            setItem: (key, value) => {
+                var inOneHour = 1/24
+                Cookies.set(key, value, { expires: inOneHour, secure: !isDev })
             },
             removeItem: (key) => Cookies.remove(key)
         }
