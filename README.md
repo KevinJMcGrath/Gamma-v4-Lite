@@ -12,6 +12,7 @@ $ npm install
 $ npm run dev
 
 # Note: a pre-dev script called init_env.js is included to copy the .env file from .env_dev.
+# .env_sample demonstrates the format for each of the deployment env files
 # The deployment scripts assume the following files exist:
 # .env_dev
 # .env_uat
