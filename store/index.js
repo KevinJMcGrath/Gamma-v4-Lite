@@ -265,7 +265,7 @@ const store = () => new Vuex.Store({
 			if (process.env.NODE_ENV !== 'production')
 				return process.env.base_url_dev 
 			else {
-				if (!process.env.is_uat) {
+				if (process.env.is_uat) {
 					return process.env.base_url_uat 
 				}
 				else {
@@ -338,6 +338,7 @@ const store = () => new Vuex.Store({
 
 			try {
 				console.log('Verifying PHK...')
+				console.log('API Base URL: ' + getters.baseAppURL )
 				let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
 
 				if (resp.data.success) {
