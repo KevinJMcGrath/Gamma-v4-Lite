@@ -5,7 +5,7 @@ if ($deploy_type.ToLower() -eq 'uat')
 {
     $project_name = 'symphony-gamma-poc'
     $env_filename = '.env_uat'
-    $app_yaml = 'app_dev.yaml'
+    $app_yaml = 'app_uat.yaml'
 }
 elseif ($deploy_type.ToLower() -eq 'prod') 
 {

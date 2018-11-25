@@ -1,22 +1,32 @@
-# gamma-nuxt
+# Symphony Self-Service Site
 
-> Nuxt.js project
+> This repo contains the code necessary to deploy the Symphony Self-Service front-end. 
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-$ npm install # Or yarn install
+$ npm install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload at localhost:8080
 $ npm run dev
 
-# build for production and launch server
-$ npm run build
-$ npm start
-
-# generate static project
-$ npm run generate
+# Note: a pre-dev script called init_env.js is included to copy the .env file from .env_dev.
+# The deployment scripts assume the following files exist:
+# .env_dev
+# .env_uat
+# .env_prod
+# app_dev.yaml
+# app_prod.yaml
 ```
 
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+## Deploy Builds to GCP
+
+``` pwsh
+# deploy to UAT
+./app_deploy.ps1 --deploy_type uat
+
+# deploy to Production
+./app_deploy.ps1 --deploy_type prod
+```
+
