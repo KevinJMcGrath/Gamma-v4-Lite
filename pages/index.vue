@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="min-height:650px;">
         <div class="lite-header">
             <div class="lite-header-logo"></div>
         </div>
