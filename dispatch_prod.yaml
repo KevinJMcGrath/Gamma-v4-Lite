@@ -1,0 +1,2 @@
+- url: "start.symphony.com/*"
+  service: gammaprod
