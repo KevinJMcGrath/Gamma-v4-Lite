@@ -1,0 +1,5 @@
+dispatch:
+  - url: "start.symphony.com/"
+    service: default
+  - url: "start.symphony.com/*"
+    service: default

@@ -1,6 +1,5 @@
 runtime: nodejs
 env: flex
-service: gammaprod
 
 # Test Settings per https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app-with-app-yaml
 manual_scaling:
