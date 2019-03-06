@@ -15,7 +15,7 @@
                                 Look for a confirmation email as we<br/>
                                 set up your Symphony workspace.<br/><br/>
                                 This email will also contain a receipt<br/> 
-                                and a copy of the <a href="/symphony_terms_conditions_winter_2018.pdf" target="_blank">Terms and Conditions</a>.
+                                and a copy of the <a href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a>.
                             </div>                            
                         </i-col>                    
                     </Row>

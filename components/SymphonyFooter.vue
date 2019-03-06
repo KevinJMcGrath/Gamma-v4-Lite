@@ -8,7 +8,7 @@
             </i-col>
         </Row>
         <Row type="flex" justify="center" class="copyright-row">
-            <i-col>Copyright © 2018 Symphony Communication Services, LLC. All Rights Reserved</i-col>
+            <i-col>Copyright © 2019 Symphony Communication Services, LLC. All Rights Reserved</i-col>
         </Row>
     </div>
 </template>

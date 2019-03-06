@@ -73,7 +73,7 @@
                                     <FormItem prop="tandc" style="height:25px"> 
                                         <label for="tandc_check" style="height:25px">
                                             <input ref="tandc_cb" type="checkbox" v-model="input_accept_tandc" name="tandc_check"/>
-                                            <span> I have read and agree to the <a class="lite-link-button" href="/symphony_terms_conditions_winter_2018.pdf" target="_blank">Terms and Conditions</a></span>
+                                            <span> I have read and agree to the <a class="lite-link-button" href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a></span>
                                         </label>
                                     </FormItem>
                                     </Form>

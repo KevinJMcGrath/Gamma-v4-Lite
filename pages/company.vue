@@ -36,27 +36,27 @@
                                             <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
                                             <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
                                                 <div>
-                                                    Symphony Business offers two pricing levels:<br/><br/>
+                                                    <br/>
                                                     <Row>
-                                                        <i-col span=4>
-                                                            <b>10-49 licenses</b>
+                                                        <i-col span=10>
+                                                            <b>Base Package (up to 100 licenses)</b>
                                                         </i-col>
-                                                        <i-col span=10 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                                        <i-col span=4 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                                         <i-col span=8 offset=1>
-                                                            <b>$30 </b>per license, per month
+                                                            <b>$2,000</b> per month
                                                         </i-col>
                                                     </Row>
                                                     <Row>
-                                                        <i-col span=6>
-                                                            <b>50 or more licenses</b>
+                                                        <i-col span=8>
+                                                            <b>Each additional license</b>
                                                         </i-col>
-                                                        <i-col span=8 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                                        <i-col span=6 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                                         <i-col span=8 offset=1>
-                                                            <b>$20 </b>per license, per month
+                                                            <b>$20</b> per month
                                                         </i-col>
                                                     </Row>
                                                     <br/>
-                                                    Any subscription requres a 1 year commitment.<br/>
+                                                    Requres a 2 year commitment with annual billing.<br/>
                                                     You can add new licenses to your subscription anytime - we'll just add them to your bill.
                                                 </div>
                                                 <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->
@@ -102,8 +102,8 @@
     export default {
         data() {
             const validateMinSeats = (rule, value, callback) => {
-                if (this.input_seats < 10) {
-                    callback(new Error('Minimum of 10 licenses'))
+                if (this.input_seats < 100) {
+                    callback(new Error('Minimum of 100 licenses'))
                 }
 
                 callback()
@@ -124,7 +124,7 @@
                 companyForm: {
                     companyname: '',
                     industry: '',
-                    seats: 25
+                    seats: 100
                 },
                 validation_rules: {
                     seats: [

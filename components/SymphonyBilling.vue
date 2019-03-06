@@ -1,29 +1,47 @@
 <template>
     <div>
-        <p class="symphony-billing-header">Symphony Business</p>
+        <p class="symphony-billing-header">Symphony Subscription</p>
         <div class="billing-group top-group">
             <Row>
                 <i-col span="8">
-                    <span class="big-item"><b>{{total_seats}}</b> Licenses</span>
+                    <span class="big-item">Base Package</span>
+                    <!--<span class="big-item"><b>{{total_seats}}</b> Licenses</span>-->
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
-                    <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div>
+                    <div class="big-item align-right">$2,000</div>
+                    <!-- <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div> -->
                 </i-col>
             </Row>
-            <Row>
+            <Row class="mini-row">
                 <i-col span="10">
-                    <span class="small-item">{{formatted_pupm}} /license/month</span>
+                    <span class="small-item"><i>(Up to 100 licenses)</i></span>
+                    <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
                 </i-col>
                 <i-col span="4" offset="10">
                     <div class="small-item align-right">per month</div>
                 </i-col>
             </Row>
-            <!--<Row>
-                <i-col span="10">
-                    <span class="small-item">{{formatted_annual_seat_cost}} billed yearly</span>
+
+            <Row v-bind:class="toggleMoreSeats">
+                <i-col span="8">
+                    <span class="big-item">More Licenses</span>
+                    <!--<span class="big-item"><b>{{total_seats}}</b> Licenses</span>-->
                 </i-col>
-                <i-col span="4" offset="10"></i-col>
-            </Row>--> 
+                <i-col :span="priceColSize" :offset="priceColOffset">
+                    <div class="big-item align-right">{{formatted_more_seats_cost}}</div>
+                    <!-- <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div> -->
+                </i-col>
+            </Row>
+            <Row v-bind:class="toggleMoreSeats" class="mini-row">
+                <i-col span="10">
+                    <span class="small-item"><i>({{more_seats}} x $20/month)</i></span>
+                    <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
+                </i-col>
+                <i-col span="4" offset="10">
+                    <div class="small-item align-right">per month</div>
+                </i-col>
+            </Row>
+ 
         </div>
         <div class="billing-group">
             <Row class="summary-row">
@@ -33,7 +51,7 @@
                 </i-col>
             </Row>
             <p class="small-item">
-                Requires a 1 year subscription.<br/>
+                Requires a 2 year subscription.<br/>
                 We'll charge the first year's amount when your service is ready.
             </p>
         </div>
@@ -72,10 +90,35 @@
                     return this.$store.state.service.seats
                 }
             },
+            more_seats: {
+                get () {
+                    return this.$store.state.service.seats - 100
+                }
+            },
+            more_seats_cost: {
+                get () {
+                    return this.more_seats * this.scaled_pupm
+                }
+            },
+            formatted_more_seats_cost: {
+                get () {
+                    return this.formatCurrencyValue(this.more_seats_cost)
+                }
+            },
+            is_more_than_base: {
+                get () {
+                    return this.$store.state.service.seats > 100
+                }
+            },
+            toggleMoreSeats: {
+                get() {
+                    return (this.is_more_than_base ? 'show' : 'hide')
+                }
+            },
             scaled_pupm: {
                 get () {
                     let seats = this.$store.state.service.seats
-                    let pupm = (seats < 50 ? 30 : 20)
+                    let pupm = 20 //(seats < 50 ? 30 : 20)
                     
                     return pupm
                 }
@@ -148,5 +191,18 @@
     .symphony-billing-header {
         font-size: 1.4em;
         font-weight: bold;
+    }
+
+    .show {
+        display: block;
+        width: 100%;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .mini-row {
+        top: -6px;
     }
 </style>

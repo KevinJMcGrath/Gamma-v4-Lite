@@ -39,7 +39,7 @@ const initial_state = () => ({
         industry: ''
     },
     service: {
-        seats: 25,
+        seats: 100,
         vanity_name: '',
         promo_code: ''
     },
@@ -60,7 +60,7 @@ const initial_state = () => ({
     pricing: {
         onetime_fees: 500,
         pupm: 20,
-        minimum_seats: 25		
+        minimum_seats: 100		
     },
     error: {
         is_error_status: false,        
