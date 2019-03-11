@@ -8,7 +8,7 @@
                     <!--<span class="big-item"><b>{{total_seats}}</b> Licenses</span>-->
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
-                    <div class="big-item align-right">$2,000</div>
+                    <div class="big-item align-right">{{formatCurrencyValue(2000)}}</div>
                     <!-- <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div> -->
                 </i-col>
             </Row>
@@ -92,7 +92,7 @@
             },
             more_seats: {
                 get () {
-                    return this.$store.state.service.seats - 100
+                    return this.is_more_than_base ? this.$store.state.service.seats - 100 : 0
                 }
             },
             more_seats_cost: {
@@ -141,7 +141,8 @@
             },
             annual_seat_cost: {
                 get () {
-                    return this.monthly_seat_cost * 12
+                    //return this.monthly_seat_cost * 12
+                    return 2000 + this.more_seats_cost
                 }
             },
             formatted_annual_seat_cost: {

@@ -66,9 +66,9 @@
                                         
                                     </div>
 
-                                    <div v-bind:class="seat_pricing_notice_class">
+                                    <!-- <div v-bind:class="seat_pricing_notice_class">
                                         <Alert show-icon>Your total cost will be lower if you purchase 50 licenses.</Alert>
-                                    </div>
+                                    </div> -->
                                     
                                     <div class="lite-button-row">
                                         <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
@@ -102,8 +102,8 @@
     export default {
         data() {
             const validateMinSeats = (rule, value, callback) => {
-                if (this.input_seats < 100) {
-                    callback(new Error('Minimum of 100 licenses'))
+                if (this.input_seats < 1) {
+                    callback(new Error('Licenses cannot be negative.'))
                 }
 
                 callback()
