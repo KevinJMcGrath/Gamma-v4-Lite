@@ -32,7 +32,7 @@
                                     <div class="lite-container-row2"> 
                                         Total Symphony Licenses<br/>
                                         <FormItem prop="seats" :show-message=true>
-                                            <InputNumber :step="1" v-model="input_seats"></InputNumber>
+                                            <InputNumber :step="1" v-model="input_seats" :min="0"></InputNumber>
                                             <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
                                             <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
                                                 <div>
@@ -102,8 +102,8 @@
     export default {
         data() {
             const validateMinSeats = (rule, value, callback) => {
-                if (this.input_seats < 1) {
-                    callback(new Error('Licenses cannot be negative.'))
+                if (this.input_seats < 0) {
+                    callback(new Error('Please enter a valid value.'))
                 }
 
                 callback()

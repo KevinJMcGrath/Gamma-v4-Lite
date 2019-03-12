@@ -39,7 +39,7 @@ const initial_state = () => ({
         industry: ''
     },
     service: {
-        seats: 0,
+        seats: 50,
         vanity_name: '',
         promo_code: ''
     },

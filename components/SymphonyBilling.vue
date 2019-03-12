@@ -142,7 +142,7 @@
             annual_seat_cost: {
                 get () {
                     //return this.monthly_seat_cost * 12
-                    return 2000 + this.more_seats_cost
+                    return (2000 + this.more_seats_cost) * 12
                 }
             },
             formatted_annual_seat_cost: {
