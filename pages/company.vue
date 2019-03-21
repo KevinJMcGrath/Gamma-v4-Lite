@@ -56,7 +56,7 @@
                                                         </i-col>
                                                     </Row>
                                                     <br/>
-                                                    Requres a 2 year commitment with annual billing.<br/>
+                                                    Requires a 2 year commitment with annual billing.<br/>
                                                     You can add new licenses to your subscription anytime - we'll just add them to your bill.
                                                 </div>
                                                 <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->
