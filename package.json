@@ -12,7 +12,9 @@
     "generate": "nuxt generate",
     "prestart": "nuxt build",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@google-cloud/debug-agent": "^2.6.0",
@@ -37,7 +39,8 @@
     "vue": "^2.5.17",
     "vue-tel-input": "^2.0.6",
     "vue-template-compiler": "^2.5.17",
-    "vuex-persistedstate": "^2.5.4"
+    "vuex-persistedstate": "^2.5.4",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
@@ -51,5 +54,6 @@
     "less": "^2.7.3",
     "less-loader": "^2.2.3",
     "postcss-loader": "^2.1.6"
-  }
+  },
+  "snyk": true
 }
