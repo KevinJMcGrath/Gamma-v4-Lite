@@ -21,5 +21,5 @@ else {
 Write-Output "Replacing .env file..."
 Copy-Item -path $env_filename -Destination ".env" -Force
 
-Write-Output "Beginning deployment..."
+Write-Output "Changing project..."
 gcloud app deploy $app_yaml --project $project_name
