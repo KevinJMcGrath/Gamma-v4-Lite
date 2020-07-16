@@ -91,7 +91,8 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-        <symphony-footer v-bind:is-absolute="false"/>
+        <!--<symphony-footer v-bind:is-absolute="false"/>-->
+        <symphony-footer is-absolute/>
     </div>  
 </template>
 <script>

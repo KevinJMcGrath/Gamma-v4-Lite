@@ -7,7 +7,7 @@
                         <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Your Information</p>
                             <div class="timeline-spacer"></div>
-                            <div class="timeline-content" style="height:280px;">
+                            <div class="timeline-content" style="height:380px;">
                             <Form ref="contact_form_ref" :model="contactForm" :rules="validation_rules" @submit.native.prevent>
                                 <div class="lite-container-row" style="height: 40px;"> 
                                     Email Address<br/>
@@ -21,6 +21,10 @@
                                                 <i-input v-model="input_firstname"></i-input>
                                             </FormItem>
                                         </i-col>
+                                    </Row>
+                                </div>
+                                <div class="lite-container-row"> 
+                                    <Row :gutter="4">
                                         <i-col span=12>
                                             Last Name<br/>
                                             <FormItem prop="lastname"> 
@@ -54,13 +58,9 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=8 class="lite-col">
-                   
-                </i-col>
-                <i-col span=2></i-col>
             </Row>
         </div>
-        <symphony-footer v-bind:is-absolute="false"/>
+        <symphony-footer is-absolute/>
     </div>  
 </template>
 <script>    

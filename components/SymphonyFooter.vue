@@ -1,11 +1,14 @@
 <template>
     <div v-bind:class="getFooterPositioningClass()"> <!-- class="footer-container"-->
         <Row type="flex" justify="center">
-            <i-col>
+            <i-col span=2 class='footer-item'><a href="https://symphony.com/en-US/legal/privacy" target="_blank">Privacy Policy</a></i-col>
+            <i-col span=2 class='footer-item'><a href="https://symphony.com/en-US/legal/cookie-policy" target="_blank">Cookie Policy</a></i-col>
+            <i-col span=2 class='footer-item'><a href="https://support.symphony.com/hc/en-us" target="_blank">Support</a></i-col>
+            <!--<i-col>
                 <div class="footer-item"><a href="https://symphony.com/en-US/legal/privacy" target="_blank">Privacy Policy</a></div>
                 <div class="footer-item"><a href="https://symphony.com/en-US/legal/cookie-policy" target="_blank">Cookie Policy</a></div>
                 <div class="footer-item"><a href="https://support.symphony.com/hc/en-us" target="_blank">Support</a></div>
-            </i-col>
+            </i-col>-->
         </Row>
         <Row type="flex" justify="center" class="copyright-row">
             <i-col>Copyright © 2019 Symphony Communication Services, LLC. All Rights Reserved</i-col>
@@ -50,7 +53,7 @@ export default {
     .footer-item {
         float: left;
         height: 15px;
-        width: 75px;
+        width: 100px;
         margin: 0 15px;
     }
 

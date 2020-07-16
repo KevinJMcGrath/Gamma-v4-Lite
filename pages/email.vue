@@ -6,7 +6,7 @@
                     <p class="info-header">First, let's confirm your email address.</p>
                     <div class="lite-container-row">
                         Business Email
-                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent> <!--@submit.native.prevent-->
+                        <Form ref="email_form" :model="emailForm" :rules="validation_rules" @submit.native.prevent>
                             <FormItem prop="email">
                                 <i-input class="email-input" v-model="input_email" placeholder="Enter your business email" v-on:on-keydown="key_handler" ></i-input>
                             </FormItem> 
@@ -23,10 +23,6 @@
                         </button>
                     </div>
                 </i-col>
-                <i-col span=8 class="lite-col">
-                    
-                </i-col>
-                <i-col span=2></i-col>
             </Row>
         </div>
         <symphony-footer is-absolute/>

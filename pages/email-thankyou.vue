@@ -2,13 +2,13 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center" >
-                <i-col span=10 offset=4 class="lite-col">
+                <i-col span=10 offset=2 class="lite-col">
                     <Row>                        
                         <i-col span=6>
                             <img src="../assets/images/big-green-check.png" height="60px" />
                         </i-col>
                         <i-col span=16>
-                            <p class="info-header">Check your inbox<br/>in a few minutes.</p>
+                            <p class="info-header">Check your inbox in a few minutes.</p>
                             <div class="lite-container-row">
                                 We emailed next steps to: <b>{{ input_email }}</b>
                             </div>
@@ -20,10 +20,6 @@
                         </i-col>                    
                     </Row>
                 </i-col>
-                <i-col span=8 class="lite-col">
-                    
-                </i-col>
-                <i-col span=2></i-col>
             </Row>
         </div>
         <symphony-footer is-absolute/>

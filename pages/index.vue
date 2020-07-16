@@ -3,9 +3,17 @@
         <div class="lite-header">
             <div class="lite-header-logo"></div>
         </div>
-        <div class="lite-banner">
-            <p>SECURE TEAM COLLABORATION</p>
-            <p class="sub-banner">FOR YOUR BUSINESS</p>
+        <div class="sym-index-banner">
+            <Row type="flex" justify="center">
+                <i-col span=6 class="blue-shields"></i-col>
+                <i-col span=10 class="sym-index-col">
+                    <p>SECURE TEAM COLLABORATION</p>
+                    <p style="font-size:1.8em;">FOR YOUR BUSINESS</p>
+                </i-col>
+                <i-col span=6 class="blue-shields"></i-col>
+            </Row>
+        </div>
+        <div style="margin-top:20px;">
             <div class="asset-box">
                 <div class="asset-1"></div>
                 <div class="asset-2">
