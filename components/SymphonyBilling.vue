@@ -8,13 +8,13 @@
                     <!--<span class="big-item"><b>{{total_seats}}</b> Licenses</span>-->
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
-                    <div class="big-item align-right">{{formatCurrencyValue(2000)}}</div>
+                    <div class="big-item align-right">{{formatCurrencyValue(400)}}</div>
                     <!-- <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div> -->
                 </i-col>
             </Row>
             <Row class="mini-row">
                 <i-col span="10">
-                    <span class="small-item"><i>(Up to 100 licenses)</i></span>
+                    <span class="small-item"><i>(Up to 20 licenses)</i></span>
                     <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
                 </i-col>
                 <i-col span="4" offset="10">
@@ -50,10 +50,10 @@
                     <div class="align-right">{{formatted_annual_seat_cost}}</div>
                 </i-col>
             </Row>
-            <p class="small-item">
+            <!--<p class="small-item">
                 Requires a 2 year subscription.<br/>
                 We'll charge the first year's amount when your service is ready.
-            </p>
+            </p>-->
         </div>
     </div>
 </template>
@@ -142,7 +142,7 @@
             annual_seat_cost: {
                 get () {
                     //return this.monthly_seat_cost * 12
-                    return (2000 + this.more_seats_cost) * 12
+                    return (400 + this.more_seats_cost) * 12
                 }
             },
             formatted_annual_seat_cost: {
