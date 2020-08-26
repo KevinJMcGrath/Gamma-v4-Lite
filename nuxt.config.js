@@ -107,7 +107,7 @@ module.exports = {
   //Working - 3/31/2018
   plugins: [
     { src: '~/plugins/iview.js', ssr: true},
-    { src: '~/plugins/vue-tele.js', ssr: false},
+    { src: '~/plugins/vue-tele.js', ssr: false}, // I don't know if this did anything or not. 
     { src: '~/plugins/qs_plugin.js', ssr: true}, 
     { src: '~/plugins/vuex_ps_cookie.js', ssr: true}
   ],

@@ -14,8 +14,34 @@
             </Row>
             <Row class="mini-row">
                 <i-col span="10">
-                    <span class="small-item"><i>(Up to 20 licenses)</i></span>
+                    <span class="small-item"><i>(Up to 20 licenses - <a class="lite-link-button" href="#" @click="pricing_window = true" >See Pricing</a>)</i></span>
                     <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
+                    <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
+                        <div>
+                            <br/>
+                            <Row>
+                                <i-col span=10>
+                                    <b>Base Package (up to 20 licenses)</b>
+                                </i-col>
+                                <i-col span=4 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                <i-col span=8 offset=1>
+                                    <b>$400</b> per month
+                                </i-col>
+                            </Row>
+                            <Row>
+                                <i-col span=8>
+                                    <b>Each additional license</b>
+                                </i-col>
+                                <i-col span=6 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                <i-col span=8 offset=1>
+                                    <b>$20</b> per month
+                                </i-col>
+                            </Row>
+                            <br/>                            
+                            You can add new licenses to your subscription anytime - we'll just add them to your bill.
+                        </div>
+                        <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button -->
+                    </Modal>
                 </i-col>
                 <i-col span="4" offset="10">
                     <div class="small-item align-right">per month</div>
@@ -68,7 +94,8 @@
                 priceColSize: 6, //4
                 priceColOffset: 10, //12
                 totalColSize: 8,
-                totalColOffset: 6
+                totalColOffset: 6,
+                pricing_window: false
             }
         },
         mounted: function() {
@@ -82,6 +109,9 @@
                     return `$${input_val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
                 else
                     return `US$ ${input_val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
+            },
+            modal_ok() {
+
             }
         },
         computed: {

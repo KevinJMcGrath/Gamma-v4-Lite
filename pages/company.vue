@@ -29,42 +29,7 @@
                                         </FormItem>
                                     </div>
 
-                                    <div class="lite-container-row2"> 
-                                        Total Symphony Licenses<br/>
-                                        <FormItem prop="seats" :show-message=true>
-                                            <InputNumber :step="1" v-model="input_seats" :min="0"></InputNumber>
-                                            <a class="lite-link-button" href="#" @click="pricing_window = true" style="margin-left: 10px;">Pricing</a>
-                                            <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
-                                                <div>
-                                                    <br/>
-                                                    <Row>
-                                                        <i-col span=10>
-                                                            <b>Base Package (up to 100 licenses)</b>
-                                                        </i-col>
-                                                        <i-col span=4 style="border-bottom:1px dotted gray;height:14px;"></i-col>
-                                                        <i-col span=8 offset=1>
-                                                            <b>$2,000</b> per month
-                                                        </i-col>
-                                                    </Row>
-                                                    <Row>
-                                                        <i-col span=8>
-                                                            <b>Each additional license</b>
-                                                        </i-col>
-                                                        <i-col span=6 style="border-bottom:1px dotted gray;height:14px;"></i-col>
-                                                        <i-col span=8 offset=1>
-                                                            <b>$20</b> per month
-                                                        </i-col>
-                                                    </Row>
-                                                    <br/>
-                                                    Requires a 2 year commitment with annual billing.<br/>
-                                                    You can add new licenses to your subscription anytime - we'll just add them to your bill.
-                                                </div>
-                                                <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button-->
-                                            </Modal>
-
-                                        </FormItem>
-                                        
-                                    </div>
+                                    
 
                                     <!-- <div v-bind:class="seat_pricing_notice_class">
                                         <Alert show-icon>Your total cost will be lower if you purchase 50 licenses.</Alert>

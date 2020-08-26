@@ -93,7 +93,7 @@
                 axios.post('/api/verify', { email_address: this.input_email, resend: true}).then(function(response) {
                     this.$Notice.success({
                         title: 'Email verification Re-sent',
-                        desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click Enter new Email to use a different address.',
+                        desc: 'Email verification re-sent to: <br/><p style="margin:10px 0;font-weight:bold;">' + this.input_email + '</p>Click "Enter new email address" to use a different address.',
                         duration: 6
                     });
 
