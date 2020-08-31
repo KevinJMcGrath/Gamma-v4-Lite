@@ -319,20 +319,14 @@ const store = () => new Vuex.Store({
 			let retVal = false
 
 			try {
-				if (process.env.USE_PHK) {
-					console.log('Verifying PHK...')
-					console.log('API Base URL: ' + getters.baseAppURL )
-					let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
+				console.log('Verifying PHK...')
+				console.log('API Base URL: ' + getters.baseAppURL )
+				let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
 
-					if (resp.data.success) {
-						commit('SET_PHK', phk)
-						retVal = true
-					}										
-				} else {
-					return true
+				if (resp.data.success) {
+					commit('SET_PHK', phk)
+					retVal = true
 				}
-
-				
 			}
 			catch (error) {
                 if (error.response) {                    

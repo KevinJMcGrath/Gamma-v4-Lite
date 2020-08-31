@@ -7,7 +7,8 @@ module.exports = {
     // this is not a secure place to store keys or magic strings
     is_dev: process.env.NODE_ENV !== 'production',
     stripe_public_key: process.env.STRIPE_PUBLIC_KEY,
-    base_app_url: process.env.BASE_URL    
+    base_app_url: process.env.BASE_URL,
+    use_phk: process.env.USE_PHK
   },
   loading: { color: '#3B8070' },
   css: [
