@@ -1,8 +1,6 @@
 export default async function ({app, env, store, query, redirect, isDev}) {
-    
-
     if (env.use_phk) {
-        
+
         let force_redirect = false
 
         if (query.phk) {

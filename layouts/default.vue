@@ -11,7 +11,7 @@
   
 
   export default {
-    middleware: 'phk',
+    //middleware: 'phk',
     components: {
       SymphonyHeader
     }
