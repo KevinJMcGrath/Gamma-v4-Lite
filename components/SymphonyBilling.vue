@@ -14,14 +14,14 @@
             </Row>
             <Row class="mini-row">
                 <i-col span="10">
-                    <span class="small-item"><i>(Up to 20 licenses - <a class="lite-link-button" href="#" @click="pricing_window = true" >See Pricing</a>)</i></span>
+                    <span class="small-item"><i>(Up to 10 licenses - <a class="lite-link-button" href="#" @click="pricing_window = true" >See Pricing</a>)</i></span>
                     <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
                     <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
                         <div>
                             <br/>
                             <Row>
                                 <i-col span=10>
-                                    <b>Base Package (up to 20 licenses)</b>
+                                    <b>Base Package (up to 10 licenses)</b>
                                 </i-col>
                                 <i-col span=4 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                 <i-col span=8 offset=1>
@@ -34,7 +34,7 @@
                                 </i-col>
                                 <i-col span=6 style="border-bottom:1px dotted gray;height:14px;"></i-col>
                                 <i-col span=8 offset=1>
-                                    <b>$20</b> per month
+                                    <b>$40</b> per month
                                 </i-col>
                             </Row>
                             <br/>                            
@@ -148,7 +148,7 @@
             scaled_pupm: {
                 get () {
                     let seats = this.$store.state.service.seats
-                    let pupm = 20 //(seats < 50 ? 30 : 20)
+                    let pupm = 40 //(seats < 50 ? 30 : 20)
                     
                     return pupm
                 }

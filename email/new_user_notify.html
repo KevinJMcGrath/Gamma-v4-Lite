@@ -1,0 +1,97 @@
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400" rel='stylesheet' type='text/css'>
+		<style>
+
+			.email-body {
+				background-color: white;
+                border: 1px solid lightgrey;
+				border-radius: 10px;
+                max-width: 700px;
+                min-height: 400px;
+                overflow:hidden;
+			}
+
+			.header {
+				color: white;
+				height: 100px;
+				width: 100%;
+                
+			}
+
+			.body-box {
+				font-family: 'Roboto';
+				padding: 20px;
+				color: #333;
+                min-height: 300px;
+			}
+
+			.big-text {
+				font-size: 22px;
+				font-weight: bold;
+			}
+
+            .login-row {
+                margin-left: 2%;
+                width: 80%;
+                height: 25px;
+            }
+
+            .login-label {
+                float:left;
+                width: 30%;
+                text-align: right;
+                font-weight: bold;
+            }
+
+            .login-text {
+                float:left;
+                width: 60%;
+                text-align: left;
+                margin-left: 10px;
+            }
+
+            .footer {
+                padding-left: 10px;
+                font-size: 11px;
+                color: #aaa;
+                text-align: center;
+            }
+		</style>
+	</head>
+	<body >
+        <div class="email-body">
+            <div class="header">
+                <img style="margin: 15px 15px;"  src="https://symphony--dev--c.cs4.content.force.com/servlet/servlet.ImageServer?id=015P0000000mhh8&oid=00DP00000002rTJ&lastMod=1598467703000" />
+            </div>
+            <div class="body-box">
+                <p class="big-text">Let's get started!</p>
+                <p> Welcome, {!Self_Service_Entry__c.Contact_First_Name__c}. Here are your new Symphony login details: </p>
+
+                    <div class="login-row">
+                        <div class="login-label">Username:</div>
+                        <div class="login-text">{!Self_Service_Entry__c.User_Email_Address__c}</div>
+                    </div>
+
+                    <div class="login-row">
+                        <div class="login-label">Symphony URL:</div>
+                        <div class="login-text"><a href="{!Self_Service_Entry__c.Symphony_URL__c}" target="_blank">Login</a></div>
+                    </div>
+
+                <p>
+                    <b>Important! </b> Before you can log in for the first time, you'll need to reset your user's password. Navigate 
+                    <a href="{!Self_Service_Entry__c.Symphony_URL__c}/#forgot-password" target="_blank">here</a> and enter your username above. A password
+                    reset email will be sent to this email address. 
+                    <br/>
+                    <br/>
+                    Admin users should read about the <a href="https://support.symphony.com/hc/en-us/articles/360000720623-Sign-into-and-out-of-the-admin-portal" 
+                        target="_blank">Access and Compliance Portal</a> to learn how to manage users going forward. 
+                    <br/>
+                    <br/>
+                    If you have any questions, contact our <a href="mailto:support@symphony.com">support team</a>.
+                </p>
+            </div>
+            <p class="footer">© 2020 Symphony Communication Services, LLC 1117 S California Ave Palo Alto CA 94304 USA</p>
+        </div>
+	</body>
+</html>

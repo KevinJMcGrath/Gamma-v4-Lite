@@ -90,7 +90,7 @@
                 companyForm: {
                     companyname: '',
                     industry: '',
-                    seats: 100
+                    seats: 10
                 },
                 validation_rules: {
                     seats: [

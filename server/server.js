@@ -41,6 +41,8 @@ const api = require('./api')
 const config = require('../nuxt.config.js')
 const nuxt = new Nuxt(config)
 
+console.log('nuxt config use_phk: ' + config.env.use_phk)
+
 app.use(bodyParser.json())
 
 // Tell express to use the API routes in the API folder

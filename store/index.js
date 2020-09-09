@@ -39,7 +39,7 @@ const initial_state = () => ({
         industry: ''
     },
     service: {
-        seats: 50,
+        seats: 10,
         vanity_name: '',
         promo_code: ''
     },
@@ -268,6 +268,12 @@ const store = () => new Vuex.Store({
 			// extracting the context.commit method.
 
 			console.log('_____________------------**********nuxtServerInit**********------------_____________')
+			
+			if (process.env.use_phk) {
+				console.log('Bypassing PHK - nuxtServerInit')
+			} else {
+				console.log('PHK Enabled - nuxtServerInit')
+			}
 
 			if (process.env.is_dev)
 			{
