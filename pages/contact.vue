@@ -71,10 +71,12 @@
     export default {
         data() {
             const validateCustomPhone = (rule, value, callback) => {
-                console.log('Phone input state: ')
-                console.log( this.$refs['vuetel'])
+                //console.log('Phone input state: ')
+                //console.log( this.$refs['vuetel'])
+                //console.log(this.$refs['vuetel'].phoneObject.isValid)
                 //if (this.$refs['vuetel'].state)
-                if(this.contactForm.country_detail.is_valid)
+                //if(this.contactForm.country_detail.is_valid)
+                if (this.$refs['vuetel'].phoneObject.isValid)
                 {
                     callback('');
                 }
@@ -246,10 +248,6 @@
                 let number = phone_validator_event.number
                 let isValid = phone_validator_event.isValid
                 let country = phone_validator_event.country
-
-                console.log('number: ' + number)
-                console.log('is valid: ' + isValid)
-                console.log('country: ' + country)
 
                 //console.log(number, isValid, country)
                 this.contactForm.country_detail = {

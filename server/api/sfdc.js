@@ -239,4 +239,41 @@ router.post('/purchase-submit', function(req, res, next) {
 	})
 })
 
+router.post('/validate-promo', function(req, res, next) {
+	console.log('Validating promo code (server)')
+
+
+	const payload = req.body
+	const config = {
+		baseURL: process.env.SFDC_BASE_URL,
+		headers: {
+			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
+		}
+	}
+
+	axios.post('/validate-promo', payload, config)
+	.then((response) => {
+		log_response(response)
+		console.log('SFDC API Success')
+
+		res.json({ 
+			success: response.data.success, 
+			promo_desc: response.data.promo_desc, 
+			discount: response.data.discount,
+			message: response.data.message
+		})
+	})
+	.catch((error) => {
+		console.log('SFDC API Fail')
+		let err_obj = axios_error(error)
+		let err_code = -99
+
+		if (error.response && error.response.code) {
+			err_code = error.response.code
+		}
+
+		res.status(500).json({ success: false, message: err_obj.message, code: err_code})
+	})
+})
+
 module.exports = router

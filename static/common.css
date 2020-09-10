@@ -34,26 +34,32 @@
 @font-face {
     font-family: 'Graphik Regular';
 	font-style: normal;
-	font-weight: normal;
-	src: url('../assets/fonts/Graphik-Regular-Cy-Web.woff2') format('woff2')
+    font-weight: normal;
+    src: url('../assets/fonts/Graphik-Regular.eot');
+    src: url('../assets/fonts/Graphik-Regular.woff') format('woff'),    
+    url('../assets/fonts/Graphik-Regular.ttf') format('truetype')
+	/*src: url('../assets/fonts/Graphik-Regular-Cy-Web.woff2') format('woff2')*/
 
 }
 
 @font-face {
     font-family: 'Graphik Medium';
 	font-style: normal;
-	font-weight: normal;
-	src: url('../assets/fonts/Graphik-Medium-Cy-Web.woff2') format('woff2')
+    font-weight: normal;
+    src: url('../assets/fonts/Graphik-Medium.eot');
+    src: url('../assets/fonts/Graphik-Medium.woff') format('woff'),    
+        url('../assets/fonts/Graphik-Medium.ttf') format('truetype')
+	/*src: url('../assets/fonts/Graphik-Medium-Cy-Web.woff2') format('woff2')*/
 
 }
 
-@font-face {
+/*@font-face {
     font-family: 'Graphik Semibold';
 	font-style: normal;
 	font-weight: normal;
 	src: url('../assets/fonts/Graphik-Semibold-Cy-Web.woff2') format('woff2')
 
-}
+}*/
 
 body {
     /*font-family: Lato;*/

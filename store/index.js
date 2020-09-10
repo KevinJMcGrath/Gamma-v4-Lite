@@ -22,7 +22,11 @@ const initial_state = () => ({
         submit_in_progress: false,
         submit_completed: false,
 		submit_completed_date: moment("1980-01-26")		
-    },
+	},
+	base: {
+		seats: 10,
+		pupm: 40
+	},
     email: {
         email_address: '',
         is_verified: false
@@ -40,8 +44,11 @@ const initial_state = () => ({
     },
     service: {
         seats: 10,
-        vanity_name: '',
-        promo_code: ''
+		vanity_name: '',
+		show_promo_code: false,
+		promo_code: '',
+		promo_code_desc: '',
+		promo_code_discount_percentage: 0
     },
     legal: {
         terms_accepted: false
@@ -130,8 +137,17 @@ const store = () => new Vuex.Store({
 		SET_VANITYNAME(state, vanity_name) {
 			state.service.vanity_name = vanity_name
 		},
-		SET_PROMOCODE(state, promo_code) {
+		SET_PROMO_CODE(state, promo_code) {
 			state.service.promo_code = promo_code
+		},
+		SET_PROMO_CODE_DESC(state, promo_code_desc) {
+			state.service.promo_code_desc = promo_code_desc
+		},
+		SET_PROMO_CODE_DISCOUNT(state, promo_code_discount) {
+			state.service.promo_code_discount_percentage = promo_code_discount
+		},
+		SET_PROMO_CODE_SHOW(state, show_promo_code) {
+			state.service.show_promo_code = show_promo_code
 		},
 		SET_TANDC(state, terms_accepted) {
 			state.legal.terms_accepted = terms_accepted
@@ -416,7 +432,68 @@ const store = () => new Vuex.Store({
                 return retVal
             }
             
-        },
+		},
+		async validatePromoCode({commit, dispatch, state})
+		{
+			commit('SET_PROMO_CODE_SHOW', false)			
+
+			let ret_obj = {
+				code: 0,
+				message: ''
+			}
+
+			try {
+				let payload = {
+					"promo_code": state.service.promo_code
+				}
+
+				let resp = await axios.post('/api/validate-promo', payload)
+
+				if (resp && resp.status) {
+
+					console.log('validate successful')
+
+					if (Math.floor(resp.status / 100) == 2) {
+						if (resp.data.success)
+						{
+							console.log('Discount: ' + resp.data.discount)
+							commit('SET_PROMO_CODE_DESC', resp.data.promo_desc)
+							commit('SET_PROMO_CODE_DISCOUNT', resp.data.discount / 100)
+							commit('SET_PROMO_CODE_SHOW', true)													
+						}
+						else
+						{							
+							ret_obj.code = -2
+							ret_obj.message = resp.data.message	
+						}
+					}
+					else {
+						
+						
+						ret_obj.code = -1
+						ret_obj.message = "Invalid Promo Code"						
+					}
+				}
+				else {
+					ret_obj.code = -101
+					ret_obj.message = "Network Error"
+				}
+			}
+			catch (error) {
+				console.log('validate-store-error' + error)
+				let err_msg = {
+                    message: 'There was a problem validating your promo code.',
+                    code: 'PRO-01'
+                }
+
+				ret_obj.code = -99
+				ret_obj.message = "System error"
+			}
+			finally
+			{
+				return ret_obj
+			}
+		},
 		async submitPurchase({ commit, dispatch, state })
 		{
             if (state.status.submit_in_progress) { return -1}

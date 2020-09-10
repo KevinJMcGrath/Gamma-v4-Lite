@@ -69,6 +69,21 @@
             </Row>
  
         </div>
+        <div class="billing-group top-group" v-bind:class="toggleCouponCode">
+            <Row>
+                <i-col span="8">
+                    <span class="big-item">Coupon Code</span>                    
+                </i-col>
+                <i-col :span="priceColSize" :offset="priceColOffset">
+                    <div class="big-item align-right">{{promo_code}}</div>                    
+                </i-col>
+            </Row>
+            <Row class="mini-row">
+                <i-col>
+                    <span class="small-item"><i>{{promo_code_desc}}</i></span>
+                </i-col>
+            </Row>
+        </div>
         <div class="billing-group">
             <Row class="summary-row">
                 <i-col span="10">Annual Total</i-col>
@@ -145,6 +160,26 @@
                     return (this.is_more_than_base ? 'show' : 'hide')
                 }
             },
+            toggleCouponCode : {
+                get() {
+                    return this.has_promo_code? 'show': 'hide'
+                }
+            },
+            has_promo_code: {
+                get () {
+                    return this.$store.state.service.show_promo_code
+                }
+            },
+            promo_code: {
+                get () {
+                    return this.$store.state.service.promo_code
+                }
+            },
+            promo_code_desc: {
+                get () {
+                    return this.$store.state.service.promo_code_desc
+                }
+            },
             scaled_pupm: {
                 get () {
                     let seats = this.$store.state.service.seats
@@ -170,9 +205,14 @@
                 }
             },
             annual_seat_cost: {
-                get () {
-                    //return this.monthly_seat_cost * 12
-                    return (400 + this.more_seats_cost) * 12
+                get () {                    
+                    //return (400 + this.more_seats_cost) * 12
+                    let monthly_cost = 400 + this.more_seats_cost
+
+                    if (this.$store.state.service.promo_code_discount_percentage)
+                        monthly_cost *= (1 - this.$store.state.service.promo_code_discount_percentage)
+
+                    return monthly_cost * 12
                 }
             },
             formatted_annual_seat_cost: {
