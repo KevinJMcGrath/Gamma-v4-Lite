@@ -96,6 +96,12 @@
                 We'll charge the first year's amount when your service is ready.
             </p>-->
         </div>
+
+        <Row type="flex" justify="center">
+            <i-col span=10 style="font-size: 1em; border: 1px solid red;">
+                <a class="lite-link-button" href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a>
+            </i-col>
+        </Row>
     </div>
 </template>
     
