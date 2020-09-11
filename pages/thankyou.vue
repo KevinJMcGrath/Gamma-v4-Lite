@@ -1,13 +1,13 @@
 <template>
     <div class="lite-layout">
         <div class="lite-body">
-            <Row type="flex" justify="center" >
+            <Row type="flex" justify="center">
                 <i-col span=10 offset=2 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Row>                        
-                        <i-col span=6>
-                            <img src="../assets/images/big-green-check.png" height="60px" />
+                        <i-col span=4 offset=2>
+                            <img src="../assets/images/bullseye.png" height="60px" />
                         </i-col>
-                        <i-col span=16>
+                        <i-col span=18 style="height: 250px;">
                             <p class="info-header">You are on your way.</p>
                             <br/>
                             <p class="info-header info-header-bottom">What's next?</p>

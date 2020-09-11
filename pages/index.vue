@@ -17,14 +17,15 @@
             <div class="asset-box">
                 <div class="asset-1"></div>
                 <div class="asset-2">
-                    <p class="symphony-start-header">With Symphony, you get:</p>
+                    <p class="symphony-start-header">With Symphony, you can:</p>
                     <ul class="symphony-start-list">
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/lock.svg" height="16px"/></div>Enterprise-grade security</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/web.svg" height="16px" /></div>Worldwide compliance</li>
-                        <li><div class="icon-box"><img class="icon-image" style="margin-top:2px;" src="../assets/images/dudes.svg" height="12px" /></div>Better team collaboration</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/refresh.svg" height="16px" /></div>Top app integrations</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/expand.svg" height="15px" /></div>Custom, scalable setup</li>
+                        <li><div class="icon-box"><img class="icon-image" style="margin-top:2px;" src="../assets/images/dudes.svg" height="12px" /></div>Optimize team collaboration</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/web.svg" height="16px" /></div>Connect to a verified network</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/expand.svg" height="15px" /></div>Streamline financial services workflows</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/refresh.svg" height="16px" /></div>Integrate with top apps</li>
+                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/lock.svg" height="16px"/></div>Secure your collaboration data</li>
                     </ul>
+                    <p class="symphony-start-header">Tips and tricks available at <a href="#">Symphony.direct</a></p>
                 </div>
             </div>
             <div class="button-box">
@@ -90,7 +91,7 @@ export default {
     }
 
     .asset-box {
-        width: 710px;
+        width: 800px;
         height: 240px;
         margin: 0 auto;        
     }
@@ -104,8 +105,8 @@ export default {
 
     .asset-2 {
         float: right;
-        height: 230px;        
-        width: 270px;
+        height: 250px;        
+        width: 370px;
         background-color: white;
         color: #333333;
         padding: 24px 32px;
