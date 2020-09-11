@@ -47,7 +47,6 @@
                         <TimelineItem color="gray">
                             <p>Review</p>
                         </TimelineItem>
-
                     </Timeline>
                 </i-col>
                 <i-col span=8 class="lite-col">

@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center">                
-                <i-col span=10 offset=4 class="lite-col" >
+                <i-col span=10 offset=4 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Your Information</p>
@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="lite-container-row"> 
                                     <Row :gutter="4">
-                                        <i-col span=12>
+                                        <i-col span=24>
                                             First Name<br/>
                                             <FormItem prop="firstname"> 
                                                 <i-input v-model="input_firstname"></i-input>
@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="lite-container-row"> 
                                     <Row :gutter="4">
-                                        <i-col span=12>
+                                        <i-col span=24>
                                             Last Name<br/>
                                             <FormItem prop="lastname"> 
                                                 <i-input v-model="input_lastname"></i-input>
@@ -55,27 +55,27 @@
                         <TimelineItem color="gray">
                             <p>Review</p>
                         </TimelineItem>
-
                     </Timeline>
                 </i-col>
+                <i-col span=8 class="lite-col">
+                    <symphony-billing />
+                </i-col>
+                <i-col span=2></i-col>
             </Row>
         </div>
         <symphony-footer is-absolute/>
     </div>  
 </template>
 <script>    
-    const axios = require('axios')
+    import SymphonyBilling from '~/components/SymphonyBilling.vue'
     import SymphonyFooter from '~/components/SymphonyFooter.vue'
+
+    const axios = require('axios')    
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
         data() {
             const validateCustomPhone = (rule, value, callback) => {
-                //console.log('Phone input state: ')
-                //console.log( this.$refs['vuetel'])
-                //console.log(this.$refs['vuetel'].phoneObject.isValid)
-                //if (this.$refs['vuetel'].state)
-                //if(this.contactForm.country_detail.is_valid)
                 if (this.$refs['vuetel'].phoneObject.isValid)
                 {
                     callback('');
@@ -268,6 +268,7 @@
 
         },
         components: {
+            SymphonyBilling,
             SymphonyFooter
         }
     }
