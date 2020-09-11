@@ -94,8 +94,8 @@
                                     </i-col>
                                 </Row>
 
-                                <div class="tandc group-margin">
-                                    <!-- <Form ref="summary_form" :model="summaryForm" :rules="validation_rules" @submit.native.prevent> -->
+                                <div class="tandc">
+                                    <p style="font-size:0.9em;">The Symphony Services are governed by and subject to the Symphony Services Agreement (the “Agreement”). By submitting this order, you understand and agree that you are entering into the Agreement on behalf of your company, who will be the “Customer” pursuant the Agreement, and you represent that you have the authority to bind your company to this order and the Agreement.</p>
                                     <!-- I REALLY hate trying to get checkboxs to align with labels.
                                     I can't believe this is still a thing in 2018-->
                                     <FormItem prop="tandc" style="height:25px"> 
@@ -104,7 +104,8 @@
                                             <span> I have read and agree to the <a class="lite-link-button" href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a></span>
                                         </label>
                                     </FormItem>
-                                    <!-- </Form> -->
+                                    
+                                    
                                 </div>
 
                                 <div class="submit-button">
@@ -474,7 +475,7 @@
     }
 
     .height-override {
-        height: 550px;
+        height: 600px;
     }
 
 </style>

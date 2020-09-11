@@ -37,8 +37,10 @@
                                     <b>$40</b> per month
                                 </i-col>
                             </Row>
+                            <br/>
+                            A License is an individual user account to access and use Symphony.
                             <br/>                            
-                            You can add new licenses to your subscription anytime - we'll just add them to your bill.
+                            You can provision additional Licenses at any time. We will charge you for additional licenses in accordance with the Symphony Services Agreement.
                         </div>
                         <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button -->
                     </Modal>
@@ -72,7 +74,7 @@
         <div class="billing-group top-group" v-bind:class="toggleCouponCode">
             <Row>
                 <i-col span="8">
-                    <span class="big-item">Coupon Code</span>                    
+                    <span class="big-item">Promo Code</span>                    
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
                     <div class="big-item align-right">{{promo_code}}</div>                    
@@ -91,14 +93,13 @@
                     <div class="align-right">{{formatted_annual_seat_cost}}</div>
                 </i-col>
             </Row>
-            <!--<p class="small-item">
-                Requires a 2 year subscription.<br/>
-                We'll charge the first year's amount when your service is ready.
-            </p>-->
+            <p class="small-item" style="font-style: italic !important;">
+                You will be charged the full annual fee when we deliver your Symphony credentials.
+            </p>
         </div>
 
         <Row type="flex" justify="center">
-            <i-col span=10 style="font-size: 1em; border: 1px solid red;">
+            <i-col span=10 style="font-size: 1em;">
                 <a class="lite-link-button" href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a>
             </i-col>
         </Row>
