@@ -41,6 +41,7 @@ const initial_state = () => ({
     company: {
         name: '',
 		industry: '',
+		use_company_address: false,
 		address1: '',
         address2: '',
         city: '',

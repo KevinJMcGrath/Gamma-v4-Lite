@@ -33,6 +33,7 @@
                                         </i-col>                                    
                                     </Row>
                                 </div>
+                                <!--
                                 <div class="lite-container-row" > 
                                     Daytime Phone Number<br/>
                                     <FormItem prop="phone"> 
@@ -40,6 +41,7 @@
                                             :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                     </FormItem>
                                 </div>
+                                -->
                                 <div>
                                     <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoCompany()">Next</button>
                                 </div>
@@ -75,7 +77,7 @@
 
     export default {
         data() {
-            const validateCustomPhone = (rule, value, callback) => {
+            /*const validateCustomPhone = (rule, value, callback) => {
                 if (this.$refs['vuetel'].phoneObject.isValid)
                 {
                     callback('');
@@ -84,7 +86,7 @@
                 {
                     callback(new Error('Invalid phone number format.'));
                 }                
-            };
+            };*/
 
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
@@ -121,11 +123,13 @@
                         { required: true, message: 'Required', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'Last Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
-                    ],
+                    ]
+                    
+                    /*,
                     phone: [
                         { required: true, message: 'Required', trigger: 'blur'},
                         { validator: validateCustomPhone, trigger: 'change' }
-                    ]
+                    ]*/
 
                 }
             }
@@ -140,9 +144,6 @@
             }
         },
         async fetch({ store, params, query, redirect, env }) {
-
-            // console.log('Is Page Completed: ' + store.getters.getPageState('contact'))
-            // console.log('Company Name from Store: ' + store.state.company.name)
             
             if (store.state.page_state.find(page => page.name === 'contact').completed) {
                 console.log('Verification completed.')
@@ -151,17 +152,14 @@
                 store.commit('SET_GUID', query.sseid)
 
                 let resp = await store.dispatch('verifyGUIDAA', query.sseid)
-                //resp => { success: (bool), message: (str), code: (int) }
-
-                //console.log('Verification response from store: ' + JSON.stringify(resp))
+ 
                 if (resp.success) {
                     console.log('verification successful (fetch)')
                     console.log('Email (SS2): ' + store.state.email.email_address)
                 }
                 else {
                     console.error('verification failed (fetch) - code: ' + resp.code)
-                    console.error('Store Error Status: ' + store.state.error.is_error_status)
-                    //redirect('/error')
+                    console.error('Store Error Status: ' + store.state.error.is_error_status)                    
                 }
             }
             else
@@ -178,15 +176,14 @@
             if (this.$store.state.error.is_error_status)
             {                
                 this.$router.push({ name: "error"})
-            }            
-
-            //console.log('Email (CS): ' + this.$store.state.email.email_address)
+            }
 
             // Won't need this if the Properties tied to the Store work for validation
             //this.contactForm.firstname = this.$store.state.user.firstname
             this.input_firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
             this.contactForm.phone = this.$store.state.user.phone
+
             // Using this to get around the inability to call the vue-tel-intl validation
             // method on pageload. Since the validation only runs after onInput or onBlur
             // the custom validator code won't work until an action is taken. This will
@@ -260,10 +257,10 @@
                 }
 
                 // Forces a validation of the field on the form level, which will show the error message if it needs to. 
-                this.$refs['contact_form_ref'].validateField('phone', (err_msg) => { })
-                this.$store.commit('SET_COUNTRYCODE', country.iso2)
-                this.$store.commit('SET_PHONE_ISVALID', isValid)
-                this.$store.commit('SET_BILLING_COUNTRY', country.name)                
+                //this.$refs['contact_form_ref'].validateField('phone', (err_msg) => { })
+                //this.$store.commit('SET_COUNTRYCODE', country.iso2)
+                //this.$store.commit('SET_PHONE_ISVALID', isValid)
+                //this.$store.commit('SET_BILLING_COUNTRY', country.name)                
             }
 
         },
@@ -275,8 +272,8 @@
 </script>
 <style>
     /*This is necessary to ensure the dropdown is positioned on top of the stuff under it*/
-    .vue-tel-input ul {
+    /*.vue-tel-input ul {
         z-index: 100;
-    }
+    }*/
 
 </style>
