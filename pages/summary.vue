@@ -48,9 +48,13 @@
                                     </Row>                                    
                                 </div>
 
-                                <p>{{$store.state.company.name}}</p>
-                                <p>{{$store.state.company.industry}}</p>
-                                <p>New Symphony Users: {{$store.state.service.seats}}</p>
+                                <p>{{$store.state.company.name}} ({{$store.state.company.industry}})</p>                                
+                                <p>{{$store.state.company.address1}}</p>
+                                <p>{{$store.state.company.address2}}</p>
+                                <p>{{$store.state.company.city}}, {{$store.state.company.company_state}} {{$store.state.company.postal_code}}</p>
+                                <p>{{$store.state.company.country}}</p>
+                                <br/>
+                                <p>{{$store.state.company.phone}}</p>
 
                                 <div class="timeline-billing-subgroup group-margin">
                                     <Row>
@@ -61,13 +65,22 @@
                                     </Row>                                    
                                 </div>
 
+                                <p>Symphony Licenses: {{$store.state.service.seats}}</p>
                                 <p>xxxx xxxx xxxx {{$store.getters.getPaymentLast4}}, 
                                     {{$store.getters.getPaymentExpMon}}/
                                     {{$store.getters.getPaymentExpYear}}</p>
-                                <p>{{$store.state.billing.address1}}</p>
-                                <p>{{$store.state.billing.address2}}</p>
-                                <p>{{$store.state.billing.city}}, {{$store.state.billing.billing_state}} {{$store.state.billing.zip_code}}</p>
-                                <p>{{$store.state.billing.country}}</p>
+                                
+                                <p v-bind:class="{hide: !$store.state.billing.same_billing_address_flag}">
+                                    <br/>
+                                    <b>Billing Address</b>: Same as Company Address
+                                </p>
+                                
+                                <div v-bind:class="{hide: $store.state.billing.same_billing_address_flag}"> 
+                                    <p>{{$store.state.billing.address1}}</p>
+                                    <p>{{$store.state.billing.address2}}</p>
+                                    <p>{{$store.state.billing.city}}, {{$store.state.billing.billing_state}} {{$store.state.billing.zip_code}}</p>
+                                    <p>{{$store.state.billing.country}}</p>
+                                </div>
 
                                 <div class="timeline-billing-subgroup group-margin">
                                     <Row>
@@ -475,7 +488,11 @@
     }
 
     .height-override {
-        height: 600px;
+        height: 650px;
+    }
+
+    .hide {
+        display: none;
     }
 
 </style>

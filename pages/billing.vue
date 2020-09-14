@@ -17,7 +17,7 @@
                         <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Billing</p>
                             <div class="timeline-spacer"></div> 
-                            <div class="timeline-content" style="height:700px;">
+                            <div class="timeline-content" v-bind:class="{height_override: !$store.state.billing.same_billing_address_flag}">
                                 <p class="timeline-billing-subgroup">Card Info</p>
                                 <Form ref="billing_form" :model="billingForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
@@ -604,5 +604,8 @@
         display: block;
     }
 
+    .height_override {
+        height: 700px;
+    }
 </style>
 
