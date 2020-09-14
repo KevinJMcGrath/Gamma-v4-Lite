@@ -40,7 +40,14 @@ const initial_state = () => ({
     },
     company: {
         name: '',
-        industry: ''
+		industry: '',
+		address1: '',
+        address2: '',
+        city: '',
+        company_state: '',
+        postal_code: '',
+		country: '',
+		phone: ''
     },
     service: {
         seats: 10,
@@ -66,8 +73,8 @@ const initial_state = () => ({
     },
     pricing: {
         onetime_fees: 500,
-        pupm: 20,
-        minimum_seats: 100		
+        pupm: 40,
+        minimum_seats: 10		
     },
     error: {
         is_error_status: false,        
@@ -164,8 +171,7 @@ const store = () => new Vuex.Store({
 		SET_CITY(state, city) {
 			state.billing.city = city.trim().replace( /\s\s+/g, ' ')
 		},
-		SET_BILLING_STATE(state, billing_state) {
-			console.log('STORE:152: ' + billing_state)			
+		SET_BILLING_STATE(state, billing_state) {	
 			state.billing.billing_state = billing_state.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_ZIP(state, zip_code) {
@@ -173,6 +179,27 @@ const store = () => new Vuex.Store({
 		},
 		SET_BILLING_COUNTRY(state, country) {
 			state.billing.country = country
+		},
+		SET_CO_ADD1(state, address1) {
+			state.company.address1 = address1.trim().replace( /\s\s+/g, ' ')
+		},
+		SET_CO_ADD2(state, address2) {
+			state.company.address2 = address2.trim().replace( /\s\s+/g, ' ')
+		},
+		SET_CO_CITY(state, city) {
+			state.company.city = city.trim().replace( /\s\s+/g, ' ')
+		},
+		SET__CO_STATE(state, company_state) {				
+			state.company.company_state = company_state.trim().replace( /\s\s+/g, ' ')
+		},
+		SET_CO_ZIP(state, zip_code) {
+			state.company.postal_code = zip_code
+		},
+		SET_CO_COUNTRY(state, country) {
+			state.company.country = country
+		},
+		SET_CO_PHONE(state, phone) {
+			state.company.phone = phone.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_STRIPE_TOKEN(state, tokenObj) {
 			state.billing.stripe_token = tokenObj
@@ -539,27 +566,9 @@ const store = () => new Vuex.Store({
                 if (error.response)
                     return error.response.code || -99
             }		
-		},
-		async testDispatch(context) {
-			let val = 'waiting'
-			console.log(SetLog('Testing async exeuction - Start'))
-			val = await testPromise()
-			console.log(SetLog('Testing async exeuction - End'))
-
-			return val;
-		},
+		}
     }
 })
-
-function testPromise() {
-	return new Promise(resolve => {
-		console.log(Date.now() + ' - Starting countdown')
-		setTimeout(() => {
-			console.log(Date.now() + ' - Ending countdown')
-			resolve('DONE!')
-		}, 10000)		
-	})
-}
 
 function SetLog(logActivity)
 {
