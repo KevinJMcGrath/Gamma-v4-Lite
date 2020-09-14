@@ -40,8 +40,7 @@ const initial_state = () => ({
     },
     company: {
         name: '',
-		industry: '',
-		use_company_address: false,
+		industry: '',		
 		address1: '',
         address2: '',
         city: '',
@@ -63,7 +62,8 @@ const initial_state = () => ({
     },
     billing: {
         card_fullname: '',
-        payment_type: '',
+		payment_type: '',
+		distinct_billing_address: false,
         address1: '',
         address2: '',
         city: '',
@@ -163,6 +163,9 @@ const store = () => new Vuex.Store({
 		SET_CARD_FULLNAME(state, fullname) {
 			state.billing.card_fullname = fullname.trim().replace( /\s\s+/g, ' ')
 		},
+		SET_DISTINCT_BILLING_ADDRESS(state, distinct_billing_address) {
+			state.billing.distinct_billing_address = distinct_billing_address
+		},
 		SET_ADD1(state, address1) {
 			state.billing.address1 = address1.trim().replace( /\s\s+/g, ' ')
 		},
@@ -190,7 +193,7 @@ const store = () => new Vuex.Store({
 		SET_CO_CITY(state, city) {
 			state.company.city = city.trim().replace( /\s\s+/g, ' ')
 		},
-		SET__CO_STATE(state, company_state) {				
+		SET_CO_STATE(state, company_state) {				
 			state.company.company_state = company_state.trim().replace( /\s\s+/g, ' ')
 		},
 		SET_CO_ZIP(state, zip_code) {

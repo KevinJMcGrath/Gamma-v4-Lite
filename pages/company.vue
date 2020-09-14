@@ -12,14 +12,66 @@
                         <TimelineItem color="#00557F">
                             <p class="timeline-current-label">Company Information</p>
                             <div class="timeline-spacer"></div>   
-                            <div class="timeline-content" style="height:320px;">
+                            <div class="timeline-content height-override">
                                 <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
                                         Legal Name of Business<br/>
                                         <FormItem prop="companyname"> 
                                             <i-input v-model="input_company"></i-input>
                                         </FormItem>
+                                    </div>                                    
+
+                                    <div class="lite-container-row"> 
+                                        Address Line 1<br/>
+                                        <FormItem prop="address1"> 
+                                            <i-input v-model="input_add1" placeholder="123 Main Street"></i-input>
+                                        </FormItem>
                                     </div>
+
+                                    <div class="lite-container-row"> 
+                                        Address Line 2<br/>
+                                        <FormItem prop="address2"> 
+                                            <i-input v-model="input_add2" placeholder="Apt, Office, Suite"></i-input>
+                                        </FormItem>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
+                                        <Row :gutter="8">
+                                            <i-col span=12>
+                                                Country<br/>
+                                                <FormItem prop="country"> 
+                                                    <!--<i-input v-model="input_country"></i-input>-->
+                                                    <country-dropdown v-on:country-changed="updateLabels()"/>
+                                                </FormItem>
+                                            </i-col>
+                                            <i-col span=12>
+                                                City<br/>
+                                                <FormItem prop="city"> 
+                                                    <i-input v-model="input_city"></i-input>
+                                                </FormItem>
+                                            </i-col>                                    
+                                        </Row>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
+                                        <Row :gutter="8">
+                                            <i-col span=12>
+                                                {{state_label}}<br/>
+                                                <FormItem prop="state"> 
+                                                    <!-- <i-input v-model="input_state"></i-input> -->
+                                                    <!-- I don't need the custom-event to trigger the reactivity changes -->
+                                                    <state-dropdown v-model="input_state"></state-dropdown> <!--v-on:custom-event="checkChanged"-->
+                                                </FormItem>
+                                            </i-col>
+                                            <i-col span=12>
+                                                {{zip_label}}<br/>
+                                                <FormItem prop="zip_code"> 
+                                                    <i-input v-model="input_zip"></i-input>
+                                                </FormItem>
+                                            </i-col>                                    
+                                        </Row>
+                                    </div>
+
                                     <div class="lite-container-row"> 
                                         Industry<br/>
                                         <FormItem prop="industry" >
@@ -62,16 +114,28 @@
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
     import SymphonyFooter from '~/components/SymphonyFooter.vue'
+    import CountryDropdown from '~/components/CountryDropdown.vue'
+    import StateDropdown from '~/components/StateDropdown.vue'
+
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
         data() {
-            const validateMinSeats = (rule, value, callback) => {
+            /*const validateMinSeats = (rule, value, callback) => {
                 if (this.input_seats < 0) {
                     callback(new Error('Please enter a valid value.'))
                 }
 
                 callback()
+            }*/
+
+            const validateReqIfUs = (rule, value, callback) => {
+                if(this.is_country_us && !value.replace(/\s+/,'').length) {
+                    callback(new Error('Required'))
+                }
+                else {
+                    callback()
+                }
             }
 
             const validateNoHTML = (rule, value, callback) => {
@@ -89,14 +153,20 @@
                 companyForm: {
                     companyname: '',
                     industry: '',
-                    seats: 10
+                    address1: '',
+                    address2: '',
+                    city: '',
+                    state: '',
+                    zip_code: '',
+                    phone: ''
+                    //seats: 10
                 },
                 validation_rules: {
-                    seats: [
+                    /*seats: [
                         //For some reason, I needed to specify the type for this rule to work consistently
                         { required: true, type: 'number', message: 'Required', trigger: 'change' },
                         { validator: validateMinSeats, trigger: 'change' } 
-                    ],
+                    ],*/
                     companyname: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
@@ -104,6 +174,30 @@
                     ],
                     industry: [
                         { required: true, message: 'Required', trigger: 'change'}
+                    ],
+                    address1: [
+                        { required: true, message: 'Required', trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
+                        { validator: validateNoHTML, trigger: 'blur' }
+                    ],
+                    address2: [
+                        { validator: validateNoHTML, trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
+                    ],
+                    city: [
+                        { required: true, message: 'Required', trigger: 'blur' },
+                        { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
+                        { validator: validateNoHTML, trigger: 'blur' }
+                    ],
+                    state: [
+                        { validator: validateReqIfUs, trigger: 'blur'},
+                        { type: 'string', 'min': 1, 'max': 50, message: 'State must be less than 50 characters.', trigger: 'blur'},
+                        { validator: validateNoHTML, trigger: 'blur' }
+                    ],
+                    zip_code: [
+                        { validator: validateReqIfUs, trigger: 'blur'},
+                        { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
+                        { validator: validateNoHTML, trigger: 'blur' }
                     ]
 
                 },
@@ -151,7 +245,13 @@
 
             this.companyForm.companyname = this.$store.state.company.name
             this.companyForm.industry = this.$store.state.company.industry
-            this.companyForm.seats = this.$store.state.service.seats         
+            //this.companyForm.seats = this.$store.state.service.seats
+            this.companyForm.address1 = this.$store.state.company.address1
+            this.companyForm.address2 = this.$store.state.company.address2
+            this.companyForm.city = this.$store.state.company.city
+            this.companyForm.state = this.$store.state.company.company_state
+            this.companyForm.zip_code = this.$store.state.company.postal_code
+            this.companyForm.country_code = this.$store.state.company.country
             
             // Check to make sure the contact page was completed first. 
             // This prevents people from using the URLs directly to skip through the flow.
@@ -170,6 +270,21 @@
             
         },
         computed: {
+            is_country_us: {
+                get () {                    
+                    return this.$store.state.user.country_code.toLowerCase() === 'us'
+                }
+            },
+            state_label: {
+                get () {                    
+                    return (this.is_country_us ? 'State' : 'State/Provice')
+                }
+            },
+            zip_label: {
+                get () {
+                    return (this.is_country_us ? 'Zip Code' : 'Postal Code')
+                }
+            },
             seat_pricing_notice_class () {
                 if (this.$store.state.service.seats >= 34 && this.$store.state.service.seats < 50) {
                     return 'alert-row-visible'
@@ -195,7 +310,67 @@
                     this.$store.commit('SET_INDUSTRY', this.getSelectOptionLabelByValue(value))
                 }
             },
-            input_seats: {
+            input_add1: {
+                get () {
+                    return this.$store.state.company.address1
+                },
+                set (value)
+                {
+                    this.companyForm.address1 = value
+                    this.$store.commit('SET_CO_ADD1', value)
+                }
+            },
+            input_add2: {
+                get () {
+                    return this.$store.state.company.address2
+                },
+                set (value)
+                {
+                    this.companyForm.address2 = value
+                    this.$store.commit('SET_CO_ADD2', value)
+                }
+            },
+            input_city: {
+                get () {
+                    return this.$store.state.company.city
+                },
+                set (value)
+                {
+                    this.companyForm.city = value
+                    this.$store.commit('SET_CO_CITY', value)
+                }
+            },
+            input_state: {
+                get () {                    
+                    return this.$store.state.company.company_state
+                },
+                set (value)
+                {
+                    this.companyForm.state = value
+                    this.$store.commit('SET_CO_STATE', value)                    
+                }
+            },
+            input_zip: {
+                get () {
+                    return this.$store.state.company.postal_code
+                },
+                set (value)
+                {
+                    this.companyForm.zip_code = value
+                    this.$store.commit('SET_CO_ZIP', value)
+                }
+            },
+            input_country: {
+                get () {
+                    return this.$store.state.company.country
+                },
+                set (value)
+                {
+                    this.companyForm.country_code = value
+                    this.$store.commit('SET_CO_COUNTRY', value)
+                }
+            }
+            /*input_seats: {
                 get () {
                     return this.$store.state.service.seats
                 },
@@ -203,7 +378,7 @@
                     this.companyForm.seats = value;
                     this.$store.commit('SET_SEATS', value)
                 }
-            }
+            }*/
         },
         methods: {
             prior_page_Ok() {
@@ -273,5 +448,10 @@
 
     .alert-row-hidden {
         display: none;
+    }
+
+    .height-override {
+        height: 600px;
+        border: 1px solid purple;
     }
 </style>
