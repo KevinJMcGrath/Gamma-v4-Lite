@@ -15,6 +15,15 @@
                             <div class="timeline-content height-override">
                                 <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
                                     <div class="lite-container-row"> 
+                                        Industry<br/>
+                                        <FormItem prop="industry" >
+                                            <i-select v-model="input_industry" placeholder="Select Industry" >
+                                                <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
+                                            </i-select>
+                                        </FormItem>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
                                         Legal Name of Business<br/>
                                         <FormItem prop="companyname"> 
                                             <i-input v-model="input_company"></i-input>
@@ -36,25 +45,13 @@
                                     </div>
 
                                     <div class="lite-container-row"> 
-                                        <Row :gutter="8">
-                                            <i-col span=12>
-                                                Country<br/>
-                                                <FormItem prop="country"> 
-                                                    <!--<i-input v-model="input_country"></i-input>-->
-                                                    <country-dropdown v-on:country-changed="updateLabels()"/>
-                                                </FormItem>
-                                            </i-col>
+                                        <Row :gutter="8">                                            
                                             <i-col span=12>
                                                 City<br/>
                                                 <FormItem prop="city"> 
                                                     <i-input v-model="input_city"></i-input>
                                                 </FormItem>
-                                            </i-col>                                    
-                                        </Row>
-                                    </div>
-
-                                    <div class="lite-container-row"> 
-                                        <Row :gutter="8">
+                                            </i-col>
                                             <i-col span=12>
                                                 {{state_label}}<br/>
                                                 <FormItem prop="state"> 
@@ -63,26 +60,32 @@
                                                     <state-dropdown v-model="input_state"></state-dropdown> <!--v-on:custom-event="checkChanged"-->
                                                 </FormItem>
                                             </i-col>
+                                        </Row>
+                                    </div>
+
+                                    <div class="lite-container-row"> 
+                                        <Row :gutter="8">
                                             <i-col span=12>
                                                 {{zip_label}}<br/>
                                                 <FormItem prop="zip_code"> 
                                                     <i-input v-model="input_zip"></i-input>
                                                 </FormItem>
-                                            </i-col>                                    
+                                            </i-col> 
+                                            <i-col span=12>
+                                                Country<br/>
+                                                <FormItem prop="country">                                                     
+                                                    <country-dropdown v-on:country-changed="updateLabels()"/>
+                                                </FormItem>
+                                            </i-col>                                                                               
                                         </Row>
-                                    </div>
-
-                                    <div class="lite-container-row"> 
-                                        Industry<br/>
-                                        <FormItem prop="industry" >
-                                            <i-select v-model="input_industry" placeholder="Select Industry" >
-                                                <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
-                                            </i-select>
+                                    </div>                                    
+                                    <div class="lite-container-row" > 
+                                        Company Phone Number<br/>
+                                        <FormItem prop="phone"> 
+                                            <vue-tel-input ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" style="height:30px;width:50%;"
+                                                :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                         </FormItem>
                                     </div>
-
-                                    
-
                                     <!-- <div v-bind:class="seat_pricing_notice_class">
                                         <Alert show-icon>Your total cost will be lower if you purchase 50 licenses.</Alert>
                                     </div> -->
@@ -107,8 +110,8 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-        <!--<symphony-footer v-bind:is-absolute="false"/>-->
-        <symphony-footer is-absolute/>
+        <symphony-footer v-bind:is-absolute="false"/>
+        <!--<symphony-footer is-absolute/>-->
     </div>  
 </template>
 <script>
@@ -128,6 +131,17 @@
 
                 callback()
             }*/
+
+            const validateCustomPhone = (rule, value, callback) => {
+                if (this.$refs['vuetel'].phoneObject.isValid)
+                {
+                    callback('')
+                }
+                else
+                {
+                    callback(new Error('Invalid phone number format.'))
+                }
+            }  
 
             const validateReqIfUs = (rule, value, callback) => {
                 if(this.is_country_us && !value.replace(/\s+/,'').length) {
@@ -158,7 +172,15 @@
                     city: '',
                     state: '',
                     zip_code: '',
-                    phone: ''
+                    phone: '',
+                    country_detail: {
+                        areaCodes: null,
+                        dialCode: '',
+                        iso2: '',
+                        name: '',
+                        is_valid: false,
+                        number: ''
+                    }
                     //seats: 10
                 },
                 validation_rules: {
@@ -198,6 +220,10 @@
                         { validator: validateReqIfUs, trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
+                    ],
+                    phone: [
+                        { required: true, message: 'Required', trigger: 'blur'},
+                        { validator: validateCustomPhone, trigger: 'change' }
                     ]
 
                 },
@@ -252,6 +278,7 @@
             this.companyForm.state = this.$store.state.company.company_state
             this.companyForm.zip_code = this.$store.state.company.postal_code
             this.companyForm.country_code = this.$store.state.company.country
+            this.companyForm.phone = this.$store.state.company.phone
             
             // Check to make sure the contact page was completed first. 
             // This prevents people from using the URLs directly to skip through the flow.
@@ -369,6 +396,15 @@
                     this.companyForm.country_code = value
                     this.$store.commit('SET_CO_COUNTRY', value)
                 }
+            },
+            input_phone: {
+                get () {
+                    return this.$store.state.company.phone
+                },
+                set (value) {
+                    this.companyForm.phone = value;
+                    this.$store.commit('SET_CO_PHONE', value)
+                }
             }
             /*input_seats: {
                 get () {
@@ -425,11 +461,36 @@
             },
             modal_ok() {
 
+            },
+            updatePhoneValidation(phone_validator_event) { //{number, isValid, country}
+                //console.log(phone_validator_event)
+
+                let number = phone_validator_event.number
+                let isValid = phone_validator_event.isValid
+                let country = phone_validator_event.country
+
+                //console.log(number, isValid, country)
+                this.companyForm.country_detail = {
+                    areaCodes: country.areaCodes,
+                    dialCode: country.dialCode,
+                    iso2: country.iso2,
+                    name: country.name,
+                    is_valid: isValid,
+                    number: number
+                }
+
+                // Forces a validation of the field on the form level, which will show the error message if it needs to. 
+                this.$refs['company_form'].validateField('phone', (err_msg) => { })
+                this.$store.commit('SET_COUNTRYCODE', country.iso2)
+                //this.$store.commit('SET_PHONE_ISVALID', isValid)
+                this.$store.commit('SET_CO_COUNTRY', country.name)                
             }
         },
         components: {
             SymphonyBilling,
-            SymphonyFooter
+            SymphonyFooter,
+            CountryDropdown,
+            StateDropdown
         }
     }
 </script>
@@ -451,7 +512,6 @@
     }
 
     .height-override {
-        height: 600px;
-        border: 1px solid purple;
+        height: 600px;        
     }
 </style>

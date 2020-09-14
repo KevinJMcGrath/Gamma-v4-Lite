@@ -63,7 +63,7 @@ const initial_state = () => ({
     billing: {
         card_fullname: '',
 		payment_type: '',
-		distinct_billing_address: false,
+		same_billing_address_flag: true,
         address1: '',
         address2: '',
         city: '',
@@ -163,8 +163,8 @@ const store = () => new Vuex.Store({
 		SET_CARD_FULLNAME(state, fullname) {
 			state.billing.card_fullname = fullname.trim().replace( /\s\s+/g, ' ')
 		},
-		SET_DISTINCT_BILLING_ADDRESS(state, distinct_billing_address) {
-			state.billing.distinct_billing_address = distinct_billing_address
+		SET_SAME_BILLING_ADDRESS(state, same_billing_address_flag) {
+			state.billing.same_billing_address_flag = same_billing_address_flag
 		},
 		SET_ADD1(state, address1) {
 			state.billing.address1 = address1.trim().replace( /\s\s+/g, ' ')

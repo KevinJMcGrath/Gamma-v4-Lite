@@ -65,6 +65,15 @@
 
                                     <p class="timeline-billing-subgroup">Billing Address</p>
 
+                                    <div class="lite-container-row" style="height: 20px; margin-bottom: 10px;">
+                                        <label for="bill_addr" style="height:25px">
+                                            <input ref="bill_addr" type="checkbox" v-model="input_billing_addr" name="billing_addr_check" @change="handleBillingAddr"/>
+                                            <span> Use Company Address</span>
+                                        </label>
+                                    </div>
+
+                                    <div v-bind:class="{hide_billing: $store.state.billing.same_billing_address_flag}">
+
                                     <div class="lite-container-row"> 
                                         Address Line 1<br/>
                                         <FormItem prop="address1"> 
@@ -115,6 +124,9 @@
                                             </i-col>                                    
                                         </Row>
                                     </div>
+
+                                    </div>
+
                                     <div>
                                         <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
                                             class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoReview()">Next</button>
@@ -165,6 +177,16 @@
                     callback()
                 }
             }
+
+            const validateIfDiffAddr = (rule, value, callback) => {
+                if (!this.$store.state.billing.same_billing_address_flag && !value)
+                {
+                    callback(new Error('Required'))
+                }
+                else {
+                    callback()
+                }
+            }
             
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
@@ -195,7 +217,8 @@
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     address1: [
-                        { required: true, message: 'Required', trigger: 'blur' },
+                        //{ required: true, message: 'Required', trigger: 'blur' },
+                        { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
@@ -204,17 +227,20 @@
                         { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
                     ],
                     city: [
-                        { required: true, message: 'Required', trigger: 'blur' },
+                        //{ required: true, message: 'Required', trigger: 'blur' },
+                        { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     state: [
-                        { validator: validateReqIfUs, trigger: 'blur'},
+                        //{ validator: validateReqIfUs, trigger: 'blur'},
+                        { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'State must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     zip_code: [
-                        { validator: validateReqIfUs, trigger: 'blur'},
+                        //{ validator: validateReqIfUs, trigger: 'blur'},
+                        { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ]
@@ -374,9 +400,31 @@
                     this.billingForm.country_code = value
                     this.$store.commit('SET_BILLING_COUNTRY', value)
                 }
+            },
+            input_billing_addr: {
+                get () {
+                    return this.$store.state.billing.same_billing_address_flag
+                },
+                set (value)
+                {
+                    this.$store.commit('SET_SAME_BILLING_ADDRESS', value)
+                }
             }
         },
         methods: {
+            handleBillingAddr(event) {
+                //console.log(this.$store.state.billing.same_billing_address_flag)
+                //console.log(event)
+
+                //console.log(event.srcElement.checked)
+                //console.log(this.$store.state.billing.same_billing_address_flag)
+
+                if (event.srcElement.checked)
+                {
+
+                }
+
+            },
             checkChanged(output_val){
                 console.log('billing.vue:382 checkChanged: ' + output_val)
                 console.log('billing.vue:383 input_state: ' + this.input_state)
@@ -545,6 +593,14 @@
     }
 
     .show_stripe {
+        display: block;
+    }
+
+    .hide_billing {
+        display: none;
+    }
+
+    .show_billing {
         display: block;
     }
 

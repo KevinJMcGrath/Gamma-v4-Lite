@@ -182,7 +182,7 @@
             //this.contactForm.firstname = this.$store.state.user.firstname
             this.input_firstname = this.$store.state.user.firstname
             this.contactForm.lastname = this.$store.state.user.lastname
-            this.contactForm.phone = this.$store.state.user.phone
+            //this.contactForm.phone = this.$store.state.user.phone
 
             // Using this to get around the inability to call the vue-tel-intl validation
             // method on pageload. Since the validation only runs after onInput or onBlur
