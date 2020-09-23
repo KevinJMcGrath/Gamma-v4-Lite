@@ -1,0 +1,108 @@
+{
+	"global": {
+		"phk": "1234567890abcdefgh"
+	},
+    "status": {
+        "guid": "<replaceme>",
+        "current": true,
+        "submit_in_progress": false,
+        "submit_completed": true,
+		"submit_completed_date": "2020-09-15T12:00:00.000Z"
+	},
+	"base": {
+		"seats": 10,
+		"pupm": 40
+	},
+    "email": {
+        "email_address": "<replaceme>",
+        "is_verified": false
+    },
+    "user": {
+        "firstname": "Kevin",
+        "lastname": "McGrath",
+        "phone": "6103289985",
+        "country_code": "US",
+        "phone_isvalid": true
+    },
+    "company": {
+        "name": "Test Company, Inc.",
+		"industry": "Professional-Services",		
+		"address1": "123 Main Street",
+        "address2": "Suite 123",
+        "city": "Philadelphia",
+        "company_state": "PA",
+        "postal_code": "19064",
+		"country": "United States",
+		"phone": "2158286986"
+    },
+    "service": {
+        "seats": 10,
+		"vanity_name": "",
+		"show_promo_code": false,
+		"promo_code": "",
+		"promo_code_desc": "",
+		"promo_code_discount_percentage": 0
+    },
+    "legal": {
+        "terms_accepted": true
+    },
+    "billing": {
+        "card_fullname": "Kevin J. McGrath",
+		"payment_type": "Visa",
+		"same_billing_address_flag": false,
+        "address1": "321 Side Street",
+        "address2": "Apt 3D",
+        "city": "New York",
+        "billing_state": "NY",
+        "zip_code": "10010",
+        "country": "United States",
+        "stripe_token": {
+            "id": "tok_1DYEF0BovuDSxGMe6D9YUIWK",
+            "p_object": "token",
+            "card": {
+                "id": "card_1DYEF0BovuDSxGMegwo5RM6y",
+                "p_object": "card",
+                "address_city": null,
+                "address_country": null,
+                "address_line1": null,
+                "address_line1_check": null,
+                "address_line2": null,
+                "address_state": null,
+                "address_zip": null,
+                "address_zip_check": null,
+                "brand": "Visa",
+                "country": "US",
+                "cvc_check": "unchecked",
+                "dynamic_last4": null,
+                "exp_month": 1,
+                "exp_year": 2020,
+                "funding": "credit",
+                "last4": "4242",
+                "metadata": {},
+                "name": null,
+                "tokenization_method": null
+            },
+            "client_ip": "69.253.229.9",
+            "created": 1542639646,
+            "livemode": false,
+            "type": "card",
+            "used": false
+        }
+    },
+    "pricing": {
+        "onetime_fees": 500,
+        "pupm": 40,
+        "minimum_seats": 10		
+    },
+    "error": {
+        "is_error_status": false,        
+        "message": ""
+    },
+    "page_state": [
+        { "index": 0, "name": "contact", "started": false, "completed": false },
+        { "index": 1, "name": "company", "started": false, "completed": false },
+        { "index": 2, "name": "billing", "started": false, "completed": false },
+        { "index": 3, "name": "summary", "started": false, "completed": false },
+        { "index": 4, "name": "thank", "started": false, "completed": false }
+    ]
+}

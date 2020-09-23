@@ -1,7 +1,7 @@
 <template>
     <div >
-        <i-select v-model="selected_country" placeholder="Select Country" @on-change="showOnChangeData">
-            <i-option v-for="country in countries" v-bind:value="country.Code" :key="country.Code" >{{country.Name}}</i-option>
+        <i-select v-model="set_local_country" placeholder="Select Country" @on-change="showOnChangeData"> 
+            <i-option v-for="country in countries" v-bind:value="country.Name" :key="country.Code" >{{country.Name}}</i-option>
 <!--                 <span>{{country.Name}}</span>
                 <span style="float:right" class="flag-icon" v-bind:class="getFlagClass(country.Code)"></span>
             </i-option> -->
@@ -10,45 +10,44 @@
 </template>
 <script>
 const country_list = require('../assets/data/country_list.json')
-import 'flag-icon-css/css/flag-icon.css'
+//import 'flag-icon-css/css/flag-icon.css'
 
 
 export default {
     data() {
         return {
-            countries: []            
+            local_country: '',
+            countries: []
         }
     },
+    props: {
+        selected_country: String
+    },
     mounted: function() {
-        console.log('Loading country dropdown component...')
+        console.log('mounted selected_country: ' + this.selected_country)
+
         this.countries = country_list
+        this.local_country = this.selected_country
     },
     methods: {
-        getFlagClass(iso_code) {
+        /*getFlagClass(iso_code) {
             //console.log(iso_code)
             return 'flag-icon-' + iso_code.toLowerCase()
-        },
+        },*/
         showOnChangeData(selected_item) {
-            //console.log('Showing selected item object...')
-            //console.log(selected_item)
-
-            // This emit call does correctly emit an event back out to 
-            // the parent compnent. 
-            //this.$emit('country-changed')
-
-            // I don't actually need the event. The problem was I was not setting the 
-            // country code in the Vuex Store when changing the option.
-            this.$store.commit('SET_COUNTRYCODE', selected_item)
+            this.$emit('country-changed', selected_item)
         }
     },
     computed: {
-        selected_country: {
-            get () {
-                //console.log('Getting Country Code: ' + this.$store.state.user.country_code)
-                return this.$store.state.user.country_code
+        set_local_country: {
+            get () {                
+                console.log('set_local_country:GET') 
+                return this.local_country
+                
             },
-            set (value) {                
-                this.$store.commit('SET_BILLING_COUNTRY', value)
+            set (value) {                                
+                this.local_country = value
+                console.log('set_local_country:SET ' + value)
             }
         }
     },

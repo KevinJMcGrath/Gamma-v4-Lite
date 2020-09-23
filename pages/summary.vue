@@ -488,7 +488,7 @@
     }
 
     .height-override {
-        height: 650px;
+        height: 750px;
     }
 
     .hide {

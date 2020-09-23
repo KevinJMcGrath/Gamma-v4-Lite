@@ -22,7 +22,6 @@
                                             </i-select>
                                         </FormItem>
                                     </div>
-
                                     <div class="lite-container-row"> 
                                         Legal Name of Business<br/>
                                         <FormItem prop="companyname"> 
@@ -54,10 +53,9 @@
                                             </i-col>
                                             <i-col span=12>
                                                 {{state_label}}<br/>
-                                                <FormItem prop="state"> 
-                                                    <!-- <i-input v-model="input_state"></i-input> -->
+                                                <FormItem prop="state">                                                     
                                                     <!-- I don't need the custom-event to trigger the reactivity changes -->
-                                                    <state-dropdown v-model="input_state"></state-dropdown> <!--v-on:custom-event="checkChanged"-->
+                                                    <state-dropdown v-model="input_state"></state-dropdown>
                                                 </FormItem>
                                             </i-col>
                                         </Row>
@@ -74,7 +72,7 @@
                                             <i-col span=12>
                                                 Country<br/>
                                                 <FormItem prop="country">                                                     
-                                                    <country-dropdown v-on:country-changed="updateLabels()"/>
+                                                    <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged"/>
                                                 </FormItem>
                                             </i-col>                                                                               
                                         </Row>
@@ -86,10 +84,6 @@
                                                 :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                         </FormItem>
                                     </div>
-                                    <!-- <div v-bind:class="seat_pricing_notice_class">
-                                        <Alert show-icon>Your total cost will be lower if you purchase 50 licenses.</Alert>
-                                    </div> -->
-                                    
                                     <div class="lite-button-row">
                                         <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
                                     </div>
@@ -173,6 +167,7 @@
                     state: '',
                     zip_code: '',
                     phone: '',
+                    country: '',
                     country_detail: {
                         areaCodes: null,
                         dialCode: '',
@@ -181,7 +176,6 @@
                         is_valid: false,
                         number: ''
                     }
-                    //seats: 10
                 },
                 validation_rules: {
                     /*seats: [
@@ -270,14 +264,13 @@
         mounted: function() {
 
             this.companyForm.companyname = this.$store.state.company.name
-            this.companyForm.industry = this.$store.state.company.industry
-            //this.companyForm.seats = this.$store.state.service.seats
+            this.companyForm.industry = this.$store.state.company.industry            
             this.companyForm.address1 = this.$store.state.company.address1
             this.companyForm.address2 = this.$store.state.company.address2
             this.companyForm.city = this.$store.state.company.city
             this.companyForm.state = this.$store.state.company.company_state
             this.companyForm.zip_code = this.$store.state.company.postal_code
-            this.companyForm.country_code = this.$store.state.company.country
+            this.companyForm.country = this.$store.state.company.country
             this.companyForm.phone = this.$store.state.company.phone
             
             // Check to make sure the contact page was completed first. 
@@ -388,12 +381,12 @@
                 }
             },
             input_country: {
-                get () {
+                get () {                    
                     return this.$store.state.company.country
                 },
                 set (value)
-                {
-                    this.companyForm.country_code = value
+                {                    
+                    this.companyForm.country = value
                     this.$store.commit('SET_CO_COUNTRY', value)
                 }
             },
@@ -406,15 +399,6 @@
                     this.$store.commit('SET_CO_PHONE', value)
                 }
             }
-            /*input_seats: {
-                get () {
-                    return this.$store.state.service.seats
-                },
-                set (value) {
-                    this.companyForm.seats = value;
-                    this.$store.commit('SET_SEATS', value)
-                }
-            }*/
         },
         methods: {
             prior_page_Ok() {
@@ -435,6 +419,12 @@
 
                 })                
             },
+            handleCountryComponentChanged(event_output) {                
+                // v-bind on custom components doesn't call the setter for the v-model on the parent page
+                // Instead, we listen to the on-change event (or whatever event is emitted by the component)
+                // and explicityly call the property
+                this.input_country = event_output
+            },            
             getSelectOptionLabelByValue(val) {
                 if (this.industry_list && !!val) {
                     let ind_obj = this.industry_list.find(inds => inds.value === val)
@@ -483,7 +473,7 @@
                 this.$refs['company_form'].validateField('phone', (err_msg) => { })
                 this.$store.commit('SET_COUNTRYCODE', country.iso2)
                 //this.$store.commit('SET_PHONE_ISVALID', isValid)
-                this.$store.commit('SET_CO_COUNTRY', country.name)                
+                //this.$store.commit('SET_CO_COUNTRY', country.name)                
             }
         },
         components: {

@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center" >
-                <i-col span=1>
+                <i-col span=2>
                     <img src="../assets/images/bullseye.png" height="60px" />
                 </i-col>
                 <i-col span=6>

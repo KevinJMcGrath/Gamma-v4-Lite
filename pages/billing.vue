@@ -74,57 +74,51 @@
 
                                     <div v-bind:class="{hide_billing: $store.state.billing.same_billing_address_flag}">
 
-                                    <div class="lite-container-row"> 
-                                        Address Line 1<br/>
-                                        <FormItem prop="address1"> 
-                                            <i-input v-model="input_add1" placeholder="123 Main Street"></i-input>
-                                        </FormItem>
-                                    </div>
+                                        <div class="lite-container-row"> 
+                                            Address Line 1<br/>
+                                            <FormItem prop="address1"> 
+                                                <i-input v-model="input_add1" placeholder="123 Main Street"></i-input>
+                                            </FormItem>
+                                        </div>
+                                        <div class="lite-container-row"> 
+                                            Address Line 2<br/>
+                                            <FormItem prop="address2"> 
+                                                <i-input v-model="input_add2" placeholder="Apt, Office, Suite"></i-input>
+                                            </FormItem>
+                                        </div>
+                                        <div class="lite-container-row"> 
+                                            <Row :gutter="8">                                                
+                                                <i-col span=12>
+                                                    City<br/>
+                                                    <FormItem prop="city"> 
+                                                        <i-input v-model="input_city"></i-input>
+                                                    </FormItem>
+                                                </i-col>
+                                                <i-col span=12>
+                                                    {{state_label}}<br/>
+                                                    <FormItem prop="state"> 
+                                                        <state-dropdown v-model="input_state"></state-dropdown>
+                                                    </FormItem>
+                                                </i-col>
+                                            </Row>
+                                        </div>
 
-                                    <div class="lite-container-row"> 
-                                        Address Line 2<br/>
-                                        <FormItem prop="address2"> 
-                                            <i-input v-model="input_add2" placeholder="Apt, Office, Suite"></i-input>
-                                        </FormItem>
-                                    </div>
-
-                                    <div class="lite-container-row"> 
-                                        <Row :gutter="8">
-                                            <i-col span=12>
-                                                Country<br/>
-                                                <FormItem prop="country"> 
-                                                    <!--<i-input v-model="input_country"></i-input>-->
-                                                    <country-dropdown v-on:country-changed="updateLabels()"/>
-                                                </FormItem>
-                                            </i-col>
-                                            <i-col span=12>
-                                                City<br/>
-                                                <FormItem prop="city"> 
-                                                    <i-input v-model="input_city"></i-input>
-                                                </FormItem>
-                                            </i-col>                                    
-                                        </Row>
-                                    </div>
-
-                                    <div class="lite-container-row"> 
-                                        <Row :gutter="8">
-                                            <i-col span=12>
-                                                {{state_label}}<br/>
-                                                <FormItem prop="state"> 
-                                                    <!-- <i-input v-model="input_state"></i-input> -->
-                                                    <!-- I don't need the custom-event to trigger the reactivity changes -->
-                                                    <state-dropdown v-model="input_state"></state-dropdown> <!--v-on:custom-event="checkChanged"-->
-                                                </FormItem>
-                                            </i-col>
-                                            <i-col span=12>
-                                                {{zip_label}}<br/>
-                                                <FormItem prop="zip_code"> 
-                                                    <i-input v-model="input_zip"></i-input>
-                                                </FormItem>
-                                            </i-col>                                    
-                                        </Row>
-                                    </div>
-
+                                        <div class="lite-container-row"> 
+                                            <Row :gutter="8">                                            
+                                                <i-col span=12>
+                                                    {{zip_label}}<br/>
+                                                    <FormItem prop="zip_code"> 
+                                                        <i-input v-model="input_zip"></i-input>
+                                                    </FormItem>
+                                                </i-col>
+                                                <i-col span=12>
+                                                    Country<br/>
+                                                    <FormItem prop="country">                                                         
+                                                        <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged()"/> <!--updateLabels-->
+                                                    </FormItem>
+                                                </i-col>
+                                            </Row>
+                                        </div>
                                     </div>
 
                                     <div>
@@ -207,7 +201,7 @@
                     city: '',
                     state: '',
                     zip_code: '',
-                    country_code: '',
+                    country: '',                    
                     stripeError: ''
                 },
                 validation_rules: {
@@ -271,7 +265,7 @@
             this.billingForm.city = this.$store.state.billing.city
             this.billingForm.state = this.$store.state.billing.billing_state
             this.billingForm.zip_code = this.$store.state.billing.zip_code
-            this.billingForm.country_code = this.$store.state.billing.country
+            this.billingForm.country = this.$store.state.billing.country            
 
             stripe = Stripe(process.env.stripe_public_key);
 
@@ -396,8 +390,8 @@
                     return this.$store.state.billing.country
                 },
                 set (value)
-                {
-                    this.billingForm.country_code = value
+                {                    
+                    this.billingForm.country = value
                     this.$store.commit('SET_BILLING_COUNTRY', value)
                 }
             },
@@ -413,27 +407,17 @@
         },
         methods: {
             handleBillingAddr(event) {
-                //console.log(this.$store.state.billing.same_billing_address_flag)
-                //console.log(event)
-
-                //console.log(event.srcElement.checked)
-                //console.log(this.$store.state.billing.same_billing_address_flag)
-
+                // Hooking into the check event, not used at present.
                 if (event.srcElement.checked)
                 {
 
                 }
-
             },
-            checkChanged(output_val){
-                console.log('billing.vue:382 checkChanged: ' + output_val)
-                console.log('billing.vue:383 input_state: ' + this.input_state)
-            },
-            updateLabels() {
-                // This method remains as an example of a working emitted
-                // event from a component (CountryList)
-                //console.log('Got to Update Labels')
-                //console.log(this.$store.state.user.country_code)
+            handleCountryComponentChanged(event_output) {
+                // v-bind on custom components doesn't call the setter for the v-model on the parent page
+                // Instead, we listen to the on-change event (or whatever event is emitted by the component)
+                // and explicityly call the property
+                this.input_country = event_output                
             },
             prior_page_Ok(page_name) {
                 this.$router.push({name: page_name, query: { sseid: this.$store.state.status.guid }})
