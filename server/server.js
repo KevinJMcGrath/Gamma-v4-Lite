@@ -41,8 +41,6 @@ const api = require('./api')
 const config = require('../nuxt.config.js')
 const nuxt = new Nuxt(config)
 
-console.log('nuxt config use_phk: ' + config.env.use_phk)
-
 app.use(bodyParser.json())
 
 // Tell express to use the API routes in the API folder
@@ -57,28 +55,11 @@ app.get('/_ah/health', (req, res) => {
 if (config.dev) {
 	const builder = new Builder(nuxt)
 	builder.build().catch((error) => {
-		console.error('Error detected in dev config section (line 66)')
+		console.error('Error detected in dev config')
 		console.error(error)
 		process.exit(1)
 	})
 }
-
-//Production error handler
-/*app.use((err, req, res, next) => {
-	if (!err) {
-		return next()
-	}
-
-	console.error('Error rendering route')
-	console.error(err.message)
-	console.error(err.statusCode)
-
-	res.status(err.status || 500)
-	res.render('error', {
-		message: err.message,
-		error: {}
-	})
-})*/
 
 app.use(nuxt.render)
 app.listen(port, host)

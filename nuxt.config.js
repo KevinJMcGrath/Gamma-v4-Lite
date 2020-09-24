@@ -42,6 +42,7 @@ module.exports = {
   // I'm not sure this is going to work exactly the way I want - it doesn't 
   // redirect the user... which is the say the URL in the omnibar doesn't change.
   router: {
+    middleware: ["https_redir"],
     extendRoutes (routes, resolve) {
       // I created an index.vue with a redirect in the fetch() method instead.
       /*routes.push({
@@ -107,9 +108,10 @@ module.exports = {
   },
 
   //Working - 3/31/2018
+  // ssr: false for components that require browser resources to work (client side components mostly)
   plugins: [
     { src: '~/plugins/iview.js', ssr: true},
-    { src: '~/plugins/vue-tele.js', ssr: false}, // I don't know if this did anything or not. 
+    { src: '~/plugins/vue-tele.js', ssr: false}, 
     { src: '~/plugins/qs_plugin.js', ssr: true}, 
     { src: '~/plugins/vuex_ps_cookie.js', ssr: true},
     { src: '~/plugins/vue-select.js', ssr: false}
