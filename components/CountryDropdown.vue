@@ -1,17 +1,12 @@
 <template>
-    <div >
-        <i-select v-model="set_local_country" placeholder="Select Country" @on-change="showOnChangeData"> 
-            <i-option v-for="country in countries" v-bind:value="country.Name" :key="country.Code" >{{country.Name}}</i-option>
-<!--                 <span>{{country.Name}}</span>
-                <span style="float:right" class="flag-icon" v-bind:class="getFlagClass(country.Code)"></span>
-            </i-option> -->
-        </i-select>
+    <div>
+        <v-select v-model="set_local_country" label="Name" :options="countries" :reduce="sel_country => sel_country.Name"></v-select>
     </div>
 </template>
 <script>
 const country_list = require('../assets/data/country_list.json')
 //import 'flag-icon-css/css/flag-icon.css'
-
+import vSelect from 'vue-select'
 
 export default {
     data() {
@@ -21,6 +16,7 @@ export default {
         }
     },
     props: {
+        // without the :reduce property above, this needs to be an Object
         selected_country: String
     },
     mounted: function() {
@@ -35,7 +31,7 @@ export default {
             return 'flag-icon-' + iso_code.toLowerCase()
         },*/
         showOnChangeData(selected_item) {
-            this.$emit('country-changed', selected_item)
+            //this.$emit('country-changed', selected_item)
         }
     },
     computed: {
@@ -47,19 +43,21 @@ export default {
             },
             set (value) {                                
                 this.local_country = value
-                console.log('set_local_country:SET ' + value)
+                console.log('set_local_country:SET ')
+                console.log(value)
+                this.$emit('country-changed', value)
             }
         }
     },
     components: {
-        
+        vSelect
         //CountryFlag
     }
 
 }
 </script>
 <style>
-
+    
 </style>
 
 

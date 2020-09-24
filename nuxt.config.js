@@ -15,6 +15,7 @@ module.exports = {
     // Using my version of the CSS to fix the issues with the --border-radius
     // custom property warnings. 
     '~/static/vue-tel-input-fixed.css',
+    'vue-select/dist/vue-select.css', // this seemed to have worked. Encouraging
     '~/static/common.css'
   ],
   head: {
@@ -28,7 +29,7 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://unpkg.com/iview/dist/styles/iview.css'},
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
-      { rel: 'stylesheet', href: '/common.css'}
+      { rel: 'stylesheet', href: '/common.css'}      
     ],
     script: [
       { hid: 'stripe', src: 'https://js.stripe.com/v3/'},      
@@ -110,7 +111,8 @@ module.exports = {
     { src: '~/plugins/iview.js', ssr: true},
     { src: '~/plugins/vue-tele.js', ssr: false}, // I don't know if this did anything or not. 
     { src: '~/plugins/qs_plugin.js', ssr: true}, 
-    { src: '~/plugins/vuex_ps_cookie.js', ssr: true}
+    { src: '~/plugins/vuex_ps_cookie.js', ssr: true},
+    { src: '~/plugins/vue-select.js', ssr: false}
   ],
 
   modules: [

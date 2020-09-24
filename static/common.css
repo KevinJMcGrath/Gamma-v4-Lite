@@ -333,3 +333,12 @@ header text for the timeline element, as it would be misaligned otherwise.  */
 .timeline-spacer {
     height: 15px;
 }
+
+.v-select .vs__selected {    
+    height: 22px;
+    
+}
+
+.v-select .vs__selected-options {
+    height: 26px;
+}

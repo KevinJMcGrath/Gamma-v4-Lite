@@ -31,11 +31,11 @@
             <div class="button-box">
                 <button class="button-style-1 button-style-start" style="" @click="handleGetStarted()">Get Started</button>
             </div>
-
         </div>
     </div>
 </template>
 <script>
+
 export default {
     layout: 'startcustom',
     data() {

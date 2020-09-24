@@ -38,6 +38,7 @@
     "postcss-loader": "^2.1.6",
     "sanitize-html": "^1.19.1",
     "vue": "^2.5.17",
+    "vue-select": "^3.10.8",
     "vue-tel-input": "^4.4.0",
     "vue-template-compiler": "^2.5.17",
     "vuex-persistedstate": "^2.5.4"

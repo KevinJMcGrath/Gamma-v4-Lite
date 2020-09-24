@@ -110,7 +110,12 @@
                                                     <FormItem prop="zip_code"> 
                                                         <i-input v-model="input_zip"></i-input>
                                                     </FormItem>
-                                                </i-col>
+                                                </i-col>                                                
+                                            </Row>
+                                        </div>
+
+                                        <div>
+                                            <Row :gutter="8">
                                                 <i-col span=12>
                                                     Country<br/>
                                                     <FormItem prop="country">                                                         
@@ -119,6 +124,7 @@
                                                 </i-col>
                                             </Row>
                                         </div>
+
                                     </div>
 
                                     <div>
@@ -145,10 +151,11 @@
 </template>
 <script>
     import SymphonyBilling from '~/components/SymphonyBilling.vue'
-    import SymphonyFooter from '~/components/SymphonyFooter.vue'
-    const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
+    import SymphonyFooter from '~/components/SymphonyFooter.vue'    
     import CountryDropdown from '~/components/CountryDropdown.vue'
-    import StateDropdown from '~/components/StateDropdown.vue'
+    import StateDropdown from '~/components/StateDropdown.vue'    
+
+    const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     // Moved these declarations to the global scope to avoid problems later. 
     // May not be necessary. Then again, it may not be necessary to keep 
@@ -589,7 +596,7 @@
     }
 
     .height_override {
-        height: 700px;
+        height: 800px;
     }
 </style>
 

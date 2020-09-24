@@ -14,12 +14,13 @@
                             <div class="timeline-spacer"></div>   
                             <div class="timeline-content height-override">
                                 <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
-                                    <div class="lite-container-row"> 
+                                    <div> 
                                         Industry<br/>
                                         <FormItem prop="industry" >
-                                            <i-select v-model="input_industry" placeholder="Select Industry" >
+                                            <!-- <i-select v-model="input_industry" placeholder="Select Industry" >
                                                 <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
-                                            </i-select>
+                                            </i-select> -->
+                                            <v-select v-model="input_industry" :options="industry_list" ></v-select>
                                         </FormItem>
                                     </div>
                                     <div class="lite-container-row"> 
@@ -66,23 +67,28 @@
                                             <i-col span=12>
                                                 {{zip_label}}<br/>
                                                 <FormItem prop="zip_code"> 
-                                                    <i-input v-model="input_zip"></i-input>
+                                                    <i-input v-model="input_zip" ></i-input>
                                                 </FormItem>
                                             </i-col> 
+                                                                                                                          
+                                        </Row>
+                                    </div>                                    
+                                    <div > 
+                                        <Row :gutter="8">
                                             <i-col span=12>
                                                 Country<br/>
                                                 <FormItem prop="country">                                                     
                                                     <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged"/>
                                                 </FormItem>
-                                            </i-col>                                                                               
-                                        </Row>
-                                    </div>                                    
-                                    <div class="lite-container-row" > 
-                                        Company Phone Number<br/>
-                                        <FormItem prop="phone"> 
-                                            <vue-tel-input ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" style="height:30px;width:50%;"
-                                                :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
-                                        </FormItem>
+                                            </i-col> 
+                                            <i-col span=12>
+                                                Company Phone Number<br/>
+                                                <FormItem prop="phone"> 
+                                                    <vue-tel-input ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" style="height:32px"
+                                                        :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
+                                                </FormItem>
+                                            </i-col>
+                                        </Row>                                        
                                     </div>
                                     <div class="lite-button-row">
                                         <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
@@ -113,6 +119,7 @@
     import SymphonyFooter from '~/components/SymphonyFooter.vue'
     import CountryDropdown from '~/components/CountryDropdown.vue'
     import StateDropdown from '~/components/StateDropdown.vue'
+    import vSelect from 'vue-select'
 
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
@@ -222,30 +229,30 @@
 
                 },
                 industry_list: [
-                    { id: 1, value: "Agriculture-Mining", label: "Agriculture & Mining" },
-                    { id: 2, value: "Communications-Media-IT", label: "Communications, Media, IT" },
-                    { id: 3, value: "Consulting-Services", label: "Consulting Services" },
-                    { id: 4, value: "Consumer-Services", label: "Consumer Services" },
-                    { id: 5, value: "eCommerce", label: "eCommerce" },
-                    { id: 6, value: "Education", label: "Education" },
-                    { id: 7, value: "Energy-Oil-Gas", label: "Energy, Oil and Gas" },
-                    { id: 8, value: "Financial-Services", label: "Financial Services" },
-                    { id: 9, value: "Food-Beverage", label: "Food & Beverage" },
-                    { id: 10, value: "Government", label: "Government" },
-                    { id: 12, value: "Healthcare-Pharmaceuticals-Biotec", label: "Healthcare, Pharma and Biotech" },
-                    { id: 13, value: "Insurance", label: "Insurance" },
-                    { id: 14, value: "Manufacturing", label: "Manufacturing" },
-                    { id: 15, value: "Media-Entertainment", label: "Media & Entertainment" },
-                    { id: 16, value: "Nonprofit", label: "Nonprofit" },
-                    { id: 17, value: "Professional-Services", label: "Professional Services" },
-                    { id: 18, value: "Public-Sector", label: "Public Sector" },
-                    { id: 19, value: "RealEstate-Construction", label: "Real Estate & Construction" },
-                    { id: 20, value: "Restaurant-Hospitality", label: "Restaurant & Hospitality" },
-                    { id: 21, value: "Retail", label: "Retail" },
-                    { id: 22, value: "Technology", label: "Technology" },
-                    { id: 23, value: "Transportation-Storage", label: "Transportation & Storage" },
-                    { id: 24, value: "Wholesale-Distribution", label: "Wholesale & Distribution" },
-                    { id: 25, value: "Other", label: "Other" }
+                    { value: "Agriculture-Mining", label: "Agriculture & Mining" },
+                    { value: "Communications-Media-IT", label: "Communications, Media, IT" },
+                    { value: "Consulting-Services", label: "Consulting Services" },
+                    { value: "Consumer-Services", label: "Consumer Services" },
+                    { value: "eCommerce", label: "eCommerce" },
+                    { value: "Education", label: "Education" },
+                    { value: "Energy-Oil-Gas", label: "Energy, Oil and Gas" },
+                    { value: "Financial-Services", label: "Financial Services" },
+                    { value: "Food-Beverage", label: "Food & Beverage" },
+                    { value: "Government", label: "Government" },
+                    { value: "Healthcare-Pharmaceuticals-Biotec", label: "Healthcare, Pharma and Biotech" },
+                    { value: "Insurance", label: "Insurance" },
+                    { value: "Manufacturing", label: "Manufacturing" },
+                    { value: "Media-Entertainment", label: "Media & Entertainment" },
+                    { value: "Nonprofit", label: "Nonprofit" },
+                    { value: "Professional-Services", label: "Professional Services" },
+                    { value: "Public-Sector", label: "Public Sector" },
+                    { value: "RealEstate-Construction", label: "Real Estate & Construction" },
+                    { value: "Restaurant-Hospitality", label: "Restaurant & Hospitality" },
+                    { value: "Retail", label: "Retail" },
+                    { value: "Technology", label: "Technology" },
+                    { value: "Transportation-Storage", label: "Transportation & Storage" },
+                    { value: "Wholesale-Distribution", label: "Wholesale & Distribution" },
+                    { value: "Other", label: "Other" }
                 ]
             }
         },
@@ -388,6 +395,7 @@
                 {                    
                     this.companyForm.country = value
                     this.$store.commit('SET_CO_COUNTRY', value)
+                    console.log('COMPANY:input_country:SET - ' + value)
                 }
             },
             input_phone: {
@@ -480,7 +488,8 @@
             SymphonyBilling,
             SymphonyFooter,
             CountryDropdown,
-            StateDropdown
+            StateDropdown,
+            vSelect
         }
     }
 </script>
