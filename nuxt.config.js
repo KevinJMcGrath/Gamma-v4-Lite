@@ -8,7 +8,9 @@ module.exports = {
     is_dev: process.env.NODE_ENV !== 'production',
     stripe_public_key: process.env.STRIPE_PUBLIC_KEY,
     base_app_url: process.env.BASE_URL,
-    use_phk: process.env.USE_PHK
+    use_phk: process.env.USE_PHK,
+    coming_soon: process.env.CSOON
+
   },
   loading: { color: '#3B8070' },
   css: [
@@ -38,21 +40,11 @@ module.exports = {
     ]
   },
   
-  // Specifying custom routes to be included in the vue-router configuration
-  // I'm not sure this is going to work exactly the way I want - it doesn't 
-  // redirect the user... which is the say the URL in the omnibar doesn't change.
   router: {
-    middleware: ["https_redir"],
+    //middleware: ["https_redir", "const_redir"],
+    middleware: ["const_redir"],
     extendRoutes (routes, resolve) {
-      // I created an index.vue with a redirect in the fetch() method instead.
-      /*routes.push({
-        name: 'root',
-        path: '/',        
-        component: resolve(__dirname, 'pages/email.vue')
-        // redirect is coming in a later version
-      }) */
-
-      routes.push({
+       routes.push({
         name: 'unknown',
         path: '*',
         component: resolve(__dirname, 'pages/404.vue')

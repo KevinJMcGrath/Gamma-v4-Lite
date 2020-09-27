@@ -1,3 +1,5 @@
+//import redirectSSL from 'redirect-ssl'
+
 // Adding automatic tracing through the TraceAgent
 if (process.env.NODE_ENV === 'production') {
 	require('@google-cloud/trace-agent').start()
@@ -36,6 +38,10 @@ const express = require('express')
 
 const app = express()
 const api = require('./api')
+
+// Let's see if this works
+//app.use(redirectSSL.create({enabled: process.env.NODE_ENV === 'production'}))
+
 
 // This should now work with the top level varible
 const config = require('../nuxt.config.js')

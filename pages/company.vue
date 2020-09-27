@@ -17,10 +17,10 @@
                                     <div> 
                                         Industry<br/>
                                         <FormItem prop="industry" >
-                                            <!-- <i-select v-model="input_industry" placeholder="Select Industry" >
+                                            <i-select v-model="input_industry" placeholder="Select Industry" >
                                                 <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
-                                            </i-select> -->
-                                            <v-select v-model="input_industry" :options="industry_list" ></v-select>
+                                            </i-select>
+                                            <!--<v-select v-model="input_industry" :options="industry_list" ></v-select>-->
                                         </FormItem>
                                     </div>
                                     <div class="lite-container-row"> 
@@ -195,9 +195,9 @@
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    industry: [
+                    /*industry: [
                         { required: true, message: 'Required', trigger: 'change'}
-                    ],
+                    ],*/
                     address1: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
@@ -229,30 +229,30 @@
 
                 },
                 industry_list: [
-                    { value: "Agriculture-Mining", label: "Agriculture & Mining" },
-                    { value: "Communications-Media-IT", label: "Communications, Media, IT" },
-                    { value: "Consulting-Services", label: "Consulting Services" },
-                    { value: "Consumer-Services", label: "Consumer Services" },
-                    { value: "eCommerce", label: "eCommerce" },
-                    { value: "Education", label: "Education" },
-                    { value: "Energy-Oil-Gas", label: "Energy, Oil and Gas" },
-                    { value: "Financial-Services", label: "Financial Services" },
-                    { value: "Food-Beverage", label: "Food & Beverage" },
-                    { value: "Government", label: "Government" },
-                    { value: "Healthcare-Pharmaceuticals-Biotec", label: "Healthcare, Pharma and Biotech" },
-                    { value: "Insurance", label: "Insurance" },
-                    { value: "Manufacturing", label: "Manufacturing" },
-                    { value: "Media-Entertainment", label: "Media & Entertainment" },
-                    { value: "Nonprofit", label: "Nonprofit" },
-                    { value: "Professional-Services", label: "Professional Services" },
-                    { value: "Public-Sector", label: "Public Sector" },
-                    { value: "RealEstate-Construction", label: "Real Estate & Construction" },
-                    { value: "Restaurant-Hospitality", label: "Restaurant & Hospitality" },
-                    { value: "Retail", label: "Retail" },
-                    { value: "Technology", label: "Technology" },
-                    { value: "Transportation-Storage", label: "Transportation & Storage" },
-                    { value: "Wholesale-Distribution", label: "Wholesale & Distribution" },
-                    { value: "Other", label: "Other" }
+                    { id: 1, value: "Agriculture-Mining", label: "Agriculture & Mining" },
+                    { id: 2, value: "Communications-Media-IT", label: "Communications, Media, IT" },
+                    { id: 3, value: "Consulting-Services", label: "Consulting Services" },
+                    { id: 4, value: "Consumer-Services", label: "Consumer Services" },
+                    { id: 5, value: "eCommerce", label: "eCommerce" },
+                    { id: 6, value: "Education", label: "Education" },
+                    { id: 7, value: "Energy-Oil-Gas", label: "Energy, Oil and Gas" },
+                    { id: 8, value: "Financial-Services", label: "Financial Services" },
+                    { id: 9, value: "Food-Beverage", label: "Food & Beverage" },
+                    { id: 10, value: "Government", label: "Government" },
+                    { id: 12, value: "Healthcare-Pharmaceuticals-Biotec", label: "Healthcare, Pharma and Biotech" },
+                    { id: 13, value: "Insurance", label: "Insurance" },
+                    { id: 14, value: "Manufacturing", label: "Manufacturing" },
+                    { id: 15, value: "Media-Entertainment", label: "Media & Entertainment" },
+                    { id: 16, value: "Nonprofit", label: "Nonprofit" },
+                    { id: 17, value: "Professional-Services", label: "Professional Services" },
+                    { id: 18, value: "Public-Sector", label: "Public Sector" },
+                    { id: 19, value: "RealEstate-Construction", label: "Real Estate & Construction" },
+                    { id: 20, value: "Restaurant-Hospitality", label: "Restaurant & Hospitality" },
+                    { id: 21, value: "Retail", label: "Retail" },
+                    { id: 22, value: "Technology", label: "Technology" },
+                    { id: 23, value: "Transportation-Storage", label: "Transportation & Storage" },
+                    { id: 24, value: "Wholesale-Distribution", label: "Wholesale & Distribution" },
+                    { id: 25, value: "Other", label: "Other" }
                 ]
             }
         },

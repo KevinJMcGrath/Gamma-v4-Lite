@@ -7,30 +7,27 @@
             <Row type="flex" justify="center">
                 <i-col span=6 class="blue-shields"></i-col>
                 <i-col span=10 class="sym-index-col">
-                    <p>SECURE TEAM COLLABORATION</p>
-                    <p style="font-size:1.8em;">FOR YOUR BUSINESS</p>
+                    <p>ONLINE SIGN UP - COMING SOON!</p>
+                    <p style="font-size:1.8em;">FALL of 2020</p>
                 </i-col>
                 <i-col span=6 class="blue-shields"></i-col>
             </Row>
         </div>
         <div style="margin-top:20px;">
-            <div class="asset-box">
-                <div class="asset-1"></div>
-                <div class="asset-2">
-                    <p class="symphony-start-header">With Symphony, you can:</p>
-                    <ul class="symphony-start-list">
-                        <li><div class="icon-box"><img class="icon-image" style="margin-top:2px;" src="../assets/images/dudes.svg" height="12px" /></div>Optimize team collaboration</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/web.svg" height="16px" /></div>Connect to a verified network</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/expand.svg" height="15px" /></div>Streamline financial services workflows</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/refresh.svg" height="16px" /></div>Integrate with top apps</li>
-                        <li><div class="icon-box"><img class="icon-image" src="../assets/images/lock.svg" height="16px"/></div>Secure your collaboration data</li>
-                    </ul>
-                    <p class="symphony-start-header">Tips and tricks available at <a href="https://symphony.com/resource/support/">here</a></p>
-                </div>
-            </div>
-            <div class="button-box">
-                <button class="button-style-1 button-style-start" style="" @click="handleGetStarted()">Get Started</button>
-            </div>
+            <Row type="flex" justify="center">
+                <i-col span=14>
+                    <p style="font-size:1.8em;text-align:center;">Thank you for your interest the Symphony secure chat platform. The online subscription experience is still under construction. 
+                        <br/><br/>Check regularly with the <a href="https://symphony.com/company/newsroom/">Newsroom</a> or follow us on <a href="https://twitter.com/symphony">Twitter</a>
+                        for updates and information.</p>
+                </i-col>
+            </Row>
+        </div>
+        <div style="margin-top:20px;">
+            <Row type="flex" justify="center">
+                <i-col span=10>
+                    <img src="../assets/images/workspaces.png" height="60%" />
+                </i-col>
+            </Row>
         </div>
     </div>
 </template>
@@ -41,14 +38,14 @@ export default {
     data() {
 
         return {
-            page_title: 'Symphony - Get Started!',
+            page_title: 'Symphony - Coming Soon!',
         }
     },
     head() {
         return {
             title: this.page_title,
             meta: [
-                { hid: 'description', name: 'description', content: 'Get started using Symphony' }
+                { hid: 'description', name: 'description', content: 'Purchase Symphony Online - coming this fall!' }
             ]
             
         }
@@ -64,12 +61,7 @@ export default {
         
     },
     methods: {
-        handleGetStarted() {
-            if (process.env.coming_soon)
-                this.$router.push({name: "coming-soon"})
-            else
-                this.$router.push({name: "email" })
-        }
+ 
     }
     
 }
