@@ -327,6 +327,22 @@ const store = () => new Vuex.Store({
 				console.log('Base URL: ' + process.env.base_app_url)
 				console.log('SFDC Base URL: ' + process.env.SFDC_BASE_URL)
 			}
+
+			/*try {
+				console.log('ENV list:')
+				console.log('server side: ' + process.server)
+				console.log('client side: ' + process.client)
+				console.log(process.env.DEPLOY_TYPE)				
+				console.log(process.env.SFDC_GAMMA_KEY)
+				console.log(process.env.SFDC_BASE_URL)
+				console.log(process.env.BASE_URL)
+				console.log(process.env.STRIPE_PUBLIC_KEY)
+				console.log(process.env.PHK_CHECK_KEY)
+				console.log(process.env.USE_PHK)
+				console.log(process.env.CSOON)
+			} catch(error) {
+				console.log(error)
+			}*/
 		},
 		resetErrorState({ commit }) {
 			commit('SET_ERROR_STATUS', false)

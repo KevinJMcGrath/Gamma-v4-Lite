@@ -7,18 +7,16 @@ module.exports = {
     // this is not a secure place to store keys or magic strings
     is_dev: process.env.NODE_ENV !== 'production',
     stripe_public_key: process.env.STRIPE_PUBLIC_KEY,
-    base_app_url: process.env.BASE_URL,
-    use_phk: process.env.USE_PHK,
-    coming_soon: process.env.CSOON
-
+    base_app_url: process.env.BASE_URL
   },
   loading: { color: '#3B8070' },
   css: [
     // Using my version of the CSS to fix the issues with the --border-radius
     // custom property warnings. 
-    '~/static/vue-tel-input-fixed.css',
+    'assets/css/vue-tel-input-fixed.css',
     'vue-select/dist/vue-select.css', // this seemed to have worked. Encouraging
-    '~/static/common.css'
+    'assets/css/common.css',
+    'iview/dist/styles/iview.css'
   ],
   head: {
     title: '{{title}}',
@@ -29,11 +27,13 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://unpkg.com/iview/dist/styles/iview.css'},
+      //{ rel: 'stylesheet', href: 'https://unpkg.com/iview/dist/styles/iview.css'},
+      //{ rel: 'stylesheet', href: 'assets/css/iveiw.css'},
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
-      { rel: 'stylesheet', href: '/common.css'}      
+      //{ rel: 'stylesheet', href: 'assets/css/common.css'}      
     ],
     script: [
+      //{ hid: 'google_analytics', src: '/js/segment-gamma.js'},
       { hid: 'stripe', src: 'https://js.stripe.com/v3/'},      
       //https://ionicons.com/
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
@@ -41,8 +41,8 @@ module.exports = {
   },
   
   router: {
-    //middleware: ["https_redir", "const_redir"],
-    middleware: ["const_redir"],
+    //middleware: ["phk", "https_redir", "const_redir"],
+    middleware: ["phk", "const_redir"],
     extendRoutes (routes, resolve) {
        routes.push({
         name: 'unknown',
@@ -110,6 +110,6 @@ module.exports = {
   ],
 
   modules: [
-    ['@nuxtjs/dotenv', {only: ['STRIPE_PUBLIC_KEY']}]
+    ['@nuxtjs/dotenv', {only: ['STRIPE_PUBLIC_KEY', 'CSOON']}]
   ]
 }

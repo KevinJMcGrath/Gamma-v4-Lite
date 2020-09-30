@@ -1,7 +1,7 @@
 /*Icons - http://www.iconarchive.com/show/100-flat-icons-by-graphicloads.1.html*/
 @font-face {
     font-family: "MrRoboto";
-    src: url('/Roboto-Regular.ttf');
+    src: url('../fonts/Roboto-Regular.ttf');
 }
 
 /* latin-ext */
@@ -25,9 +25,9 @@
     font-family: 'Mirador Black';
 	font-style: normal;
 	font-weight: normal;
-	src: url('../assets/fonts/Mirador-Black-1.woff2') format('woff2'),
-		url('../assets/fonts/Mirador-Black-1.woff') format('woff'),
-		url('../assets/fonts/Mirador-Black-1.ttf') format('truetype')
+	src: url('../fonts/Mirador-Black-1.woff2') format('woff2'),
+		url('../fonts/Mirador-Black-1.woff') format('woff'),
+		url('../fonts/Mirador-Black-1.ttf') format('truetype')
 
 }
 
@@ -35,10 +35,10 @@
     font-family: 'Graphik Regular';
 	font-style: normal;
     font-weight: normal;
-    src: url('../assets/fonts/Graphik-Regular.eot');
-    src: url('../assets/fonts/Graphik-Regular.woff') format('woff'),    
-    url('../assets/fonts/Graphik-Regular.ttf') format('truetype')
-	/*src: url('../assets/fonts/Graphik-Regular-Cy-Web.woff2') format('woff2')*/
+    src: url('../fonts/Graphik-Regular.eot');
+    src: url('../fonts/Graphik-Regular.woff') format('woff'),    
+    url('../fonts/Graphik-Regular.ttf') format('truetype')
+	/*src: url('../fonts/Graphik-Regular-Cy-Web.woff2') format('woff2')*/
 
 }
 
@@ -46,20 +46,12 @@
     font-family: 'Graphik Medium';
 	font-style: normal;
     font-weight: normal;
-    src: url('../assets/fonts/Graphik-Medium.eot');
-    src: url('../assets/fonts/Graphik-Medium.woff') format('woff'),    
-        url('../assets/fonts/Graphik-Medium.ttf') format('truetype')
-	/*src: url('../assets/fonts/Graphik-Medium-Cy-Web.woff2') format('woff2')*/
+    src: url('../fonts/Graphik-Medium.eot');
+    src: url('../fonts/Graphik-Medium.woff') format('woff'),    
+        url('../fonts/Graphik-Medium.ttf') format('truetype')
+	/*src: url('../fonts/Graphik-Medium-Cy-Web.woff2') format('woff2')*/
 
 }
-
-/*@font-face {
-    font-family: 'Graphik Semibold';
-	font-style: normal;
-	font-weight: normal;
-	src: url('../assets/fonts/Graphik-Semibold-Cy-Web.woff2') format('woff2')
-
-}*/
 
 body {
     /*font-family: Lato;*/
@@ -84,7 +76,7 @@ body {
 .lite-header-logo {
     height: 35px;
     width: 200px;
-    background-image: url("../assets/images/symphony-logo-nav-new.svg");
+    background-image: url("../images/symphony-logo-nav-new.svg");
     background-repeat: no-repeat;  
     background-size: 100%;
     margin-top: 10px;
@@ -95,7 +87,7 @@ body {
     width: 100%;
     height: 200px;
     color: white;
-    background-image: url('../assets/images/fractal-bg-wide-new.png');
+    background-image: url('../images/fractal-bg-wide-new.png');
     background-repeat: no-repeat;
     background-position-y: -20px;
     background-size: auto 130%;
@@ -188,7 +180,7 @@ body {
 .orange-circles {
     height: 100px;
     width: 30%;
-    background-image: url('../assets/images/orange_circles.svg');
+    background-image: url('../images/orange_circles.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     
@@ -196,7 +188,7 @@ body {
 
 .orange-half-circles {
     height: 100px;
-    background-image: url('../assets/images/orange_half_circles.svg');
+    background-image: url('../images/orange_half_circles.svg');
     background-repeat: no-repeat;
     background-size: auto 50%;
     background-position: 0px 20px;
@@ -206,7 +198,7 @@ body {
 .orange-diamonds {
     height: 100px;
     width: 30%;
-    background-image: url('../assets/images/orange_diamond.svg');
+    background-image: url('../images/orange_diamond.svg');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     
@@ -214,7 +206,7 @@ body {
 
 .purple-chat {
     height: 100px;
-    background-image: url('../assets/images/purple_chat_bubble.svg');
+    background-image: url('../images/purple_chat_bubble.svg');
     background-repeat: no-repeat;
     background-size: auto 50%;
     background-position: 0px 20px;    
@@ -222,7 +214,7 @@ body {
 
 .purple-chevron {
     height: 100px;
-    background-image: url('../assets/images/purple_chevron.svg');
+    background-image: url('../images/purple_chevron.svg');
     background-repeat: no-repeat;
     background-size: auto 50%;
     background-position: 0px 20px;  
@@ -231,7 +223,7 @@ body {
 
 .green-oval {
     height: 100px;
-    background-image: url('../assets/images/green_oval.svg');
+    background-image: url('../images/green_oval.svg');
     background-repeat: no-repeat;
     background-size: auto 50%;
     background-position: 0px 20px;
@@ -241,7 +233,7 @@ body {
 .blue-shields {
     height: 100px;
     /*width: 30%;*/
-    background-image: url('../assets/images/blue_shield.svg');
+    background-image: url('../images/blue_shield.svg');
     background-repeat: no-repeat;
     /*background-size: cover;*/
     background-size: auto 60%;

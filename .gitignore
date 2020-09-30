@@ -16,6 +16,7 @@ archive
 
 # Secrets
 credentials
+google_analytics/
 secrets.json
 .env
 .env_dev

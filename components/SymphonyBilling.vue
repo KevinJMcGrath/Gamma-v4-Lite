@@ -100,7 +100,7 @@
 
         <Row type="flex" justify="center">
             <i-col span=10 style="font-size: 1em;">
-                <a class="lite-link-button" href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a>
+                <a class="lite-link-button" href="https://symphony.com/resources/legal/ss-customer-agreement-sept2020.pdf" target="_blank">Symphony Services Agreement</a>
             </i-col>
         </Row>
     </div>

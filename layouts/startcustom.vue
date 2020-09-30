@@ -8,7 +8,6 @@
 import SymphonyFooter from '~/components/SymphonyFooter.vue'
 
 export default {
-    //middleware: 'phk',
     components: {
         SymphonyFooter
     }

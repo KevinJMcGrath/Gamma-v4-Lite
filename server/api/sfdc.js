@@ -54,14 +54,24 @@ function clean_input(input_val) {
 }
 
 router.post('/private-check', function(req, res, next) {
-	let key = req.body.phk
 
-	if (key === process.env.PHK_CHECK_KEY) {
+	let key = req.body.phk
+	let phk_check = process.env.USE_PHK == 'TRUE'
+
+	if (phk_check)
+	{
+		console.log('Evaluating PHK QP...')
+		if (key === process.env.PHK_CHECK_KEY) {
+			res.json({ success: true })
+		}
+		else {
+			res.json({ success: false })
+		}
+	} else {
+		console.log('Skipping PHK Check...')
 		res.json({ success: true })
 	}
-	else {
-		res.json({ success: false })
-	}
+	
 }) 
 
 router.post('/domain-check', function(req, res, next) {
