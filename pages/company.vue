@@ -16,7 +16,7 @@
                                 <Form ref="company_form" :model="companyForm" :rules="validation_rules" @submit.native.prevent>
                                     <div> 
                                         Industry<br/>
-                                        <FormItem prop="industry" >
+                                        <FormItem prop="_industry" >
                                             <i-select v-model="input_industry" placeholder="Select Industry" >
                                                 <i-option v-for="industry in industry_list" v-bind:value="industry.value" :key="industry.id">{{industry.label}}</i-option>
                                             </i-select>
@@ -25,28 +25,28 @@
                                     </div>
                                     <div class="lite-container-row"> 
                                         Legal Name of Business<br/>
-                                        <FormItem prop="companyname"> 
+                                        <FormItem prop="_company"> 
                                             <i-input v-model="input_company"></i-input>
                                         </FormItem>
                                     </div>                                    
 
                                     <div class="lite-container-row"> 
                                         Address Line 1<br/>
-                                        <FormItem prop="address1"> 
+                                        <FormItem prop="_add1"> 
                                             <i-input v-model="input_add1" placeholder="123 Main Street"></i-input>
                                         </FormItem>
                                     </div>
 
                                     <div class="lite-container-row"> 
                                         Address Line 2<br/>
-                                        <FormItem prop="address2"> 
+                                        <FormItem prop="_add2"> 
                                             <i-input v-model="input_add2" placeholder="Apt, Office, Suite"></i-input>
                                         </FormItem>
                                     </div>
 
                                     <div class="lite-container-row2">                                        
                                         Country<br/>
-                                        <FormItem prop="country">                                                     
+                                        <FormItem prop="_country">                                                     
                                             <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged"/>
                                         </FormItem>                                            
                                     </div>
@@ -55,13 +55,13 @@
                                         <Row :gutter="8">                                            
                                             <i-col span=12>
                                                 City<br/>
-                                                <FormItem prop="city"> 
+                                                <FormItem prop="_city"> 
                                                     <i-input v-model="input_city"></i-input>
                                                 </FormItem>
                                             </i-col>
                                             <i-col span=12>
                                                 {{state_label}}<br/>
-                                                <FormItem prop="state">                                                    
+                                                <FormItem prop="_state">                                                    
                                                     <state-dropdown v-bind:selected_state="input_state" v-bind:selected_country="input_country" 
                                                         v-on:state-changed="handleStateComponentChanged"></state-dropdown>
                                                 </FormItem>
@@ -73,13 +73,13 @@
                                         <Row :gutter="8">
                                             <i-col span=12>
                                                 {{zip_label}}<br/>
-                                                <FormItem prop="zip_code"> 
+                                                <FormItem prop="_zip"> 
                                                     <i-input v-model="input_zip" ></i-input>
                                                 </FormItem>
                                             </i-col> 
                                             <i-col span=12>
                                                 Company Phone Number<br/>
-                                                <FormItem prop="phone"> 
+                                                <FormItem prop="_phone"> 
                                                     <vue-tel-input class="override-tele" ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" 
                                                         :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                                 </FormItem>
@@ -158,6 +158,15 @@
                 page_title: 'Symphony - Company',
                 pricing_window: false,
                 companyForm: {
+                    _company: '',
+                    _industry: '',
+                    _add1: '',
+                    _add2: '',
+                    _city: '',
+                    _state: '',
+                    _zip: '',
+                    _country: '',
+                    _phone: '',
                     country_detail: {
                         areaCodes: null,
                         dialCode: '',
@@ -168,39 +177,42 @@
                     }
                 },
                 validation_rules: {
-                    companyname: [
+                    _company: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    industry: [
+                    _industry: [
                         { required: true, message: 'Required', trigger: 'change'}
                     ],
-                    address1: [
+                    _add1: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    address2: [
+                    _add2: [
                         { validator: validateNoHTML, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
                     ],
-                    city: [
+                    _city: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    state: [
+                    _state: [
                         { validator: validateReqIfUs, trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'State must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    zip_code: [
+                    _zip: [
                         { validator: validateReqIfUs, trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    phone: [
+                    _country: [
+                        { required: true, message: 'Required', trigger: 'change'}
+                    ],
+                    _phone: [
                         { required: true, message: 'Required', trigger: 'blur'},
                         { validator: validateCustomPhone, trigger: 'change' }
                     ]
@@ -261,6 +273,15 @@
                 })
             }
 
+            this.companyForm._company = this.$store.state.company.name
+            this.companyForm._industry = this.$store.state.company.industry
+            this.companyForm._add1 = this.$store.state.company.address1
+            this.companyForm._add2 = this.$store.state.company.address2
+            this.companyForm._city = this.$store.state.company.city
+            this.companyForm._state = this.$store.state.company.company_state
+            this.companyForm._zip = this.$store.state.company.postal_code
+            this.companyForm._country = this.$store.state.company.country
+            this.companyForm._phone = this.$store.state.company.phone
             
         },
         computed: {
@@ -284,6 +305,7 @@
                     return this.$store.state.company.name
                 },
                 set (value) {
+                    this.companyForm._company = value;
                     this.$store.commit('SET_COMPANY', value)
                 }
             },
@@ -292,6 +314,7 @@
                     return this.getSelectOptionValueByLabel(this.$store.state.company.industry)
                 },
                 set (value) {
+                    this.companyForm._industry = value
                     this.$store.commit('SET_INDUSTRY', this.getSelectOptionLabelByValue(value))
                 }
             },
@@ -301,6 +324,7 @@
                 },
                 set (value)
                 {
+                    this.companyForm._add1 = value
                     this.$store.commit('SET_CO_ADD1', value)
                 }
             },
@@ -310,6 +334,7 @@
                 },
                 set (value)
                 {
+                    this.companyForm._add2 = value
                     this.$store.commit('SET_CO_ADD2', value)
                 }
             },
@@ -319,6 +344,7 @@
                 },
                 set (value)
                 {
+                    this.companyForm._city = value
                     this.$store.commit('SET_CO_CITY', value)
                 }
             },
@@ -328,6 +354,7 @@
                 },
                 set (value)
                 {
+                    this.companyForm._state = value
                     this.$store.commit('SET_CO_STATE', value)                    
                 }
             },
@@ -337,6 +364,7 @@
                 },
                 set (value)
                 {
+                    this.companyForm._zip = value
                     this.$store.commit('SET_CO_ZIP', value)
                 }
             },
@@ -345,7 +373,8 @@
                     return this.$store.state.company.country
                 },
                 set (value)
-                {                    
+                {   
+                    this.companyForm._country = value          
                     this.$store.commit('SET_CO_COUNTRY', value)                    
                 }
             },
@@ -354,6 +383,7 @@
                     return this.$store.state.company.phone
                 },
                 set (value) {
+                    this.companyForm._phone = value
                     this.$store.commit('SET_CO_PHONE', value)
                 }
             }
