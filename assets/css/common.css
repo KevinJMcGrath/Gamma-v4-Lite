@@ -69,8 +69,6 @@ body {
 .lite-header {
     width: 100%;
     height: 55px;
-    /*the fuck? Why does this change the whole thing?*/
-    /*border: 1px solid white; */
 }
 
 .lite-header-logo {
@@ -136,6 +134,7 @@ body {
     width: 100%;
     height: 60px;
     /*margin-top: 20px;*/
+    margin-bottom: 20px;
     font-size: 1em;
 }
 
@@ -145,13 +144,14 @@ body {
 
 .new-sym-banner {
     width: 100%;
-    height: 100px;    
+    height: 145px;
+    /*height: 100px;*/
 }
 
 .new-sym-banner p {
-    width: 180px;
+    /*width: 180px;*/
     height: 60px;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     font-size: 3.5em;
     
 }
@@ -175,6 +175,18 @@ body {
 .sym-index-col {
     padding: 10px 0;  
     font-family: "Mirador Black";
+}
+
+.purple-chat-min {
+    height: 50px;
+    background-image: url('../images/purple-chat-min.png');
+    background-repeat: repeat-x;
+}
+
+.green-oval-min {
+    height: 50px;
+    background-image: url('../images/green_oval.svg');
+    background-repeat: repeat-x;
 }
 
 .orange-circles {
@@ -207,10 +219,13 @@ body {
 .purple-chat {
     height: 100px;
     background-image: url('../images/purple_chat_bubble.svg');
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
     background-size: auto 50%;
-    background-position: 0px 20px;    
+    /*background-position: 0px 20px;    */
+    background-position: center;
 }
+
+
 
 .purple-chevron {
     height: 100px;

@@ -2,7 +2,7 @@
     <div class="lite-layout">        
         <div class="lite-body">
             <Row type="flex" justify="center">
-                <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=7 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
@@ -44,6 +44,13 @@
                                         </FormItem>
                                     </div>
 
+                                    <div class="lite-container-row2">                                        
+                                        Country<br/>
+                                        <FormItem prop="country">                                                     
+                                            <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged"/>
+                                        </FormItem>                                            
+                                    </div>
+
                                     <div class="lite-container-row"> 
                                         <Row :gutter="8">                                            
                                             <i-col span=12>
@@ -54,9 +61,9 @@
                                             </i-col>
                                             <i-col span=12>
                                                 {{state_label}}<br/>
-                                                <FormItem prop="state">                                                     
-                                                    <!-- I don't need the custom-event to trigger the reactivity changes -->
-                                                    <state-dropdown v-model="input_state"></state-dropdown>
+                                                <FormItem prop="state">                                                    
+                                                    <state-dropdown v-bind:selected_state="input_state" v-bind:selected_country="input_country" 
+                                                        v-on:state-changed="handleStateComponentChanged"></state-dropdown>
                                                 </FormItem>
                                             </i-col>
                                         </Row>
@@ -70,26 +77,16 @@
                                                     <i-input v-model="input_zip" ></i-input>
                                                 </FormItem>
                                             </i-col> 
-                                                                                                                          
-                                        </Row>
-                                    </div>                                    
-                                    <div > 
-                                        <Row :gutter="8">
-                                            <i-col span=12>
-                                                Country<br/>
-                                                <FormItem prop="country">                                                     
-                                                    <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged"/>
-                                                </FormItem>
-                                            </i-col> 
                                             <i-col span=12>
                                                 Company Phone Number<br/>
                                                 <FormItem prop="phone"> 
-                                                    <vue-tel-input ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" style="height:32px"
+                                                    <vue-tel-input class="override-tele" ref="vuetel" v-model="input_phone" @onInput="updatePhoneValidation" 
                                                         :preferredCountries="['US','GB','FR','DE']"></vue-tel-input>
                                                 </FormItem>
-                                            </i-col>
-                                        </Row>                                        
-                                    </div>
+                                            </i-col>                                                                                                                          
+                                        </Row>
+                                    </div>                                    
+
                                     <div class="lite-button-row">
                                         <button class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoBilling()">Next</button>
                                     </div>
@@ -104,10 +101,10 @@
                         </TimelineItem>
                     </Timeline>
                 </i-col>
-                <i-col span=8 class="lite-col">
+                <i-col span=7 class="lite-col">
                     <symphony-billing />
                 </i-col>
-                <i-col span=2></i-col>
+                
             </Row>
         </div>
         <symphony-footer v-bind:is-absolute="false"/>        
@@ -136,7 +133,11 @@
             }  
 
             const validateReqIfUs = (rule, value, callback) => {
-                if(this.is_country_us && !value.replace(/\s+/,'').length) {
+                console.log('validateReqIfUs')
+                console.log(rule)
+                console.log(value)
+
+                if(this.is_country_us && (!value || !value.replace(/\s+/,'').length)) {
                     callback(new Error('Required'))
                 }
                 else {
@@ -157,15 +158,6 @@
                 page_title: 'Symphony - Company',
                 pricing_window: false,
                 companyForm: {
-                    companyname: '',
-                    industry: '',
-                    address1: '',
-                    address2: '',
-                    city: '',
-                    state: '',
-                    zip_code: '',
-                    phone: '',
-                    country: '',
                     country_detail: {
                         areaCodes: null,
                         dialCode: '',
@@ -176,11 +168,6 @@
                     }
                 },
                 validation_rules: {
-                    /*seats: [
-                        //For some reason, I needed to specify the type for this rule to work consistently
-                        { required: true, type: 'number', message: 'Required', trigger: 'change' },
-                        { validator: validateMinSeats, trigger: 'change' } 
-                    ],*/
                     companyname: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
@@ -260,17 +247,6 @@
             store.commit('SET_PAGE_STARTED', 'company')
         },
         mounted: function() {
-
-            this.companyForm.companyname = this.$store.state.company.name
-            this.companyForm.industry = this.$store.state.company.industry            
-            this.companyForm.address1 = this.$store.state.company.address1
-            this.companyForm.address2 = this.$store.state.company.address2
-            this.companyForm.city = this.$store.state.company.city
-            this.companyForm.state = this.$store.state.company.company_state
-            this.companyForm.zip_code = this.$store.state.company.postal_code
-            this.companyForm.country = this.$store.state.company.country
-            this.companyForm.phone = this.$store.state.company.phone
-            
             // Check to make sure the contact page was completed first. 
             // This prevents people from using the URLs directly to skip through the flow.
             if (!this.$store.getters.getPageState('contact'))
@@ -290,7 +266,7 @@
         computed: {
             is_country_us: {
                 get () {                    
-                    return this.$store.state.user.country_code.toLowerCase() === 'us'
+                    return this.input_country === 'United States'
                 }
             },
             state_label: {
@@ -303,19 +279,11 @@
                     return (this.is_country_us ? 'Zip Code' : 'Postal Code')
                 }
             },
-            seat_pricing_notice_class () {
-                if (this.$store.state.service.seats >= 34 && this.$store.state.service.seats < 50) {
-                    return 'alert-row-visible'
-                }
-
-                return 'alert-row-hidden'
-            },
             input_company: {
                 get () {
                     return this.$store.state.company.name
                 },
                 set (value) {
-                    this.companyForm.companyname = value
                     this.$store.commit('SET_COMPANY', value)
                 }
             },
@@ -324,7 +292,6 @@
                     return this.getSelectOptionValueByLabel(this.$store.state.company.industry)
                 },
                 set (value) {
-                    this.companyForm.industry = value 
                     this.$store.commit('SET_INDUSTRY', this.getSelectOptionLabelByValue(value))
                 }
             },
@@ -334,7 +301,6 @@
                 },
                 set (value)
                 {
-                    this.companyForm.address1 = value
                     this.$store.commit('SET_CO_ADD1', value)
                 }
             },
@@ -344,7 +310,6 @@
                 },
                 set (value)
                 {
-                    this.companyForm.address2 = value
                     this.$store.commit('SET_CO_ADD2', value)
                 }
             },
@@ -354,17 +319,15 @@
                 },
                 set (value)
                 {
-                    this.companyForm.city = value
                     this.$store.commit('SET_CO_CITY', value)
                 }
             },
             input_state: {
-                get () {                    
+                get () {
                     return this.$store.state.company.company_state
                 },
                 set (value)
                 {
-                    this.companyForm.state = value
                     this.$store.commit('SET_CO_STATE', value)                    
                 }
             },
@@ -374,7 +337,6 @@
                 },
                 set (value)
                 {
-                    this.companyForm.zip_code = value
                     this.$store.commit('SET_CO_ZIP', value)
                 }
             },
@@ -384,9 +346,7 @@
                 },
                 set (value)
                 {                    
-                    this.companyForm.country = value
-                    this.$store.commit('SET_CO_COUNTRY', value)
-                    console.log('COMPANY:input_country:SET - ' + value)
+                    this.$store.commit('SET_CO_COUNTRY', value)                    
                 }
             },
             input_phone: {
@@ -394,7 +354,6 @@
                     return this.$store.state.company.phone
                 },
                 set (value) {
-                    this.companyForm.phone = value;
                     this.$store.commit('SET_CO_PHONE', value)
                 }
             }
@@ -423,7 +382,10 @@
                 // Instead, we listen to the on-change event (or whatever event is emitted by the component)
                 // and explicityly call the property
                 this.input_country = event_output
-            },            
+            },
+            handleStateComponentChanged(event_output) {
+                this.input_state = event_output
+            },
             getSelectOptionLabelByValue(val) {
                 if (this.industry_list && !!val) {
                     let ind_obj = this.industry_list.find(inds => inds.value === val)
@@ -452,13 +414,11 @@
 
             },
             updatePhoneValidation(phone_validator_event) { //{number, isValid, country}
-                //console.log(phone_validator_event)
 
                 let number = phone_validator_event.number
                 let isValid = phone_validator_event.isValid
                 let country = phone_validator_event.country
 
-                //console.log(number, isValid, country)
                 this.companyForm.country_detail = {
                     areaCodes: country.areaCodes,
                     dialCode: country.dialCode,
@@ -470,9 +430,7 @@
 
                 // Forces a validation of the field on the form level, which will show the error message if it needs to. 
                 this.$refs['company_form'].validateField('phone', (err_msg) => { })
-                this.$store.commit('SET_COUNTRYCODE', country.iso2)
-                //this.$store.commit('SET_PHONE_ISVALID', isValid)
-                //this.$store.commit('SET_CO_COUNTRY', country.name)                
+                this.$store.commit('SET_COUNTRYCODE', country.iso2)               
             }
         },
         components: {
@@ -503,5 +461,16 @@
 
     .height-override {
         height: 600px;        
+    }
+
+    .override-tele {
+        height: 32px;
+        margin-top: 1px;
+    }
+
+    .override-tele input {
+        border-width: 0 !important;
+        height: 30px;
+        
     }
 </style>

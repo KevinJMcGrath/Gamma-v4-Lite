@@ -20,8 +20,6 @@ export default {
         selected_country: String
     },
     mounted: function() {
-        console.log('mounted selected_country: ' + this.selected_country)
-
         this.countries = country_list
         this.local_country = this.selected_country
     },
@@ -37,14 +35,11 @@ export default {
     computed: {
         set_local_country: {
             get () {                
-                console.log('set_local_country:GET') 
                 return this.local_country
                 
             },
             set (value) {                                
                 this.local_country = value
-                console.log('set_local_country:SET ')
-                console.log(value)
                 this.$emit('country-changed', value)
             }
         }
@@ -57,11 +52,7 @@ export default {
 }
 </script>
 <style scoped>
-    
 
-    .v-select .vs__selected-options {
-        height: 26px;
-    }
 </style>
 
 

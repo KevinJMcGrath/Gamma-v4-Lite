@@ -5,11 +5,14 @@
         </div>
         <div class="new-sym-banner">
             <Row type="flex" justify="center">
-                <i-col span=8 v-bind:class="getHeaderGraphic()"></i-col>
+                <!-- <i-col span=8 v-bind:class="getHeaderGraphic()"></i-col> -->
                 <i-col span=4 class="new-sym-col">
-                    <p style="text-align: center; margin: 10px auto;">Sign up</p>
+                    <p class="signup" style="">Sign up</p>
                 </i-col>
-                <i-col span=8 v-bind:class="getHeaderGraphic()"></i-col>
+                <!-- <i-col span=8 v-bind:class="getHeaderGraphic()"></i-col> -->
+            </Row>
+            <Row>
+                <i-col v-bind:class="getHeaderGraphic()"></i-col>
             </Row>
         </div>
     </div>
@@ -30,13 +33,13 @@ export default {
                     return 'orange-half-circles'
                     break
                 case 'contact':
-                    return 'purple-chat'
+                    return 'purple-chat-min'
                     break
                 case 'billing':
                     return 'purple-chevron'
                     break
                 case 'company':
-                    return 'green-oval'
+                    return 'green-oval-min'
                     break
                 case 'summary':
                     return 'orange-diamonds'
@@ -48,3 +51,11 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .signup {
+        text-align: center; 
+        /*margin: 10px auto;*/
+        color: black;
+    }
+</style>
