@@ -27,10 +27,10 @@ export default {
             switch(this.$route.name)
             {
                 case 'email':
-                    return 'orange-circles'
+                    return 'orange-circles-min'
                     break
                 case 'email-thankyou':
-                    return 'orange-half-circles'
+                    return 'orange-half-circles-min'
                     break
                 case 'contact':
                     return 'purple-chat-min'
@@ -42,10 +42,10 @@ export default {
                     return 'green-oval-min'
                     break
                 case 'summary':
-                    return 'orange-diamonds'
+                    return 'orange-diamonds-min'
                     break
                 default:
-                    return 'orange-diamonds'
+                    return 'orange-diamonds-min'
             }
         }
     }

@@ -3,7 +3,7 @@
         <div class="lite-body">
             
             <Row type="flex" justify="center">
-                <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=7 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
@@ -138,10 +138,10 @@
                         </TimelineItem>
                     </Timeline>
                 </i-col>
-                <i-col span=8 class="lite-col">
+                <i-col span=7 class="lite-col">
                     <symphony-billing />
                 </i-col>
-                <i-col span=2></i-col>
+                
             </Row>
         
         </div>

@@ -189,6 +189,26 @@ body {
     background-repeat: repeat-x;
 }
 
+.orange-diamonds-min {
+    height: 50px;
+    background-image: url('../images/orange_diamond_min.png');
+    background-repeat: repeat-x;
+}
+
+.orange-circles-min {
+    height: 50px;
+    background-image: url('../images/orange_circles.svg');
+    background-repeat: repeat-x;
+    
+}
+
+.orange-half-circles-min {
+    height: 50px;
+    background-image: url('../images/orange_half_circles.svg');
+    background-repeat: repeat-x;
+    
+}
+
 .purple-chevron-min {
     height: 50px;
     background-image: url('../images/purple_chevron.svg');
