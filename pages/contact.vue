@@ -80,10 +80,6 @@
             return {
                 page_title: 'Symphony - Contact',
                 error_state: false,
-                contactForm: {
-                    firstname: '',
-                    lastname: ''
-                },
                 validation_rules: { 
                     firstname: [
                         { required: true, message: 'Required', trigger: 'blur'},
@@ -141,21 +137,13 @@
             {                
                 this.$router.push({ name: "error"})
             }
-
-            // Won't need this if the Properties tied to the Store work for validation
-            //this.contactForm.firstname = this.$store.state.user.firstname
-            this.input_firstname = this.$store.state.user.firstname
-            this.contactForm.lastname = this.$store.state.user.lastname
         },
         computed: {
-            // Using computed properties for two-way binding with Vuex
             input_firstname: {
                 get () {
                     return this.$store.state.user.firstname
                 },
                 set (value) {
-                    // I'm intentionally adding side effects to make the validation rules work. Not ideal
-                    this.contactForm.firstname = value;
                     this.$store.commit('SET_FNAME', value)
                 }
             },
@@ -164,7 +152,6 @@
                     return this.$store.state.user.lastname
                 },
                 set (value) {
-                    this.contactForm.lastname = value;
                     this.$store.commit('SET_LNAME', value)
                 }
             }
