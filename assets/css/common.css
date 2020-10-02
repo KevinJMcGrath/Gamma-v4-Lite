@@ -68,7 +68,7 @@ body {
 
 .lite-header {
     width: 100%;
-    height: 55px;
+    height: 35px;
 }
 
 .lite-header-logo {
@@ -179,7 +179,7 @@ body {
 
 .purple-chat-min {
     height: 50px;
-    background-image: url('../images/purple-chat-min.png');
+    background-image: url('../images/purple_chat_min.png');
     background-repeat: repeat-x;
 }
 
@@ -196,8 +196,8 @@ body {
 }
 
 .orange-circles-min {
-    height: 50px;
-    background-image: url('../images/orange_circles.svg');
+    height: 70px;
+    background-image: url('../images/orange_circle_min.png');
     background-repeat: repeat-x;
     
 }

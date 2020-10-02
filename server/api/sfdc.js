@@ -250,9 +250,6 @@ router.post('/purchase-submit', function(req, res, next) {
 })
 
 router.post('/validate-promo', function(req, res, next) {
-	console.log('Validating promo code (server)')
-
-
 	const payload = req.body
 	const config = {
 		baseURL: process.env.SFDC_BASE_URL,
@@ -264,18 +261,21 @@ router.post('/validate-promo', function(req, res, next) {
 	axios.post('/validate-promo', payload, config)
 	.then((response) => {
 		log_response(response)
-		console.log('SFDC API Success')
+
+		console.log(response.data)
+
+		let disc_per = (response.data.discount ? response.data.discount / 100 : 0)
+		let disc_flat =  (response.data.discount_flat ? response.data.discount_flat : 0)
 
 		res.json({ 
 			success: response.data.success, 
 			promo_desc: response.data.promo_desc, 
-			discount: response.data.discount,
-			discount_flat: response.data.discount_flat,
+			discount: disc_per,
+			discount_flat: disc_flat,
 			message: response.data.message
 		})
 	})
 	.catch((error) => {
-		console.log('SFDC API Fail')
 		let err_obj = axios_error(error)
 		let err_code = -99
 

@@ -509,8 +509,9 @@ const store = () => new Vuex.Store({
 						if (resp.data.success)
 						{
 							console.log('Discount: ' + resp.data.discount)
+							console.log('Discount (flat): ' + resp.data.discount_flat)
 							commit('SET_PROMO_CODE_DESC', resp.data.promo_desc)
-							commit('SET_PROMO_CODE_DISCOUNT', resp.data.discount / 100)
+							commit('SET_PROMO_CODE_DISCOUNT', resp.data.discount)
 							commit('SET_PROMO_DISCOUNT_FLAT', resp.data.discount_flat)
 							commit('SET_PROMO_CODE_SHOW', true)													
 						}
