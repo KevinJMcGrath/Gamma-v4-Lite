@@ -189,6 +189,12 @@ body {
     background-repeat: repeat-x;
 }
 
+.purple-chevron-min {
+    height: 50px;
+    background-image: url('../images/purple_chevron.svg');
+    background-repeat: repeat-x;
+}
+
 .orange-circles {
     height: 100px;
     width: 30%;

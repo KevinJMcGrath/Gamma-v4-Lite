@@ -2,7 +2,7 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center">
-                <i-col span=10 offset="4" class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=7 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Timeline>
                         <TimelineItem class="completed-icon">
                             <ion-icon name="checkmark-circle" slot="dot"></ion-icon>
@@ -86,6 +86,13 @@
                                                 <i-input v-model="input_add2" placeholder="Apt, Office, Suite"></i-input>
                                             </FormItem>
                                         </div>
+                                        <div class="lite-container-row2">
+                                            Country<br/>
+                                            <FormItem prop="country">                                                         
+                                                <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged"/> 
+                                            </FormItem>
+                                        </div>
+
                                         <div class="lite-container-row"> 
                                             <Row :gutter="8">                                                
                                                 <i-col span=12>
@@ -97,7 +104,8 @@
                                                 <i-col span=12>
                                                     {{state_label}}<br/>
                                                     <FormItem prop="state"> 
-                                                        <state-dropdown v-model="input_state"></state-dropdown>
+                                                        <state-dropdown v-bind:selected_state="input_state" v-bind:selected_country="input_country" 
+                                                            v-on:state-changed="handleStateComponentChanged"></state-dropdown>
                                                     </FormItem>
                                                 </i-col>
                                             </Row>
@@ -113,20 +121,7 @@
                                                 </i-col>                                                
                                             </Row>
                                         </div>
-
-                                        <div>
-                                            <Row :gutter="8">
-                                                <i-col span=12>
-                                                    Country<br/>
-                                                    <FormItem prop="country">                                                         
-                                                        <country-dropdown v-bind:selected_country="input_country" v-on:country-changed="handleCountryComponentChanged()"/> <!--updateLabels-->
-                                                    </FormItem>
-                                                </i-col>
-                                            </Row>
-                                        </div>
-
                                     </div>
-
                                     <div>
                                         <button :disabled="!!loading" v-bind:class="{button_disabled: loading}" 
                                             class="button-style-1" style="height: 32px; width: 100px;" @click="handleGotoReview()">Next</button>
@@ -140,10 +135,9 @@
 
                     </Timeline>
                 </i-col>
-                <i-col span=8 class="lite-col">
+                <i-col span=7 class="lite-col">
                     <symphony-billing />
-                </i-col>
-                <i-col span=2></i-col>
+                </i-col>                
             </Row>
         </div>
         <symphony-footer v-bind:is-absolute="false"/>
@@ -217,8 +211,7 @@
                         { type: 'string', 'min': 1, 'max': 150, message: 'Full Name must be less than 150 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    address1: [
-                        //{ required: true, message: 'Required', trigger: 'blur' },
+                    address1: [                        
                         { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
@@ -228,19 +221,16 @@
                         { type: 'string', 'min': 1, 'max': 50, message: 'Address 2 must be less than 50 characters.', trigger: 'blur'},
                     ],
                     city: [
-                        //{ required: true, message: 'Required', trigger: 'blur' },
                         { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'City must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     state: [
-                        //{ validator: validateReqIfUs, trigger: 'blur'},
                         { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 50, message: 'State must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
                     zip_code: [
-                        //{ validator: validateReqIfUs, trigger: 'blur'},
                         { validator: validateIfDiffAddr, trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 25, message: 'Postal Code must be less than 25 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
@@ -289,8 +279,7 @@
                 this.$Modal.error({
                     title: 'Missing Information',
                     content: 'We need more of Your Information. Click Ok to go back to that page.',
-                    onOk: () => {
-                        console.log('Mising contact data')
+                    onOk: () => {                        
                         this.prior_page_Ok('contact')
                     }, 
                     okText: 'Ok'
@@ -373,7 +362,7 @@
                 }
             },
             input_state: {
-                get () {                    
+                get () {
                     return this.$store.state.billing.billing_state
                 },
                 set (value)
@@ -426,6 +415,9 @@
                 // and explicityly call the property
                 this.input_country = event_output                
             },
+            handleStateComponentChanged(event_output) {
+                this.input_state = event_output
+            },
             prior_page_Ok(page_name) {
                 this.$router.push({name: page_name, query: { sseid: this.$store.state.status.guid }})
             },
@@ -457,7 +449,6 @@
                             console.log('string token submitted')
                             if (result.token)
                             {
-                                console.log(result.token)
                                 this.$store.commit('SET_STRIPE_TOKEN', result.token)
 
                                 this.$store.commit('SET_PAGE_COMPLETE', 'billing')
@@ -466,11 +457,9 @@
                             else if (result.error) {
                                 this.billingForm.stripeError = result.error;
                                 this.loading = false
-                                console.error(result.error);
                             } else {
                                 this.billingForm.stripeError = 'Unable to validate your credit card info. Please contact Symphony.'
                                 this.loading = false
-                                console.error('Failed to obtain token from Stripe.');
                             }                   
 
                         //Needed to bind "this" in order to get this promise declaration to 

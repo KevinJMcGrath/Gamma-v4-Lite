@@ -36,7 +36,7 @@ export default {
                     return 'purple-chat-min'
                     break
                 case 'billing':
-                    return 'purple-chevron'
+                    return 'purple-chevron-min'
                     break
                 case 'company':
                     return 'green-oval-min'

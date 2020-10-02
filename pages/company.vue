@@ -455,7 +455,7 @@
                 }
 
                 // Forces a validation of the field on the form level, which will show the error message if it needs to. 
-                this.$refs['company_form'].validateField('phone', (err_msg) => { })
+                this.$refs['company_form'].validateField('_phone', (err_msg) => { })
                 this.$store.commit('SET_COUNTRYCODE', country.iso2)               
             }
         },
