@@ -17,7 +17,7 @@
                                     <Row :gutter="4">
                                         <i-col span=18>
                                             First Name<br/>
-                                            <FormItem prop="firstname"> 
+                                            <FormItem prop="_first"> 
                                                 <i-input v-model="input_firstname"></i-input>
                                             </FormItem>
                                         </i-col>
@@ -27,7 +27,7 @@
                                     <Row :gutter="4">
                                         <i-col span=18>
                                             Last Name<br/>
-                                            <FormItem prop="lastname"> 
+                                            <FormItem prop="_last"> 
                                                 <i-input v-model="input_lastname"></i-input>
                                             </FormItem>
                                         </i-col>                                    
@@ -67,7 +67,7 @@
     const htmlRe = new RegExp(String.raw`</?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)/?>`)
 
     export default {
-        data() {
+        data() {            
             const validateNoHTML = (rule, value, callback) => {
                 if (htmlRe.test(value) === true) {
                     callback(new Error('Invalid format.'))
@@ -80,13 +80,17 @@
             return {
                 page_title: 'Symphony - Contact',
                 error_state: false,
+                contactForm: {
+                    _first: '',
+                    _last: ''
+                },
                 validation_rules: { 
-                    firstname: [
+                    _first: [
                         { required: true, message: 'Required', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'First Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    lastname: [
+                    _last: [
                         { required: true, message: 'Required', trigger: 'blur'},
                         { type: 'string', 'min': 1, 'max': 50, message: 'Last Name must be less than 50 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
@@ -137,6 +141,9 @@
             {                
                 this.$router.push({ name: "error"})
             }
+
+            this.contactForm._first = this.$store.state.user.firstname
+            this.contactForm._last = this.$store.state.user.lastname
         },
         computed: {
             input_firstname: {
@@ -144,6 +151,7 @@
                     return this.$store.state.user.firstname
                 },
                 set (value) {
+                    this.contactForm._first = value
                     this.$store.commit('SET_FNAME', value)
                 }
             },
@@ -152,6 +160,7 @@
                     return this.$store.state.user.lastname
                 },
                 set (value) {
+                    this.contactForm._last = value
                     this.$store.commit('SET_LNAME', value)
                 }
             }

@@ -133,10 +133,6 @@
             }  
 
             const validateReqIfUs = (rule, value, callback) => {
-                console.log('validateReqIfUs')
-                console.log(rule)
-                console.log(value)
-
                 if(this.is_country_us && (!value || !value.replace(/\s+/,'').length)) {
                     callback(new Error('Required'))
                 }
