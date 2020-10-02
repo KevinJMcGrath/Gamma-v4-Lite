@@ -110,8 +110,7 @@
                 <i-col span=2></i-col>
             </Row>
         </div>
-        <symphony-footer v-bind:is-absolute="false"/>
-        <!--<symphony-footer is-absolute/>-->
+        <symphony-footer v-bind:is-absolute="false"/>        
     </div>  
 </template>
 <script>
@@ -125,14 +124,6 @@
 
     export default {
         data() {
-            /*const validateMinSeats = (rule, value, callback) => {
-                if (this.input_seats < 0) {
-                    callback(new Error('Please enter a valid value.'))
-                }
-
-                callback()
-            }*/
-
             const validateCustomPhone = (rule, value, callback) => {
                 if (this.$refs['vuetel'].phoneObject.isValid)
                 {
@@ -195,9 +186,9 @@
                         { type: 'string', 'min': 1, 'max': 100, message: 'Company Name must be less than 100 characters.', trigger: 'blur'},
                         { validator: validateNoHTML, trigger: 'blur' }
                     ],
-                    /*industry: [
+                    industry: [
                         { required: true, message: 'Required', trigger: 'change'}
-                    ],*/
+                    ],
                     address1: [
                         { required: true, message: 'Required', trigger: 'blur' },
                         { type: 'string', 'min': 1, 'max': 100, message: 'Address 1 must be less than 100 characters.', trigger: 'blur'},

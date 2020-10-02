@@ -56,8 +56,12 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
     
+
+    .v-select .vs__selected-options {
+        height: 26px;
+    }
 </style>
 
 

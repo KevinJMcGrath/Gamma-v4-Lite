@@ -55,7 +55,9 @@ const initial_state = () => ({
 		show_promo_code: false,
 		promo_code: '',
 		promo_code_desc: '',
-		promo_code_discount_percentage: 0
+		promo_code_discount_percentage: 0,
+		promo_code_discount_flat: 0		
+
     },
     legal: {
         terms_accepted: false
@@ -153,6 +155,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_PROMO_CODE_DISCOUNT(state, promo_code_discount) {
 			state.service.promo_code_discount_percentage = promo_code_discount
+		},
+		SET_PROMO_DISCOUNT_FLAT(state, promo_code_discount_flat) {
+			state.service.promo_code_discount_flat = promo_code_discount_flat
 		},
 		SET_PROMO_CODE_SHOW(state, show_promo_code) {
 			state.service.show_promo_code = show_promo_code
@@ -506,6 +511,7 @@ const store = () => new Vuex.Store({
 							console.log('Discount: ' + resp.data.discount)
 							commit('SET_PROMO_CODE_DESC', resp.data.promo_desc)
 							commit('SET_PROMO_CODE_DISCOUNT', resp.data.discount / 100)
+							commit('SET_PROMO_DISCOUNT_FLAT', resp.data.discount_flat)
 							commit('SET_PROMO_CODE_SHOW', true)													
 						}
 						else

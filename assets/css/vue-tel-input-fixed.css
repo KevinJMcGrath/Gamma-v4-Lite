@@ -1,3 +1,6 @@
+/* Using my version of the CSS to fix the issues with the --border-radius
+  custom property warnings. */
+
 :root {
     --border-radius: 2px;
 }

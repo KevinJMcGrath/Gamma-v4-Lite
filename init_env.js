@@ -1,7 +1,16 @@
 const fs = require('fs')
 
-fs.copyFile('.env_dev', '.env', (err) => {
+const args = process.argv.slice(2)
+
+console.log(args)
+
+let source_env_filename = '.env_dev'
+
+if (args[0] == 'uat' || args[0] == 'staging')
+    source_env_filename = '.env_staging'
+
+fs.copyFile(source_env_filename, '.env', (err) => {
     if (err) throw err;
 
-    console.log('Pre-dev: .env_dev copied to .env')
+    console.log(source_env_filename + ' copied to .env')
 })

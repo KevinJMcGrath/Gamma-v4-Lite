@@ -7,6 +7,8 @@
   "scripts": {
     "predev": "node ./init_env.js",
     "dev": "node ./server/server.js",
+    "prestaging": "node ./init_env.js uat",
+    "staging": "node ./server/server.js",
     "build": "nuxt build",
     "start": "node ./server/server.js",
     "generate": "nuxt generate",

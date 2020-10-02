@@ -270,6 +270,7 @@ router.post('/validate-promo', function(req, res, next) {
 			success: response.data.success, 
 			promo_desc: response.data.promo_desc, 
 			discount: response.data.discount,
+			discount_flat: response.data.discount_flat,
 			message: response.data.message
 		})
 	})

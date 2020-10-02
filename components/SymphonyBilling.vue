@@ -4,18 +4,15 @@
         <div class="billing-group top-group">
             <Row>
                 <i-col span="8">
-                    <span class="big-item">Base Package</span>
-                    <!--<span class="big-item"><b>{{total_seats}}</b> Licenses</span>-->
+                    <span class="big-item">Base Package</span>                    
                 </i-col>
                 <i-col :span="priceColSize" :offset="priceColOffset">
-                    <div class="big-item align-right">{{formatCurrencyValue(400)}}</div>
-                    <!-- <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div> -->
+                    <div class="big-item align-right">{{formatCurrencyValue(monthly_base_cost)}}</div>                    
                 </i-col>
             </Row>
             <Row class="mini-row">
                 <i-col span="10">
-                    <span class="small-item"><i>(Up to 10 licenses - <a class="lite-link-button" href="#" @click="pricing_window = true" >See Pricing</a>)</i></span>
-                    <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
+                    <span class="small-item"><i>(Up to 10 licenses - <a class="lite-link-button" href="#" @click="pricing_window = true" >See Pricing</a>)</i></span>                    
                     <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
                         <div>
                             <br/>
@@ -23,18 +20,18 @@
                                 <i-col span=10>
                                     <b>Base Package (up to 10 licenses)</b>
                                 </i-col>
-                                <i-col span=4 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                <i-col span=4 class="pricing-dotted-line"></i-col>
                                 <i-col span=8 offset=1>
-                                    <b>$400</b> per month
+                                    <b>$4,800</b> per year
                                 </i-col>
                             </Row>
                             <Row>
                                 <i-col span=8>
                                     <b>Each additional license</b>
                                 </i-col>
-                                <i-col span=6 style="border-bottom:1px dotted gray;height:14px;"></i-col>
+                                <i-col span=6 class="pricing-dotted-line" ></i-col>
                                 <i-col span=8 offset=1>
-                                    <b>$40</b> per month
+                                    <b>$300</b> per year
                                 </i-col>
                             </Row>
                             <br/>
@@ -48,30 +45,9 @@
                 <i-col span="4" offset="10">
                     <div class="small-item align-right">per month</div>
                 </i-col>
-            </Row>
-
-            <Row v-bind:class="toggleMoreSeats">
-                <i-col span="8">
-                    <span class="big-item">More Licenses</span>
-                    <!--<span class="big-item"><b>{{total_seats}}</b> Licenses</span>-->
-                </i-col>
-                <i-col :span="priceColSize" :offset="priceColOffset">
-                    <div class="big-item align-right">{{formatted_more_seats_cost}}</div>
-                    <!-- <div class="big-item align-right">{{formatted_monthly_seat_cost}}</div> -->
-                </i-col>
-            </Row>
-            <Row v-bind:class="toggleMoreSeats" class="mini-row">
-                <i-col span="10">
-                    <span class="small-item"><i>({{more_seats}} x $20/month)</i></span>
-                    <!-- <span class="small-item">{{formatted_pupm}} /license/month</span> -->
-                </i-col>
-                <i-col span="4" offset="10">
-                    <div class="small-item align-right">per month</div>
-                </i-col>
-            </Row>
- 
+            </Row> 
         </div>
-        <div class="billing-group top-group" v-bind:class="toggleCouponCode">
+        <div class="billing-group top-group" v-bind:class="togglePromoCode">
             <Row>
                 <i-col span="8">
                     <span class="big-item">Promo Code</span>                    
@@ -90,7 +66,7 @@
             <Row class="summary-row">
                 <i-col span="10">Annual Total</i-col>
                 <i-col :span="totalColSize" :offset="totalColOffset">
-                    <div class="align-right">{{formatted_annual_seat_cost}}</div>
+                    <div class="align-right">{{formatCurrencyValue(adjusted_annual_seat_cost)}}</div>
                 </i-col>
             </Row>
             <p class="small-item" style="font-style: italic !important;">
@@ -113,8 +89,8 @@
             return {
                 // Leaving this for now, though changing the internal containers to divs and right aligning 
                 // made it kinda moot.
-                priceColSize: 6, //4
-                priceColOffset: 10, //12
+                priceColSize: 6, 
+                priceColOffset: 10, 
                 totalColSize: 8,
                 totalColOffset: 6,
                 pricing_window: false
@@ -137,37 +113,7 @@
             }
         },
         computed: {
-            total_seats: {
-                get () {
-                    return this.$store.state.service.seats
-                }
-            },
-            more_seats: {
-                get () {
-                    return this.is_more_than_base ? this.$store.state.service.seats - 100 : 0
-                }
-            },
-            more_seats_cost: {
-                get () {
-                    return this.more_seats * this.scaled_pupm
-                }
-            },
-            formatted_more_seats_cost: {
-                get () {
-                    return this.formatCurrencyValue(this.more_seats_cost)
-                }
-            },
-            is_more_than_base: {
-                get () {
-                    return this.$store.state.service.seats > 100
-                }
-            },
-            toggleMoreSeats: {
-                get() {
-                    return (this.is_more_than_base ? 'show' : 'hide')
-                }
-            },
-            toggleCouponCode : {
+            togglePromoCode : {
                 get() {
                     return this.has_promo_code? 'show': 'hide'
                 }
@@ -187,44 +133,27 @@
                     return this.$store.state.service.promo_code_desc
                 }
             },
-            scaled_pupm: {
+            monthly_base_cost: {
                 get () {
-                    let seats = this.$store.state.service.seats
-                    let pupm = 40 //(seats < 50 ? 30 : 20)
-                    
-                    return pupm
+                    return this.$store.state.service.seats * this.$store.state.base.pupm
                 }
             },
-            formatted_pupm: {
-                get () {
-                    return this.formatCurrencyValue(this.scaled_pupm)
-                }
-                
-            },
-            monthly_seat_cost: {
-                get () {
-                    return this.total_seats * this.scaled_pupm
-                }
-            },
-            formatted_monthly_seat_cost: {
-                get () {
-                    return this.formatCurrencyValue(this.monthly_seat_cost)
-                }
-            },
-            annual_seat_cost: {
+            adjusted_annual_seat_cost: {
                 get () {                    
-                    //return (400 + this.more_seats_cost) * 12
-                    let monthly_cost = 400 + this.more_seats_cost
+                    
+                    let list_price = this.$store.state.base.pupm * this.$store.state.base.seats * 12
+                    let annual_price = list_price
+
+                    if (this.$store.state.service.promo_code_discount_flat)
+                        annual_price = list_price - this.$store.state.service.promo_code_discount_flat
 
                     if (this.$store.state.service.promo_code_discount_percentage)
-                        monthly_cost *= (1 - this.$store.state.service.promo_code_discount_percentage)
+                    {
+                        let disc_price = annual_price * this.$store.state.service.promo_code_discount_percentage
+                        annual_price -= disc_price
+                    }                        
 
-                    return monthly_cost * 12
-                }
-            },
-            formatted_annual_seat_cost: {
-                get () {
-                    return this.formatCurrencyValue(this.annual_seat_cost)
+                    return annual_price
                 }
             }
         }
@@ -282,5 +211,10 @@
 
     .mini-row {
         top: -6px;
+    }
+
+    .pricing-dotted-line { 
+        border-bottom: 1px dotted gray;
+        height: 14px;
     }
 </style>

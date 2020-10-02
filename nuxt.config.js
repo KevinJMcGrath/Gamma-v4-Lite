@@ -10,12 +10,10 @@ module.exports = {
     base_app_url: process.env.BASE_URL
   },
   loading: { color: '#3B8070' },
-  css: [
-    // Using my version of the CSS to fix the issues with the --border-radius
-    // custom property warnings. 
-    'assets/css/vue-tel-input-fixed.css',
-    'vue-select/dist/vue-select.css', // this seemed to have worked. Encouraging
+  css: [ 
     'assets/css/common.css',
+    'assets/css/vue-tel-input-fixed.css',
+    'vue-select/dist/vue-select.css',     
     'iview/dist/styles/iview.css'
   ],
   head: {
@@ -27,10 +25,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      //{ rel: 'stylesheet', href: 'https://unpkg.com/iview/dist/styles/iview.css'},
-      //{ rel: 'stylesheet', href: 'assets/css/iveiw.css'},
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
-      //{ rel: 'stylesheet', href: 'assets/css/common.css'}      
     ],
     script: [
       //{ hid: 'google_analytics', src: '/js/segment-gamma.js'},
@@ -102,10 +97,10 @@ module.exports = {
   //Working - 3/31/2018
   // ssr: false for components that require browser resources to work (client side components mostly)
   plugins: [
-    { src: '~/plugins/iview.js', ssr: true},
-    { src: '~/plugins/vue-tele.js', ssr: false}, 
+    { src: '~/plugins/iview.js', ssr: true},     
     { src: '~/plugins/qs_plugin.js', ssr: true}, 
     { src: '~/plugins/vuex_ps_cookie.js', ssr: true},
+    { src: '~/plugins/vue-tele.js', ssr: false},
     { src: '~/plugins/vue-select.js', ssr: false}
   ],
 
