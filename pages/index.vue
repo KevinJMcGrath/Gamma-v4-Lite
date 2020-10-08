@@ -6,9 +6,10 @@
         <div class="sym-index-banner">
             <Row type="flex" justify="center">
                 <i-col span=6 class="blue-shields"></i-col>
-                <i-col span=10 class="sym-index-col">
-                    <p>SECURE TEAM COLLABORATION</p>
-                    <p style="font-size:1.8em;">FOR YOUR BUSINESS</p>
+                <i-col span=12 class="sym-index-col">
+                    <p>Symphony. <br/>Collaboration Technology &amp; Solutions for Financial Services</p>
+                    <p style="font-size:1.8em;">The world’s largest financial services network of over 535,000 industry users.</p>
+                    <p>Join us.</p>
                 </i-col>
                 <i-col span=6 class="blue-shields"></i-col>
             </Row>

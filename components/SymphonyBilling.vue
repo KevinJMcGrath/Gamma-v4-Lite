@@ -70,7 +70,7 @@
                 </i-col>
             </Row>
             <p class="small-item" style="font-style: italic !important;">
-                You will be charged the full annual fee when we deliver your Symphony credentials.
+                You will be charged the full annual fee when we deliver your Symphony credentials, and upon each annual renewal date thereafter (unless you cancel your subscription pursuant to the Symphony Services Agreement).
             </p>
         </div>
 

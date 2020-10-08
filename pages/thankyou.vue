@@ -2,21 +2,21 @@
     <div class="lite-layout">
         <div class="lite-body">
             <Row type="flex" justify="center">
-                <i-col span=10 offset=2 class="lite-col" style="border-right: 1px solid lightgray;">
+                <i-col span=12 offset=2 class="lite-col" style="border-right: 1px solid lightgray;">
                     <Row>                        
-                        <i-col span=4 offset=2>
+                        <i-col span=2 offset=3>
                             <img src="../assets/images/bullseye.png" height="60px" />
                         </i-col>
-                        <i-col span=18 style="height: 250px;">
-                            <p class="info-header">You are on your way.</p>
-                            <br/>
-                            <p class="info-header info-header-bottom">What's next?</p>
-                            <div class="lite-container-row" style="font-size:16px;">
-                                Look for a confirmation email as we<br/>
-                                set up your Symphony workspace.<br/><br/>
-                                This email will also contain a receipt<br/> 
-                                and a copy of the <a href="/Symphony_Services_Agreement.pdf" target="_blank">Symphony Services Agreement</a>.
-                            </div>                            
+                        <i-col span=17 offset=1 style="height: 300px;">
+                                <div class="info-header">You are on your way.</div>
+                                <br/>
+                                <div class="info-header info-header-bottom">What's next?</div>
+                                <div class="lite-container-row" style="font-size:16px;">
+                                    Look for a confirmation email as we
+                                    set up your Symphony workspace.<br/><br/>
+                                    This email will also contain a Service Order with the details of your purchase, as well as a copy of the <a href="https://symphony.com/resources/legal/ss-customer-agreement-sept2020.pdf" target="_blank">Symphony Services Agreement</a>. 
+                                    
+                                </div>
                         </i-col>                    
                     </Row>
                 </i-col>
