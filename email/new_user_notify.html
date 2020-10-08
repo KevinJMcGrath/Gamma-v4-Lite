@@ -51,6 +51,19 @@
                 margin-left: 10px;
             }
 
+			.button-link {
+				color: white !important;
+				background-color: #277d99;
+                text-decoration: none;
+                padding: 12px 70px;
+                font-size: 20px;                
+			}
+
+            .link-box {
+                margin-top: 30px;
+                text-align: center;
+            }
+
             .footer {
                 padding-left: 10px;
                 font-size: 11px;
@@ -68,24 +81,25 @@
                 <p class="big-text">Let's get started!</p>
                 <p> Welcome, {!Self_Service_Entry__c.Contact_First_Name__c}. Here are your new Symphony login details: </p>
 
-                    <div class="login-row">
-                        <div class="login-label">Username:</div>
-                        <div class="login-text">{!Self_Service_Entry__c.User_Email_Address__c}</div>
-                    </div>
+                <div class="login-row">
+                    <div class="login-label">Username:</div>
+                    <div class="login-text">{!Self_Service_Entry__c.User_Email_Address__c}</div>
+                </div>
 
-                    <div class="login-row">
-                        <div class="login-label">Symphony URL:</div>
-                        <div class="login-text"><a href="{!Self_Service_Entry__c.Symphony_URL__c}" target="_blank">Login</a></div>
-                    </div>
+                <div class="login-row">
+                    <div class="login-label">Symphony URL:</div>
+                    <div class="login-text"><a href="{!Self_Service_Entry__c.Symphony_URL__c}" target="_blank">{!Self_Service_Entry__c.Symphony_URL__c}</a></div>
+                </div>
+
+                <div class="link-box">
+                    <h3>Click the button below to set your password:</h3>
+                    <br/>
+                    <a class="button-link" href="{!Self_Service_Entry__c.Symphony_URL__c}/#forgot-password" target="_blank">
+                        Get Started With Symphony
+                    </a>
+                </div>
 
                 <p>
-                    <b>Important! </b> Before you can log in for the first time, you'll need to reset your user's password. Navigate 
-                    <a href="{!Self_Service_Entry__c.Symphony_URL__c}/#forgot-password" target="_blank">here</a> and enter your username above. A password
-                    reset email will be sent to this email address. 
-                    <br/>
-                    <br/>
-                    Admin users should read about the <a href="https://support.symphony.com/hc/en-us/articles/360000720623-Sign-into-and-out-of-the-admin-portal" 
-                        target="_blank">Access and Compliance Portal</a> to learn how to manage users going forward. 
                     <br/>
                     <br/>
                     If you have any questions, contact our <a href="mailto:support@symphony.com">support team</a>.

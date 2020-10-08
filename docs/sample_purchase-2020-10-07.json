@@ -1,0 +1,133 @@
+{
+  "global": {
+    "phk": ""
+  },
+  "status": {
+    "guid": "c3da71ab-7efa-c591-457a-3cba83971bc2",
+    "current": false,
+    "submit_in_progress": true,
+    "submit_completed": false,
+    "submit_completed_date": "1980-01-26T00:00:00.000Z"
+  },
+  "base": {
+    "seats": 10,
+    "pupm": 40
+  },
+  "email": {
+    "email_address": "kevin.mcgrath+uat03@symphony.com",
+    "is_verified": true
+  },
+  "user": {
+    "firstname": "Kevin",
+    "lastname": "McGrath",
+    "phone": "",
+    "country_code": "US",
+    "phone_isvalid": false
+  },
+  "company": {
+    "name": "Ghostbusters, Inc",
+    "industry": "Consulting Services",
+    "address1": "365 Prime Ave.",
+    "address2": "",
+    "city": "Bear",
+    "company_state": "Delaware",
+    "postal_code": "19701",
+    "country": "United States",
+    "phone": "(610) 328-9985"
+  },
+  "service": {
+    "seats": 10,
+    "vanity_name": "",
+    "show_promo_code": false,
+    "promo_code": "",
+    "promo_code_desc": "",
+    "promo_code_discount_percentage": 0,
+    "promo_code_discount_flat": 0
+  },
+  "legal": {
+    "terms_accepted": true
+  },
+  "billing": {
+    "card_fullname": "Kevin McGrath",
+    "payment_type": "",
+    "same_billing_address_flag": true,
+    "address1": "",
+    "address2": "",
+    "city": "",
+    "billing_state": "",
+    "zip_code": "",
+    "country": "",
+    "stripe_token": {
+      "id": "tok_1HZJcBBovuDSxGMeK4VDsgKR",
+      "p_object": "token",
+      "card": {
+        "id": "card_1HZJcBBovuDSxGMekltAF1yv",
+        "p_object": "card",
+        "address_city": null,
+        "address_country": null,
+        "address_line1": null,
+        "address_line1_check": null,
+        "address_line2": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_zip_check": null,
+        "brand": "Visa",
+        "country": "US",
+        "cvc_check": "unchecked",
+        "dynamic_last4": null,
+        "exp_month": 1,
+        "exp_year": 2024,
+        "funding": "credit",
+        "last4": "4242",
+        "name": null,
+        "tokenization_method": null
+      },
+      "client_ip": "172.85.48.82",
+      "created": 1602003975,
+      "livemode": false,
+      "type": "card",
+      "used": false
+    }
+  },
+  "pricing": {
+    "onetime_fees": 500,
+    "pupm": 40,
+    "minimum_seats": 10
+  },
+  "error": {
+    "is_error_status": false,
+    "message": ""
+  },
+  "page_state": [
+    {
+      "index": 0,
+      "name": "contact",
+      "started": false,
+      "completed": true
+    },
+    {
+      "index": 1,
+      "name": "company",
+      "started": true,
+      "completed": true
+    },
+    {
+      "index": 2,
+      "name": "billing",
+      "started": true,
+      "completed": true
+    },
+    {
+      "index": 3,
+      "name": "summary",
+      "started": true,
+      "completed": false
+    },
+    {
+      "index": 4,
+      "name": "thank",
+      "started": false,
+      "completed": false
+    }
+  ]
+}

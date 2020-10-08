@@ -1,4 +1,5 @@
 export default async function ({app, env, store, query, redirect, isDev}) {
+    console.log('https_redir Middleware executing...')
     // https://stackoverflow.com/questions/56629722/redirect-all-routes-to-https-in-nuxt-project-hosted-in-heroku
     console.log('This is where we would redirect to HTTPS')
     console.log(app.context.req.header("x-forwarded-proto"))

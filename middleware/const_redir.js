@@ -1,5 +1,5 @@
 export default function ({route, redirect}) {
-
+    console.log('const_redir Middleware executing...')
     /*try {
         console.log('ENV list:')
         console.log('server side: ' + process.server)

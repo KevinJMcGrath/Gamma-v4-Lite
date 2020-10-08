@@ -11,8 +11,8 @@
                 </i-col>
             </Row>
             <Row class="mini-row">
-                <i-col span="10">
-                    <span class="small-item"><i>(Up to 10 licenses - <a class="lite-link-button" href="#" @click="pricing_window = true" >See Pricing</a>)</i></span>                    
+                <i-col span="14" > 
+                    <span class="small-item"><i>(1 year subscription - Includes up to 10 <a class="lite-link-button" href="#" @click="pricing_window = true" >licenses</a>)</i></span>                    
                     <Modal v-model="pricing_window" title="Pricing" @on-ok="modal_ok" ok-text="Ok" >
                         <div>
                             <br/>
@@ -42,7 +42,7 @@
                         <div slot="footer"></div> <!--intentionally blank to suppress OK/Cancel button -->
                     </Modal>
                 </i-col>
-                <i-col span="4" offset="10">
+                <i-col span="6" offset="4"> 
                     <div class="small-item align-right">per month</div>
                 </i-col>
             </Row> 
@@ -75,7 +75,7 @@
         </div>
 
         <Row type="flex" justify="center">
-            <i-col span=10 style="font-size: 1em;">
+            <i-col span=24 class="agreement-override" >
                 <a class="lite-link-button" href="https://symphony.com/resources/legal/ss-customer-agreement-sept2020.pdf" target="_blank">Symphony Services Agreement</a>
             </i-col>
         </Row>
@@ -216,5 +216,10 @@
     .pricing-dotted-line { 
         border-bottom: 1px dotted gray;
         height: 14px;
+    }
+
+    .agreement-override {
+        font-size: 1em; 
+        text-align: center;
     }
 </style>

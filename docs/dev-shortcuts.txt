@@ -1,0 +1,41 @@
+http://localhost:8080/community/signup?ccode=001P000001exJqzIAE
+
+http://localhost:8080/contact?ccode=001P000001LGcOIIA1
+
+Email Thank You: http://localhost:8080/email-thankyou?em=a2V2aW4ubWdyYXRoK3Rlc3QyMDIwMDFAc3ltcGhvbnkuY29t
+
+Contact with SSEID: http://localhost:8080/contact?sseid=0e737e07-9261-4262-7908-6728ba485a84&phk=ea318a8de35d490486b65d9bfc97ac4f
+
+
+https://spinnaker-pmt.qamt.symphony.com/
+
+https://symphony-gamma-poc.uc.r.appspot.com/
+
+
+http://localhost:8080/contact?sseid=ca2c508c-4b62-c2ed-eace-d1060d5d1483
+
+
+# Put the URL encoded JSON here as the query string
+https://symphony--dev--c.cs4.visual.force.com/apex/GammaPurchaseSummary?bdjs=
+
+
+
+CC #: 4242 4242 4242 4242
+Exp: 01/25
+CVV: 123
+
+
+email: Use your symphony email. If you have already registered in the past, add a +uat01 to the local part of your address. E.g.: guy.raber+uat01@symphony.com 
+
+
+Remember: email will take several minutes to come to you, 
+
+
+Let me know if you see any issues or errors. 
+
+fc9cafe3-7162-35f5-ad2d-ec3c65d8cba2
+
+https://api.trade.gov/apps/store/apis/info?name=ConsolidatedScreeningListAPI&version=v1
+https://api.trade.gov/apps/store/site/pages/application.jag?name=Gamma&#subscription
+https://api.trade.gov/apps/store/apis/info?name=ConsolidatedScreeningListAPI&version=v1&provider=dataservices@trade.gov#/default/get_search
+https://api.trade.gov/apps/store/site/pages/doc-viewer.jag?docName=Search%20Parameters%20for%20Consolidated%20Screening%20List%20Sources&name=ConsolidatedScreeningListAPI&version=v1&
