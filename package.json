@@ -37,7 +37,7 @@
     "nuxt": "^1.4.2",
     "postcss-loader": "^2.1.6",
     "redirect-ssl": "^2.0.0",
-    "sanitize-html": "^1.19.1",
+    "sanitize-html": "^2.1.0",
     "vue": "^2.5.17",
     "vue-select": "^3.10.8",
     "vue-tel-input": "^4.4.0",
