@@ -1,10 +1,10 @@
 //import redirectSSL from 'redirect-ssl'
 
 // Adding automatic tracing through the TraceAgent
-if (process.env.NODE_ENV === 'production') {
+/*if (process.env.NODE_ENV === 'production') {
 	require('@google-cloud/trace-agent').start()
 	require('@google-cloud/debug-agent').start({ allowExpressions: true });
-}
+}*/
 
 /*
 else {
