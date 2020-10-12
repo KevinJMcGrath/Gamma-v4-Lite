@@ -61,14 +61,18 @@ router.post('/private-check', function(req, res, next) {
 	if (phk_check)
 	{
 		console.log('Evaluating PHK QP...')
+		console.log('PHK submitted: ' + key)
+		console.log('PHK ref: ' + process.env.PHK_CHECK_KEY)
 		if (key === process.env.PHK_CHECK_KEY) {
+			console.log('PHK QP accepted')
 			res.json({ success: true })
 		}
 		else {
+			console.log('PHK QP rejected')
 			res.json({ success: false })
 		}
 	} else {
-		console.log('Skipping PHK Check...')
+		console.log('Skipping PHK Check (ENV)...')
 		res.json({ success: true })
 	}
 	

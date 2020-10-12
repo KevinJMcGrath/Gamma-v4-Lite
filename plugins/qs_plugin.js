@@ -5,21 +5,19 @@ export default ({app, store, query}) => {
         //console.log('router is accessible (qs_plugin.js')
         
         app.router.beforeEach((to, from, next) => {
-            //console.log('Running beforeEach (qs_plugin.js)')
+            console.log('Running beforeEach (qs_plugin.js)')
 
-            //console.log('PHK - Query (before): ' + to.query.phk)
-            //console.log('PHK - State (before): ' + store.state.global.phk)
+            console.log('PHK - Query (before): ' + to.query.phk)
+            console.log('PHK - State (before): ' + store.state.global.phk)
 
             // Do not use app.router.push here. That will cause a loop. 
             // Use the next() function to pass the path to the router, including 
             // the desired query string
             // ** 11/16/2018 This process is working as expected **
-            if (!to.query.phk && store.state.global.phk) {
-                //console.log('Attempting to add PHK to URL (before)')
+            if (!to.query.phk && store.state.global.phk) {                
                 next({path: to.name, query: Object.assign({}, query, {phk: store.state.global.phk})})
             }
-            else {
-                //console.log('qs_plugin:22 PHK qs exists. Moving on...')
+            else {                
                 next()
             }
             

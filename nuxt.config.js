@@ -37,7 +37,7 @@ module.exports = {
   
   router: {
     //middleware: ["phk", "https_redir", "const_redir"],
-    middleware: ["phk", "const_redir"],
+    middleware: ["phk"], //, "const_redir"],
     extendRoutes (routes, resolve) {
        routes.push({
         name: 'unknown',

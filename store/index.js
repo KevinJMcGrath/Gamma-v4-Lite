@@ -394,34 +394,20 @@ const store = () => new Vuex.Store({
 
 			try {
 				console.log('Verifying PHK...')
-				console.log('API Base URL: ' + getters.baseAppURL )
 				let resp = await axios.post(getters.baseAppURL + '/api/private-check', { phk: phk })
 
 				if (resp.data.success) {
-					commit('SET_PHK', phk)
+					console.log('PHK verified.')
+					//commit('SET_PHK', phk)
 					retVal = true
 				}
 			}
 			catch (error) {
                 if (error.response) {                    
                     console.error('Axios error verifying PHK: ' + error.response.statusText)                    
-
-                    let err_msg = 'Unable to verify.'
-                    commit('SET_ERROR_STATUS', true)
-                    commit('SET_ERROR_MESSAGE', err_msg)
-
-                    retVal.success = false
-                    retVal.message = err_msg
-                    retVal.code = error.response.data.vcode
                 }
                 else {
                     console.error('Error without response: ' + error.message)
-                    commit('SET_ERROR_STATUS', true)
-                    commit('SET_ERROR_MESSAGE', error.message || 'Unknown error message')
-
-                    retVal.success = false
-                    retVal.message = error.message || 'Unknown error message'
-                    retVal.code = -7
                 }
 			}
 			finally {
