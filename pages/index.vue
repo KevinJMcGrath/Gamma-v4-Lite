@@ -16,7 +16,7 @@
                 <i-col span=6 class="blue-shields"></i-col>
             </Row>
         </div>
-        <div style="margin-top:20px;">
+        <div style="margin-top:20px;margin-bottom:100px;">
             <Row type="flex" justify="center">
                 <i-col span=7>
                      <div class="asset-3"></div>
