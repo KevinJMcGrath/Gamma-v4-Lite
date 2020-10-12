@@ -8,8 +8,10 @@
                 <i-col span=6 class="blue-shields"></i-col>
                 <i-col span=12 class="sym-index-col">
                     <p><span class="sym-text-alt">Symphony.</span> <br/>Collaboration Technology &amp; Solutions for Financial Services</p>
-                    <p style="font-size:1.8em;">The world’s largest financial services network of over 535,000 industry users.</p>
-                    <p><span class="sym-text-alt">Join us.</span></p>
+                    <p style="font-size:1.8em;font-family: Graphik Medium">The world’s largest financial services network of over 535,000 industry users.</p>
+                    <div class="button-box" style="font-family: Graphik Medium">
+                        <button class="button-style-1 button-style-start" style="" @click="handleGetStarted()">Get Started</button>
+                    </div>
                 </i-col>
                 <i-col span=6 class="blue-shields"></i-col>
             </Row>
@@ -17,25 +19,21 @@
         <div style="margin-top:20px;">
             <Row type="flex" justify="center">
                 <i-col span=7>
-                     <div class="asset-3">xx</div>
+                     <div class="asset-3"></div>
                 </i-col>
                 <i-col span=7 offset=1>
-                    <div class="asset-2-lite">
-                        <p class="symphony-start-header">With Symphony, you can:</p>
+                    <div class="asset-2-lite">                        
                         <ul class="symphony-start-list">
                             <li><div class="icon-box"><img class="icon-image" style="margin-top:2px;" src="../assets/images/dudes.svg" height="12px" /></div>Trusted digital directory, verified users only</li>
                             <li><div class="icon-box"><img class="icon-image" src="../assets/images/web.svg" height="16px" /></div>External and internal collaboration and front-to-back workflows</li>
                             <li><div class="icon-box"><img class="icon-image" src="../assets/images/expand.svg" height="15px" /></div>End-to-end encryption &amp; data sovereignty</li>
                             <li><div class="icon-box"><img class="icon-image" src="../assets/images/refresh.svg" height="16px" /></div>Granular Compliance and security controls</li>
                             <li><div class="icon-box"><img class="icon-image" src="../assets/images/lock.svg" height="16px"/></div>Open - integrate, build, automate</li>
-                        </ul>
-                        <p class="symphony-start-header">Tips and tricks available at <a href="https://symphony.com/resource/support/">here</a></p>
+                        </ul>                        
                     </div>
                 </i-col>
             </Row>
-            <div class="button-box">
-                <button class="button-style-1 button-style-start" style="" @click="handleGetStarted()">Get Started</button>
-            </div>
+            
         </div>
     </div>
 </template>
@@ -118,6 +116,7 @@ export default {
         color: #333333;
         padding: 24px 32px;
         box-shadow: 4px 4px 15px 2px rgb(201, 201, 201, 0.5);
+        
     }
 
     .asset-2-lite {
@@ -125,10 +124,11 @@ export default {
         color: #333333;
         padding: 24px 30px;
         box-shadow: 4px 4px 15px 2px rgb(201, 201, 201, 0.5);
+        margin-top: 75px;
     }
 
     .asset-3 {
-        height: 100%;
+        height: 400px;
         width: 100%;
         background-image: url("../assets/images/1_5_dark_mode.png");
         background-size: cover;
