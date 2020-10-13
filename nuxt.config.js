@@ -1,6 +1,7 @@
 require('dotenv').config()
 
-module.exports = {  
+module.exports = {
+  telemetry: true,
   dev: (process.env.NODE_ENV !== 'production'),
   env: {
     // REMEMBER: variables here are replaced in the javascript verbatim
@@ -35,9 +36,8 @@ module.exports = {
     ]
   },
   
-  router: {
-    //middleware: ["phk", "https_redir", "const_redir"],
-    middleware: ["phk"], //, "const_redir"],
+  router: {    
+    middleware: ["phk"], 
     extendRoutes (routes, resolve) {
        routes.push({
         name: 'unknown',
@@ -49,11 +49,6 @@ module.exports = {
 
   build: {
     extractCSS: true,
-    vendor: [
-      'iview',
-      'vue-tel-input'
-    ],
-
     extend (config, { isDev, isClient }) {
 
       if (isDev && isClient) {
