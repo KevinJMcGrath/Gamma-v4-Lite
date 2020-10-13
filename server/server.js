@@ -1,25 +1,3 @@
-//import redirectSSL from 'redirect-ssl'
-
-// Adding automatic tracing through the TraceAgent
-/*if (process.env.NODE_ENV === 'production') {
-	require('@google-cloud/trace-agent').start()
-	require('@google-cloud/debug-agent').start({ allowExpressions: true });
-}*/
-
-/*
-else {
-	require('@google-cloud/trace-agent').start({
-		projectId: 'symphony-gamma-poc',
-		keyFilename: './credentials/symphony-gamma-poc-493624b6cca1.json'
-	})
-
-	require('@google-cloud/debug-agent').start({
-		allowExpressions: true,
-  		projectId: 'symphony-gamma-poc',
-  		keyFilename: './credentials/symphony-gamma-poc-493624b6cca1.json'
-});
-}*/
-
 const port = process.env.PORT || 8080
 const host = process.env.HOST || '0.0.0.0'
 
@@ -38,9 +16,6 @@ const express = require('express')
 
 const app = express()
 const api = require('./api')
-
-// Let's see if this works
-//app.use(redirectSSL.create({enabled: process.env.NODE_ENV === 'production'}))
 
 
 // This should now work with the top level varible
