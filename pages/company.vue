@@ -463,8 +463,7 @@
             SymphonyBilling,
             SymphonyFooter,
             CountryDropdown,
-            StateDropdown,
-            vSelect
+            StateDropdown
         }
     }
 </script>
