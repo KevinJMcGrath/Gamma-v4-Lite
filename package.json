@@ -1,6 +1,6 @@
 {
-  "name": "gamma-nuxt",
-  "version": "1.0.1",
+  "name": "gamma-v4",
+  "version": "1.4.0",
   "description": "Symphony Self Service Ordering",
   "author": "Kevin McGrath <kevin.mcgrath@symphony.com>",
   "private": true,
@@ -17,7 +17,7 @@
     "precommit": "npm run lint"
   },
   "engines": {
-    "node": "9.9.0"
+    "node": "12.x.x"
   },
   "dependencies": {
     "@nuxtjs/dotenv": "^1.1.1",
@@ -53,7 +53,7 @@
     "eslint-loader": "^1.7.1",
     "eslint-plugin-vue": "^4.7.1",
     "iview-loader": "^1.2.2",
-    "less": "^2.7.3",
+    "less": "^3.0.2",
     "less-loader": "^2.2.3",
     "postcss-loader": "^2.1.6"
   }
