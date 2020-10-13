@@ -28,7 +28,7 @@ module.exports = {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
     ],
     script: [
-      //{ hid: 'google_analytics', src: '/js/segment-gamma.js'},
+      { hid: 'google_analytics', src: '/js/segment-gamma.js'},
       { hid: 'stripe', src: 'https://js.stripe.com/v3/'},      
       //https://ionicons.com/
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
