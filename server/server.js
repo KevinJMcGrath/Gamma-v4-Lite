@@ -13,6 +13,7 @@ process.env.DEBUG = 'nuxt:*'
 const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
 const express = require('express')
+const helmet = require('helmet')
 
 const app = express()
 const api = require('./api')
@@ -23,6 +24,11 @@ const config = require('../nuxt.config.js')
 const nuxt = new Nuxt(config)
 
 app.use(bodyParser.json())
+
+const sixtyDaysInSeconds = 5184000
+app.use(helmet.hsts({
+	maxAge: sixtyDaysInSeconds
+ }))
 
 // Tell express to use the API routes in the API folder
 // instead of specifying them manually

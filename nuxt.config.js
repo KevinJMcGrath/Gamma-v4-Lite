@@ -26,10 +26,10 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
+      //{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
     ],
     script: [
-      { hid: 'google_analytics', src: 'assets/js/segment-gamma.js'},
+      //{ hid: 'google_analytics', src: '~assets/js/segment-gamma.js'},
       { hid: 'stripe', src: 'https://js.stripe.com/v3/'},      
       //https://ionicons.com/
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
@@ -101,19 +101,13 @@ module.exports = {
 
   modules: [
     'nuxt-helmet',
+    '@dansmaculotte/nuxt-segment',
     ['@nuxtjs/dotenv', {only: ['STRIPE_PUBLIC_KEY', 'CSOON']}]
   ],
-  helmet: {
-    // explicitly do not use contentSecurityPolicy, this can cause conflicts in nuxt
-    dnsPrefetchControl: true,
-    expectCt: true,
-    frameguard: true,
-    hidePoweredBy: true,
-    hsts: true,
-    ieNoOpen: true,
-    noSniff: true,
-    permittedCrossDomainPolicies: true,
-    referrerPolicy: true,
-    xssFilter: true
+
+  segment: {
+    writeKey: process.env.SEGMENT_KEY,
+    disabled: process.env.ADD_SEGMENT !== 'TRUE',
+    useRouter: true
   }
 }

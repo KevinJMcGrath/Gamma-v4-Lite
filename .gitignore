@@ -23,6 +23,7 @@ secrets.json
 .env_uat
 .env_prod
 .env_old
+.env_staging
 
 # Temp junk
 *.bak

@@ -12,5 +12,3 @@ resources:
 # It would be lovely if this just worked
 env_variables:
   NODE_ENV: "production"
-  SFDC_API_KEY: "12345"
-  VERIFY_SERVER_ONLY: "8b50a94a-3b88-4739-aa11-b1b02a1d8ab9"
