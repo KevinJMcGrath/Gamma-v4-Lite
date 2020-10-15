@@ -25,11 +25,9 @@ module.exports = {
       { hid: 'description', name: 'description', content: '{{escape description }}' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      //{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lato|Roboto:300,400'},
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }      
     ],
-    script: [
-      //{ hid: 'google_analytics', src: '~assets/js/segment-gamma.js'},
+    script: [      
       { hid: 'stripe', src: 'https://js.stripe.com/v3/'},      
       //https://ionicons.com/
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
