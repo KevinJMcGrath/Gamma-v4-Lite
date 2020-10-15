@@ -207,23 +207,6 @@ router.post('/error', function(req, res, next) {
 	})
 })
 
-router.post('/test-post', function(req, res, next) {
-	console.log('server reports: test succeeded')
-	res.json({ success: true })
-})
-
-router.post('/purchase-submit-test', function(req, res, next) {
-	var input = req.body
-
-	for (var property in input) {
-		if (input.hasOwnProperty(property)) {
-			input[property] = clean_input(input[property])
-		}
-	}
-
-	res.json({input: input})
-}) 
-
 router.post('/purchase-submit', function(req, res, next) {
 	
 	const payload = req.body

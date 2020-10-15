@@ -389,6 +389,24 @@ const store = () => new Vuex.Store({
             return
 					
 		},
+		async verifyDPL({dispatch, getters}, dpl_qp)
+		{
+			let retval = false
+			try {
+				let resp = await axios.post(getters.baseAppURL + '/api/dpl_check', {qp: dpl_qp})
+
+				if (resp.data.success) {
+					console.log('DPL success')
+					retval = true
+				}
+			}
+			catch (error) {
+				console.error('Error checking DPL.' + error.response)
+			}
+			finally {
+				return retval
+			}
+		},
 		async verifyPHK({commit, getters}, phk) {
 			let retVal = false
 

@@ -119,7 +119,7 @@
                         this.handleValidateEmail()
                     }
                 }
-            },
+            },            
             handleValidateEmail() {
                 this.$refs['email_form'].validate((valid) => {
                     if (valid)
