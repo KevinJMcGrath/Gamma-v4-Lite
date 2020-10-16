@@ -389,65 +389,59 @@ const store = () => new Vuex.Store({
             return
 					
 		},
-		domainCheck({getters}, email_address) {
+		async domainCheck({getters}, email_address) {
 			console.log('domainCheck')
 			let retval = false
 
 			try
 			{
-				let resp = axios.post(getters.baseAppURL + '/api/domain-check', { email_address: email_address})
+				let resp = await axios.post(getters.baseAppURL + '/api/domain-check', { email_address: email_address})
 
-				
-				console.log(resp)
+				if (resp.data.success) { 
+					return 0 
+				} else if (resp.data.server_code === 11) { 
+					return -1 
+				} else { 
+					return -2 
+				}
 
-				if (resp.data.success) { return 0 }					
-				else if (resp.data.server_code === 11) { return -1 }
-				else { return -2 }
 			} catch(error) {
 				console.error(error)
 				return -2
 			}
 		},
-		async verifyEmailSFDC({getters, state}) {
+		async verifyEmailSFDC({getters, state}) {			
 			let retval;
+			let success = false			
+			let err_msg = 'There was a problem verifying your email. Contact sales@symphony.com for assistance.'
 
 			try {
-				let resp = await axios.post(getters.baseAppURL + '/api/verify', { email_address: state.email.email_address })
-				if (resp.data.vcode) {
-					retval = {
-						success: true,
-						vcode: resp.data.vcode
+				let resp = await axios.post(getters.baseAppURL + '/api/verify-email', { email_address: state.email.email_address })	
+
+				if (resp) { 
+					success = resp.data.success
+					switch(resp.data.vcode) {
+						case 'ver01':
+						case 'ver02':
+							err_msg = ''
+							break
+						case 'ver91':
+							err_msg = 'You have already submitted your email address. Check your email for verification link. Contact sales@symphony.com for assistance.'
+							break
+						case 'ver92':
+							err_msg = 'Your email domain is already associated with a Symphony client. Contact sales@symphony.com for assistance.'
+							break
+						default:
+							break
 					}
-				} else {
-					retval = {
-						success: false,
-						message: 'Unknown error verifying email address. Contact sales@symphony.com'
-					}
-				}				
+				}			
 			} catch (err) {
 				console.error(err)
-
-				let err_msg = 'Unknown error verifying email address. Contact sales@symphony.com'
-				switch (error.response.data.error_data.errorDetail) {
-					case '1':
-						err_msg = 'Your email was previously submitted and is blocked. Contact Symphony if this is an error.'
-						break
-					case '2':
-						err_msg = 'Your company is already uses Symphony. Contact your IT department for an account.'
-						break
-					case '3':
-						err_msg = 'A Symphony account with this email address already exists.'
-						break
-					default:
-						break
-				}
-				
-				retval = {
-					success: false,
-					message: err_msg
-				}
 			} finally {
-				return retval
+				return {
+					success: success,
+					err_msg: err_msg
+				}
 			}
 		},
 		async verifyDPL({getters}, dpl_qp)

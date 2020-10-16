@@ -83,19 +83,6 @@
             }
         },
         mounted: function() {            
-            if (this.$route.query.em)
-            {
-                let email_addy = this.$route.query.em
-
-                if (email_addy.indexOf('@') !== -1) {
-                    store.commit('SET_EMAIL', email_addy)
-                }
-                else {
-                    store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
-                }
-                
-            }
-
             this.emailForm.email = this.$store.state.email.email_address
         },
         methods: {
@@ -109,9 +96,9 @@
                     }
                 }
             },
-            domain_check() {
+            async domain_check() {
                 let retval = false
-                let check_code = this.$store.dispatch('domainCheck', this.input_email)
+                let check_code = await this.$store.dispatch('domainCheck', this.input_email)                
 
                 if (check_code === 0) { 
                     retval = true 
@@ -131,58 +118,57 @@
 
                 return retval
             },
-            validate_sfdc() {
-                let retval = false
-                let resp = this.$store.dispatch('verifyEmailSFDC')
+            async validate_sfdc() {                
+                let err_msg = ''
 
-                if (resp.success) {
-                    if (resp.vcode === 'ver01') {
-                        this.$router.push({ name: 'email-thankyou' })
-                    }
-                    else if (resp.vcode === 'ver02') {
-                        // Re-verification sent. Include the 'cd' param to tell the 
-                        // thank you page that it's a re-verification
-                        this.$router.push({name: "email-thankyou", query:{cd: '1086453', em: response.data.encoded}})
-                    }
-                    else {
-                        this.loading = false
-                        this.$Notice.error({
-                            title: 'Error Verifying Email Address',
-                            desc: 'There was a problem verifying your email. Try again later.',
-                            duration: 6
-                        })
-                    }
+                let resp = await this.$store.dispatch('verifyEmailSFDC')
+
+                if (resp && resp.success) {
+                    this.$router.push({ name: 'email-thankyou' })
+                } else if (resp.err_msg) {
+                    err_msg = resp.err_msg
                 }
                 else {
+                    err_msg = 'Unknown Error. Contact sales@symphony.com'
+                }
+
+                if (err_msg)
+                {
                     this.$Notice.error({
                         title: 'Error Verifying Email Address',
-                        desc: resp.message,
+                        desc: err_msg,
                         duration: 6
                     })
                 }
             },
-            handleValidateEmail() {
+            async handleValidateEmail() {
                 this.loading = true
-                console.log('handleValidateEmail')                
-                let is_domain_valid = false
 
-                this.$refs['email_form'].validate((is_valid) => {
-                    console.log('validator: ' + is_valid)                   
+                try {                    
+                    let is_valid = await this.$refs['email_form'].validate()                    
 
                     if (is_valid)
                     {
-                        console.log('Form valid')
-                        is_domain_valid = this.domain_check()
-
-                        if (is_domain_valid) {
-                            this.validate_sfdc()
+                        if (await this.domain_check())
+                        {
+                            console.log('Domain check succeeded')
+                            await this.validate_sfdc()
                         }
+                        else {
+                            console.log('Domain check failed')
+                        }
+
                     } else {
                         console.log('Form INVALID')
                     }
-                })
-
-                this.loading = false
+                }
+                catch (err) {
+                    console.error(err)
+                }
+                finally {
+                    this.loading = false
+                }
+                
             }
         },
         computed: {

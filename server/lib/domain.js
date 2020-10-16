@@ -13,11 +13,11 @@ const domain_search = {
 
             let isForbidden = is_blacklist || is_freemail || is_disposable
 
-            console.log('domain: ' + domain)
+            /*console.log('domain: ' + domain)
             console.log('is_blacklist: ' + is_blacklist)
             console.log('is_freemail: ' + is_freemail)
             console.log('is_disposable: ' + is_disposable)
-            console.log('isForbidden? ' + isForbidden)
+            console.log('isForbidden? ' + isForbidden)*/
 
             resolve(isForbidden)
         })

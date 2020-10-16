@@ -96,7 +96,12 @@ router.post('/domain-check', function(req, res, next) {
 	})
 })
 
-router.post('/verify', function(req, res, next) {	
+router.post('/vt', function(req, res, next) {
+	console.log('/api/vt')
+	res.json({success: true})
+})
+
+router.post('/verify-email', function(req, res, next) {	
 	let email_address = clean_input(req.body.email_address.toLowerCase())
 	
 	const payload = { 
@@ -111,20 +116,16 @@ router.post('/verify', function(req, res, next) {
 		}
 	}
 
-	console.log('Sending verification request to Salesforce')
 	axios.post('/email-verification', payload, config)
 	.then((response) => {	
 		try
 		{
-			
-			log_response(response)			
-			// btoa is not available server side 
-			//let encoded_email = btoa(email_address).replace(/=/g, '-')
-			let encoded_email = Buffer.from(email_address).toString('base64').replace(/=/g, '-')
+			console.log(response)
+			//let encoded_email = Buffer.from(email_address).toString('base64').replace(/=/g, '-')
 			let r_vcode = (response.data && response.data.vcode ? response.data.vcode : 'ver99')
-			let r_msg = (response.data && response.data.message ? response.data.message : 'Could not find message')
+			//let r_msg = (response.data && response.data.message ? response.data.message : 'Could not find message')
 
-			res.json( { success: true, message: r_msg, encoded: encoded_email, vcode: r_vcode })
+			res.json( { success: response.data.success, vcode: r_vcode }) // message: r_msg, encoded: encoded_email,
 		}
 		catch (err) {
 			res.status(err.response.status).json({success: false, message: error.message})
