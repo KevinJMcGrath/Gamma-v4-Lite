@@ -50,7 +50,7 @@ router.post('/dpl_check', function(req, res, next) {
         if (response.data.total === 0)
         {
             res.json({ 
-                success: response.data.success
+                success: true
             })
         } else {
             res.json({success: false})

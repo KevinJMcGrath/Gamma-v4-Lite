@@ -120,7 +120,6 @@ router.post('/verify-email', function(req, res, next) {
 	.then((response) => {	
 		try
 		{
-			console.log(response)
 			//let encoded_email = Buffer.from(email_address).toString('base64').replace(/=/g, '-')
 			let r_vcode = (response.data && response.data.vcode ? response.data.vcode : 'ver99')
 			//let r_msg = (response.data && response.data.message ? response.data.message : 'Could not find message')

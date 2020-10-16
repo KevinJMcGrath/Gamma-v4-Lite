@@ -36,7 +36,8 @@ const initial_state = () => ({
         lastname: '',
         phone: '',
         country_code: 'us',
-        phone_isvalid: false
+		phone_isvalid: false,
+		dpl: false
     },
     company: {
         name: '',
@@ -119,6 +120,9 @@ const store = () => new Vuex.Store({
 		},
 		SET_PHK(state, phk) {
 			state.global.phk = phk
+		},
+		SET_DPL(state, dpl_check) {
+			state.user.dpl = dpl_check
 		},
 		SET_FNAME(state, firstname) {
 			state.user.firstname = firstname.trim().replace( /\s\s+/g, ' ')
@@ -425,10 +429,10 @@ const store = () => new Vuex.Store({
 						case 'ver02':
 							err_msg = ''
 							break
-						case 'ver91':
+						case 'ver91':							
 							err_msg = 'You have already submitted your email address. Check your email for verification link. Contact sales@symphony.com for assistance.'
 							break
-						case 'ver92':
+						case 'ver92':							
 							err_msg = 'Your email domain is already associated with a Symphony client. Contact sales@symphony.com for assistance.'
 							break
 						default:
@@ -444,7 +448,7 @@ const store = () => new Vuex.Store({
 				}
 			}
 		},
-		async verifyDPL({getters, state})
+		async verifyDPL({commit, getters, state})
 		{
 			let retval = false
 			try {
@@ -457,6 +461,7 @@ const store = () => new Vuex.Store({
 					let resp_company = await axios.post(getters.baseAppURL + '/api/dpl_check', {qp: cname})
 					if (resp_company.data.success)
 					{
+						commit('SET_DPL', true)
 						retval = true
 					}					
 				}

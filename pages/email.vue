@@ -98,7 +98,7 @@
             },
             async domain_check() {
                 let retval = false
-                let check_code = await this.$store.dispatch('domainCheck', this.input_email)                
+                let check_code = await this.$store.dispatch('domainCheck', this.input_email)                                
 
                 if (check_code === 0) { 
                     retval = true 

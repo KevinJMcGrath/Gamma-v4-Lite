@@ -363,6 +363,8 @@
             async verify_dpl() {
                 let dpl_check = await this.$store.dispatch('verifyDPL')
 
+                console.log('summary verify_dpl: ' + dpl_check)
+
                 if (!dpl_check)
                 {
                     this.$Modal.error({
@@ -379,7 +381,9 @@
             },
             async do_submit() {
                 let retval = false                
-                let submit_resp = this.$store.dispatch('submitPurchase')
+                let submit_resp = await this.$store.dispatch('submitPurchase')
+
+                console.log('summary do_submit: ' + submit_resp)
 
                 switch (submit_resp) {
                     case 0:
@@ -406,6 +410,8 @@
                             okText: 'Ok'
                         })
                 }
+
+                return retval
             },
             async handleGotoThankyou() {
                 this.loading = true
@@ -413,19 +419,24 @@
 
                 let is_valid = await this.$refs['summary_form'].validate()
                 
-                if (valid)
-                {
-                    if (this.$store.getters.isInterviewComplete)
+                try {
+                    if (is_valid)
                     {
-                        if (await verify_dpl()) {
-                            if (await do_submit()) {
-                                this.$router.push({name: "thankyou"})
+                        if (this.$store.getters.isInterviewComplete)
+                        {
+                            if (await this.verify_dpl()) {
+                                if (await this.do_submit()) {
+                                    this.$router.push({name: "thankyou"})
+                                }
                             }
+                        } else {
+                            this.$Message.error('The form is missing information.')
                         }
-                    } else {
-                        this.$Message.error('The form is missing information.')
                     }
+                } catch (err) {
+                    console.log(err)
                 }
+                
                     
                 this.loading = false
             }
