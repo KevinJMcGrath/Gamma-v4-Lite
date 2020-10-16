@@ -389,7 +389,62 @@ const store = () => new Vuex.Store({
             return
 					
 		},
-		async verifyDPL({getters, store})
+		async domainCheck({getters}, email_address) {
+			console.log('domainCheck')
+			let retval = false
+
+			try
+			{
+				let resp = await axios.post(getters.baseAppURL + '/api/domain-check', { email_address: email_address})
+
+				if (resp.data.success) { 
+					return 0 
+				} else if (resp.data.server_code === 11) { 
+					return -1 
+				} else { 
+					return -2 
+				}
+
+			} catch(error) {
+				console.error(error)
+				return -2
+			}
+		},
+		async verifyEmailSFDC({getters, state}) {			
+			let retval;
+			let success = false			
+			let err_msg = 'There was a problem verifying your email. Contact sales@symphony.com for assistance.'
+
+			try {
+				let resp = await axios.post(getters.baseAppURL + '/api/verify-email', { email_address: state.email.email_address })	
+
+				if (resp) { 
+					success = resp.data.success
+					switch(resp.data.vcode) {
+						case 'ver01':
+						case 'ver02':
+							err_msg = ''
+							break
+						case 'ver91':
+							err_msg = 'You have already submitted your email address. Check your email for verification link. Contact sales@symphony.com for assistance.'
+							break
+						case 'ver92':
+							err_msg = 'Your email domain is already associated with a Symphony client. Contact sales@symphony.com for assistance.'
+							break
+						default:
+							break
+					}
+				}			
+			} catch (err) {
+				console.error(err)
+			} finally {
+				return {
+					success: success,
+					err_msg: err_msg
+				}
+			}
+		},
+		async verifyDPL({getters}, dpl_qp)
 		{
 			let retval = false
 			try {
@@ -438,7 +493,7 @@ const store = () => new Vuex.Store({
 				return retVal
 			}
 		},
-        async verifyGUIDAA({ commit, dispatch, getters, state }, guid) {
+        async verifyGUIDAA({ commit, getters, state }, guid) {
             console.log('(a/a) Verifying GUID with Salesforce...')
             let retVal = {
                 success: false,
@@ -495,7 +550,7 @@ const store = () => new Vuex.Store({
             }
             
 		},
-		async validatePromoCode({commit, dispatch, state})
+		async validatePromoCode({commit, state})
 		{
 			commit('SET_PROMO_CODE_SHOW', false)			
 
@@ -607,11 +662,6 @@ const store = () => new Vuex.Store({
     }
 })
 
-function SetLog(logActivity)
-{
-	const processExe = 'Running on: ' + (process.server ? 'Server-side' : 'Client-side')
-	console.log(moment().format('MM-DD-YYYY HH:mm:ss.SSS Z') + ' | ' + logActivity + ' | ' + processExe)
-}
 
 function CreateErrorObject(error, guid)
 {

@@ -82,25 +82,7 @@
                 
             }
         },
-        fetch({ store, params, query, redirect, env }) {
-            //store.commit('RESET_STATE')
-            
-        },
-        mounted: function() {
-            console.log('PHK (email.vue): ' + this.$store.state.global.phk)
-            if (this.$route.query.em)
-            {
-                let email_addy = this.$route.query.em
-
-                if (email_addy.indexOf('@') !== -1) {
-                    store.commit('SET_EMAIL', email_addy)
-                }
-                else {
-                    store.commit('SET_EMAIL', atob(query.em.replace(/-/g, '=')))
-                }
-                
-            }
-
+        mounted: function() {            
             this.emailForm.email = this.$store.state.email.email_address
         },
         methods: {
@@ -114,112 +96,79 @@
                     }
                 }
             },
-            async handleValidateEmailAsync() {
-                let is_valid = await this.$refs['email_form'].validate()
+            async domain_check() {
+                let retval = false
+                let check_code = await this.$store.dispatch('domainCheck', this.input_email)                
 
-                
+                if (check_code === 0) { 
+                    retval = true 
+                } else if (check_code === -1) {
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: 'Business domain email addresses only.',
+                        duration: 6
+                    })
+                } else {
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: 'There was a problem verifying your email. Try again later.',
+                        duration: 6
+                    })
+                }
+
+                return retval
             },
-            handleValidateEmail() {
-                this.$refs['email_form'].validate((valid) => {
+            async validate_sfdc() {                
+                let err_msg = ''
+
+                let resp = await this.$store.dispatch('verifyEmailSFDC')
+
+                if (resp && resp.success) {
+                    this.$router.push({ name: 'email-thankyou' })
+                } else if (resp.err_msg) {
+                    err_msg = resp.err_msg
+                }
+                else {
+                    err_msg = 'Unknown Error. Contact sales@symphony.com'
+                }
+
+                if (err_msg)
+                {
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: err_msg,
+                        duration: 6
+                    })
+                }
+            },
+            async handleValidateEmail() {
+                this.loading = true
+
+                try {                    
+                    let is_valid = await this.$refs['email_form'].validate()                    
+
                     if (is_valid)
                     {
-                        let doVerify = false
+                        if (await this.domain_check())
+                        {
+                            console.log('Domain check succeeded')
+                            await this.validate_sfdc()
+                        }
+                        else {
+                            console.log('Domain check failed')
+                        }
 
-                        axios.post('/api/domain-check', { email_address: this.input_email }).then(function(response) {
-                            doVerify = response.data.success
-
-                            if (response.data.server_code && response.data.server_code === 11)
-                            {
-                                let domain = response.data.domain_name
-                                let msg = 'Business domain email addresses only.'
-
-                                if (domain)
-                                    msg += '(' + domain + ')'
-
-                                this.$Notice.error({
-                                    title: 'Error Verifying Email Address',
-                                    desc: msg,
-                                    duration: 6
-                                })
-                            }
-
-                        }.bind(this)).then(function(response) {
-                            if (doVerify)
-                            {
-                                this.loading = true
-                                axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
-                                    if (response.data && response.data.vcode) {
-                                        if (response.data.vcode === 'ver01') {
-                                            // Initial verification successfully sent.
-                                            this.$router.push({name: 'email-thankyou', query: {em: response.data.encoded}})
-                                        }
-                                        else if (response.data.vcode === 'ver02') {
-                                            // Re-verification sent. Include the 'cd' param to tell the 
-                                            // thank you page that it's a re-verification
-                                            this.$router.push({name: "email-thankyou", query:{cd: '1086453', em: response.data.encoded}})
-                                        }
-                                        else {
-                                            this.loading = false
-                                            this.$Notice.error({
-                                                title: 'Error Verifying Email Address',
-                                                desc: 'There was a problem verifying your email. Try again later.',
-                                                duration: 6
-                                            })
-                                        }
-                                    }
-                                    else {
-                                        this.loading = false
-                                        this.$Notice.error({
-                                            title: 'Error Verifying Email Address',
-                                            desc: 'There was a problem verifying your email. Try again later.',
-                                            duration: 6
-                                        })
-                                    }
-                                    
-
-                                }.bind(this)).catch(function (error) {
-
-                                    let d = 'There was a problem completing your verification request. '
-
-                                    if (error.response.data.error_data.errorDetail)
-                                    {
-                                        switch (error.response.data.error_data.errorDetail) {
-                                            case '1':
-                                                d += 'Your email was previously submitted and is blocked. Contact Symphony if this is an error.'
-                                                break
-                                            case '2':
-                                                d += 'Your company is already uses Symphony. Contact your IT department for an account.'
-                                                break
-                                            case '3':
-                                                d += 'A Symphony account with this email address already exists.'
-                                                break
-                                            default:
-                                                break
-                                        }
-                                    }                           
-
-                                    this.loading = false
-                                    this.$Notice.error({
-                                        title: 'Error Verifying Email Address',
-                                        desc: d,
-                                        duration: 6
-                                    })
-                                }.bind(this))
-                            }
-                        }.bind(this)).catch(function (error) {
-                            err_msg = {
-                                message: 'There was a problem verifying your email.',
-                                code: 'EMAIL-01'
-                            }
-
-                            store.dispatch('sendErrorReport', error)
-                            store.dispatch('setErrorState', err_msg)
-
-
-                            this.$router.push({ name: "error" })                            
-                        }.bind(this))
+                    } else {
+                        console.log('Form INVALID')
                     }
-                })                
+                }
+                catch (err) {
+                    console.error(err)
+                }
+                finally {
+                    this.loading = false
+                }
+                
             }
         },
         computed: {
@@ -228,7 +177,6 @@
                     return this.$store.state.email.email_address                    
                 },
                 set (value) {
-                    // I'm intentionally adding side effects to make the validation rules work. Not ideal
                     this.emailForm.email = value
                     this.$store.commit('SET_EMAIL', value)
                 }
@@ -250,7 +198,4 @@
     .email-input {
         width: 50%;
     }
-
-    
-
  </style>

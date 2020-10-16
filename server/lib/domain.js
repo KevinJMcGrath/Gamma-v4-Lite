@@ -7,11 +7,17 @@ const domain_search = {
         return new Promise((resolve, reject) => {
             let domain = extractDomain(email_address)
             
-            var isForbidden = isIncludedDomainList(blacklist, domain) ||
-                isIncludedDomainList(freemail, domain) ||
-                isIncludedDomainList(disposable, domain)
+            let is_blacklist = isIncludedDomainList(blacklist, domain)
+            let is_freemail = isIncludedDomainList(freemail, domain)
+            let is_disposable = isIncludedDomainList(disposable, domain)
 
-            console.log('isForbidden? ' + isForbidden)
+            let isForbidden = is_blacklist || is_freemail || is_disposable
+
+            /*console.log('domain: ' + domain)
+            console.log('is_blacklist: ' + is_blacklist)
+            console.log('is_freemail: ' + is_freemail)
+            console.log('is_disposable: ' + is_disposable)
+            console.log('isForbidden? ' + isForbidden)*/
 
             resolve(isForbidden)
         })
