@@ -389,15 +389,21 @@ const store = () => new Vuex.Store({
             return
 					
 		},
-		async verifyDPL({dispatch, getters}, dpl_qp)
+		async verifyDPL({getters, store})
 		{
 			let retval = false
 			try {
-				let resp = await axios.post(getters.baseAppURL + '/api/dpl_check', {qp: dpl_qp})
+				let name = store.user.lastname + ', ' + store.user.firstname
+				let cname = store.company.name
 
-				if (resp.data.success) {
-					console.log('DPL success')
-					retval = true
+				let resp_name = await axios.post(getters.baseAppURL + '/api/dpl_check', {qp: name})
+				if (resp_name.data.success) {
+
+					let resp_company = await axios.post(getters.baseAppURL + '/api/dpl_check', {qp: cname})
+					if (resp_company.data.success)
+					{
+						retval = true
+					}					
 				}
 			}
 			catch (error) {

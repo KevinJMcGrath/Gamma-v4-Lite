@@ -367,7 +367,10 @@
                     {
                         if (this.$store.getters.isInterviewComplete)
                         {
-                            console.log('Interview is complete')
+                            // this.$store.dispatch('verifyDPL').then((dpl_result) => {
+                                
+                            // })
+
                             this.$store.dispatch('submitPurchase').then((result) => {
                                 console.log(result)
 

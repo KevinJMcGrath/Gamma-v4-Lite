@@ -104,12 +104,6 @@
             this.emailForm.email = this.$store.state.email.email_address
         },
         methods: {
-            testValidate() {
-                this.loading = true;
-                setTimeout(() => {
-                    this.loading = false;
-                }, 3000);
-            },
             key_handler(key_event) {               
                 if (key_event.keyCode === 32) {                    
                     event.preventDefault()
@@ -119,10 +113,15 @@
                         this.handleValidateEmail()
                     }
                 }
-            },            
+            },
+            async handleValidateEmailAsync() {
+                let is_valid = await this.$refs['email_form'].validate()
+
+                
+            },
             handleValidateEmail() {
                 this.$refs['email_form'].validate((valid) => {
-                    if (valid)
+                    if (is_valid)
                     {
                         let doVerify = false
 
