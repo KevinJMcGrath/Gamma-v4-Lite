@@ -82,12 +82,7 @@
                 
             }
         },
-        fetch({ store, params, query, redirect, env }) {
-            //store.commit('RESET_STATE')
-            
-        },
-        mounted: function() {
-            console.log('PHK (email.vue): ' + this.$store.state.global.phk)
+        mounted: function() {            
             if (this.$route.query.em)
             {
                 let email_addy = this.$route.query.em
@@ -104,12 +99,6 @@
             this.emailForm.email = this.$store.state.email.email_address
         },
         methods: {
-            testValidate() {
-                this.loading = true;
-                setTimeout(() => {
-                    this.loading = false;
-                }, 3000);
-            },
             key_handler(key_event) {               
                 if (key_event.keyCode === 32) {                    
                     event.preventDefault()
@@ -119,108 +108,81 @@
                         this.handleValidateEmail()
                     }
                 }
-            },            
-            handleValidateEmail() {
-                this.$refs['email_form'].validate((valid) => {
-                    if (valid)
-                    {
-                        let doVerify = false
+            },
+            domain_check() {
+                let retval = false
+                let check_code = this.$store.dispatch('domainCheck', this.input_email)
 
-                        axios.post('/api/domain-check', { email_address: this.input_email }).then(function(response) {
-                            doVerify = response.data.success
+                if (check_code === 0) { 
+                    retval = true 
+                } else if (check_code === -1) {
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: 'Business domain email addresses only.',
+                        duration: 6
+                    })
+                } else {
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: 'There was a problem verifying your email. Try again later.',
+                        duration: 6
+                    })
+                }
 
-                            if (response.data.server_code && response.data.server_code === 11)
-                            {
-                                let domain = response.data.domain_name
-                                let msg = 'Business domain email addresses only.'
+                return retval
+            },
+            validate_sfdc() {
+                let retval = false
+                let resp = this.$store.dispatch('verifyEmailSFDC')
 
-                                if (domain)
-                                    msg += '(' + domain + ')'
-
-                                this.$Notice.error({
-                                    title: 'Error Verifying Email Address',
-                                    desc: msg,
-                                    duration: 6
-                                })
-                            }
-
-                        }.bind(this)).then(function(response) {
-                            if (doVerify)
-                            {
-                                this.loading = true
-                                axios.post('/api/verify', { email_address: this.input_email }).then(function(response) {
-                                    if (response.data && response.data.vcode) {
-                                        if (response.data.vcode === 'ver01') {
-                                            // Initial verification successfully sent.
-                                            this.$router.push({name: 'email-thankyou', query: {em: response.data.encoded}})
-                                        }
-                                        else if (response.data.vcode === 'ver02') {
-                                            // Re-verification sent. Include the 'cd' param to tell the 
-                                            // thank you page that it's a re-verification
-                                            this.$router.push({name: "email-thankyou", query:{cd: '1086453', em: response.data.encoded}})
-                                        }
-                                        else {
-                                            this.loading = false
-                                            this.$Notice.error({
-                                                title: 'Error Verifying Email Address',
-                                                desc: 'There was a problem verifying your email. Try again later.',
-                                                duration: 6
-                                            })
-                                        }
-                                    }
-                                    else {
-                                        this.loading = false
-                                        this.$Notice.error({
-                                            title: 'Error Verifying Email Address',
-                                            desc: 'There was a problem verifying your email. Try again later.',
-                                            duration: 6
-                                        })
-                                    }
-                                    
-
-                                }.bind(this)).catch(function (error) {
-
-                                    let d = 'There was a problem completing your verification request. '
-
-                                    if (error.response.data.error_data.errorDetail)
-                                    {
-                                        switch (error.response.data.error_data.errorDetail) {
-                                            case '1':
-                                                d += 'Your email was previously submitted and is blocked. Contact Symphony if this is an error.'
-                                                break
-                                            case '2':
-                                                d += 'Your company is already uses Symphony. Contact your IT department for an account.'
-                                                break
-                                            case '3':
-                                                d += 'A Symphony account with this email address already exists.'
-                                                break
-                                            default:
-                                                break
-                                        }
-                                    }                           
-
-                                    this.loading = false
-                                    this.$Notice.error({
-                                        title: 'Error Verifying Email Address',
-                                        desc: d,
-                                        duration: 6
-                                    })
-                                }.bind(this))
-                            }
-                        }.bind(this)).catch(function (error) {
-                            err_msg = {
-                                message: 'There was a problem verifying your email.',
-                                code: 'EMAIL-01'
-                            }
-
-                            store.dispatch('sendErrorReport', error)
-                            store.dispatch('setErrorState', err_msg)
-
-
-                            this.$router.push({ name: "error" })                            
-                        }.bind(this))
+                if (resp.success) {
+                    if (resp.vcode === 'ver01') {
+                        this.$router.push({ name: 'email-thankyou' })
                     }
-                })                
+                    else if (resp.vcode === 'ver02') {
+                        // Re-verification sent. Include the 'cd' param to tell the 
+                        // thank you page that it's a re-verification
+                        this.$router.push({name: "email-thankyou", query:{cd: '1086453', em: response.data.encoded}})
+                    }
+                    else {
+                        this.loading = false
+                        this.$Notice.error({
+                            title: 'Error Verifying Email Address',
+                            desc: 'There was a problem verifying your email. Try again later.',
+                            duration: 6
+                        })
+                    }
+                }
+                else {
+                    this.$Notice.error({
+                        title: 'Error Verifying Email Address',
+                        desc: resp.message,
+                        duration: 6
+                    })
+                }
+            },
+            handleValidateEmail() {
+                this.loading = true
+                console.log('handleValidateEmail')                
+                let is_domain_valid = false
+
+                this.$refs['email_form'].validate((is_valid) => {
+                    console.log('validator: ' + is_valid)                   
+
+                    if (is_valid)
+                    {
+                        console.log('Form valid')
+                        is_domain_valid = this.domain_check()
+
+                        if (is_domain_valid) {
+                            this.validate_sfdc()
+                        }
+                    } else {
+                        console.log('Form INVALID')
+                    }
+                })
+
+                this.loading = false
             }
         },
         computed: {
@@ -229,7 +191,6 @@
                     return this.$store.state.email.email_address                    
                 },
                 set (value) {
-                    // I'm intentionally adding side effects to make the validation rules work. Not ideal
                     this.emailForm.email = value
                     this.$store.commit('SET_EMAIL', value)
                 }
@@ -251,7 +212,4 @@
     .email-input {
         width: 50%;
     }
-
-    
-
  </style>

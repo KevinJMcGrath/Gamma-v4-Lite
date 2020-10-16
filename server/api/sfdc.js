@@ -81,18 +81,18 @@ router.post('/private-check', function(req, res, next) {
 router.post('/domain-check', function(req, res, next) {
 
 	let email_address = clean_input(req.body.email_address.toLowerCase())
-	domain_search.isForbiddenDomain(email_address).then((result) => {
-		if (result) {
+	domain_search.isForbiddenDomain(email_address).then((is_forbidden_domain) => {
+		if (is_forbidden_domain) {
 			let domain = domain_search.getDomain(email_address)
 			res.json( { success: false, message: 'Invalid Email', server_code: 11, domain_name: domain })	
 		}
 		else
 		{
-			res.json( { success: true })
+			res.json( { success: true, server_code: 0 })
 		}
 
 	}).catch((error) => {		
-		res.json( { success: false, message: 'Problem verifying email'})
+		res.json( { success: false, message: 'Problem verifying email', server_code: -1 })
 	})
 })
 

@@ -389,7 +389,68 @@ const store = () => new Vuex.Store({
             return
 					
 		},
-		async verifyDPL({dispatch, getters}, dpl_qp)
+		domainCheck({getters}, email_address) {
+			console.log('domainCheck')
+			let retval = false
+
+			try
+			{
+				let resp = axios.post(getters.baseAppURL + '/api/domain-check', { email_address: email_address})
+
+				
+				console.log(resp)
+
+				if (resp.data.success) { return 0 }					
+				else if (resp.data.server_code === 11) { return -1 }
+				else { return -2 }
+			} catch(error) {
+				console.error(error)
+				return -2
+			}
+		},
+		async verifyEmailSFDC({getters, state}) {
+			let retval;
+
+			try {
+				let resp = await axios.post(getters.baseAppURL + '/api/verify', { email_address: state.email.email_address })
+				if (resp.data.vcode) {
+					retval = {
+						success: true,
+						vcode: resp.data.vcode
+					}
+				} else {
+					retval = {
+						success: false,
+						message: 'Unknown error verifying email address. Contact sales@symphony.com'
+					}
+				}				
+			} catch (err) {
+				console.error(err)
+
+				let err_msg = 'Unknown error verifying email address. Contact sales@symphony.com'
+				switch (error.response.data.error_data.errorDetail) {
+					case '1':
+						err_msg = 'Your email was previously submitted and is blocked. Contact Symphony if this is an error.'
+						break
+					case '2':
+						err_msg = 'Your company is already uses Symphony. Contact your IT department for an account.'
+						break
+					case '3':
+						err_msg = 'A Symphony account with this email address already exists.'
+						break
+					default:
+						break
+				}
+				
+				retval = {
+					success: false,
+					message: err_msg
+				}
+			} finally {
+				return retval
+			}
+		},
+		async verifyDPL({getters}, dpl_qp)
 		{
 			let retval = false
 			try {
@@ -432,7 +493,7 @@ const store = () => new Vuex.Store({
 				return retVal
 			}
 		},
-        async verifyGUIDAA({ commit, dispatch, getters, state }, guid) {
+        async verifyGUIDAA({ commit, getters, state }, guid) {
             console.log('(a/a) Verifying GUID with Salesforce...')
             let retVal = {
                 success: false,
@@ -489,7 +550,7 @@ const store = () => new Vuex.Store({
             }
             
 		},
-		async validatePromoCode({commit, dispatch, state})
+		async validatePromoCode({commit, state})
 		{
 			commit('SET_PROMO_CODE_SHOW', false)			
 
@@ -601,11 +662,6 @@ const store = () => new Vuex.Store({
     }
 })
 
-function SetLog(logActivity)
-{
-	const processExe = 'Running on: ' + (process.server ? 'Server-side' : 'Client-side')
-	console.log(moment().format('MM-DD-YYYY HH:mm:ss.SSS Z') + ' | ' + logActivity + ' | ' + processExe)
-}
 
 function CreateErrorObject(error, guid)
 {
