@@ -360,62 +360,74 @@
             handleGotoBilling() { 
                 this.$router.push({ name: "billing", query: { sseid: this.$store.state.status.guid }})
             },
-            handleGotoThankyou() {
-                this.loading = true
-                this.$refs['summary_form'].validate((valid) => {
-                    if (valid)
-                    {
-                        if (this.$store.getters.isInterviewComplete)
-                        {
-                            // this.$store.dispatch('verifyDPL').then((dpl_result) => {
+            async verify_dpl() {
+                let dpl_check = await this.$store.dispatch('verifyDPL')
+
+                if (!dpl_check)
+                {
+                    this.$Modal.error({
+                        title: 'Error',
+                        content: 'There was a problem submitting your purchase. Please contact sales@symphony.com. Error Code: 147263',
+                        onOk: () => {
+                            
+                        }, 
+                        okText: 'Ok'
+                    })
+                }
+
+                return dpl_check                
+            },
+            async do_submit() {
+                let retval = false                
+                let submit_resp = this.$store.dispatch('submitPurchase')
+
+                switch (submit_resp) {
+                    case 0:
+                    case -1:
+                        retval = true
+                        break
+                    case -2:
+                        this.$Modal.warning({
+                            title: 'Submission Pending',
+                            content: 'This account is already pending. You will receive a confirmation soon.',
+                            onOk: () => {
                                 
-                            // })
+                            }, 
+                            okText: 'Ok'
+                        })                        
+                        break
+                    default:
+                        this.$Modal.error({
+                            title: 'Error',
+                            content: 'There was an error submitting your request. Please contact Symphony sales.',
+                            onOk: () => {
+                                
+                            }, 
+                            okText: 'Ok'
+                        })
+                }
+            },
+            async handleGotoThankyou() {
+                this.loading = true
+                let err_msg = ''
 
-                            this.$store.dispatch('submitPurchase').then((result) => {
-                                console.log(result)
-
-                                if (result == 0) {
-                                    this.$router.push({name: "thankyou"}) 
-                                }
-                                else if (result == -1) {
-                                    this.$router.push({name: "thankyou"}) 
-                                }
-                                else if (result == -2) {
-                                    this.$Modal.warning({
-                                        title: 'Submission Pending',
-                                        content: 'This account is already pending. You will receive a confirmation soon.',
-                                        onOk: () => {
-                                            
-                                        }, 
-                                        okText: 'Ok'
-                                    })
-                                }
-                                else {
-                                    this.$Modal.error({
-                                        title: 'Error',
-                                        content: 'There was an error submitting your request. Please contact Symphony sales.',
-                                        onOk: () => {
-                                            
-                                        }, 
-                                        okText: 'Ok'
-                                    })
-                                }
-                            })
-                        }
-                        else
-                        {
-                            this.$Message.error('The form is missing information.')
-                            this.loading = false
-                        }
-                    }
-                    else
+                let is_valid = await this.$refs['summary_form'].validate()
+                
+                if (valid)
+                {
+                    if (this.$store.getters.isInterviewComplete)
                     {
-                        this.loading = false
+                        if (await verify_dpl()) {
+                            if (await do_submit()) {
+                                this.$router.push({name: "thankyou"})
+                            }
+                        }
+                    } else {
+                        this.$Message.error('The form is missing information.')
                     }
-
+                }
                     
-                })
-                                            
+                this.loading = false
             }
         },
         components: {

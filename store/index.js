@@ -444,12 +444,12 @@ const store = () => new Vuex.Store({
 				}
 			}
 		},
-		async verifyDPL({getters}, dpl_qp)
+		async verifyDPL({getters, state})
 		{
 			let retval = false
 			try {
-				let name = store.user.lastname + ', ' + store.user.firstname
-				let cname = store.company.name
+				let name = state.user.lastname + ', ' + state.user.firstname
+				let cname = state.company.name
 
 				let resp_name = await axios.post(getters.baseAppURL + '/api/dpl_check', {qp: name})
 				if (resp_name.data.success) {
