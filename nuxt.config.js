@@ -37,12 +37,12 @@ module.exports = {
     ]
   },
 
-  /*server: {
+  server: {
     https: {
       key: fs.readFileSync(path.resolve(__dirname, './certs/gamma-nuxt-express.key')),
       cert: fs.readFileSync(path.resolve(__dirname, './certs/gamma-nuxt-express.crt'))
     }
-  },*/
+  },
   
   router: {    
     middleware: ["phk"], 
