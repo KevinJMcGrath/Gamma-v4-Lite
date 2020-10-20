@@ -1,3 +1,6 @@
+//const path = require('path')
+//const fs = require('fs')
+
 require('dotenv').config()
 
 module.exports = {
@@ -33,6 +36,13 @@ module.exports = {
       { hid: 'ionicons', src: 'https://unpkg.com/ionicons@4.3.0/dist/ionicons.js'}
     ]
   },
+
+  /*server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, './certs/gamma-nuxt-express.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, './certs/gamma-nuxt-express.crt'))
+    }
+  },*/
   
   router: {    
     middleware: ["phk"], 
@@ -72,18 +82,6 @@ module.exports = {
         loader: 'file-loader',
         options: {}
       })
-
-      // 8/12/2018 - KJM - Added this to hopefully fix the 
-      // icon issue. Update: it didn't help. I'm using the 
-      // font reference directly.
-      // Having SVG in this caused my svg images to not load properly 
-      // when specified as a local resource. Clearly I don't
-      // understand this junk well enough. 
-      /*config.module.rules.push({
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=10000',
-        options: {}
-      })*/
     }
   },
 

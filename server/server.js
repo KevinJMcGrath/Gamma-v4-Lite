@@ -14,7 +14,9 @@ const { Nuxt, Builder } = require('nuxt')
 const bodyParser = require('body-parser')
 const express = require('express')
 const helmet = require('helmet')
-//const https = require('https')
+
+// https server
+// const https = require('https')
 const fs = require('fs')
 
 const app = express()
@@ -52,5 +54,7 @@ if (config.dev) {
 
 app.use(nuxt.render)
 app.listen(port, host)
+
+//https.createServer(nuxt.options.server.https, app).listen(port, host)
 
 console.log(`Setting server listening port to: ${port}`)

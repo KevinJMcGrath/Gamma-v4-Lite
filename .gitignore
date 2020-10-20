@@ -15,8 +15,8 @@ archive
 *.old.vue
 
 # Secrets
+certs/
 credentials
-google_analytics/
 secrets.json
 .env
 .env_dev
