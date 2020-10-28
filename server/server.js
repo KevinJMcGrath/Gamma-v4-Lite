@@ -58,7 +58,7 @@ if (process.env.LB_TLS === 'TRUE')
 {
 	//https server
 	const https = require('https')
-	https.createServer(nuxt.options.server.https, app).listen('8083', host)
+	https.createServer(nuxt.options.server.https, app).listen('8080', host)
 }
 
 console.log(`Setting server listening port to: ${port}`)
