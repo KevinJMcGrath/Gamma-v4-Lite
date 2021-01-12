@@ -13,6 +13,7 @@ dist
 # Archived Files
 archive
 *.old.vue
+*.zip
 
 # Secrets
 certs/
@@ -35,3 +36,8 @@ secrets.json
 
 #env
 .env
+
+
+#ip range files
+/docs/ip_ranges/
+/docs/cidr.txt

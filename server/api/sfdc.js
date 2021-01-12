@@ -3,8 +3,28 @@ const axios = require('axios')
 const crypto = require('crypto')
 const domain_search = require('../lib/domain.js')
 const santize = require('sanitize-html')
+const sfdc = require('jsforce')
 
 const router = Router()
+
+const sfdc_conn = new sfdc.Connection({})
+
+async function sfdc_login()
+{
+	if (!sfdc_conn.accessToken)
+	{
+		un = process.env.SFDC_USERNAME
+		pwd = process.env.SFDC_PASSWORD + process.env.SFDC_SEC_TOKEN
+
+		await sfdc_conn.login(un, pwd, function(err, userInfo){
+			if (err) { return console.error(err) }
+
+			console.log('Login successful')
+			console.log('UserId: ' + userInfo.id)
+		})
+	}
+
+}
 
 function log_response(resp, isError)
 {
@@ -152,6 +172,7 @@ router.post('/confirm', function(req, res, next) {
 		baseURL: process.env.SFDC_BASE_URL,
 		headers: {
 			'X-SYM-APIKEY': process.env.SFDC_GAMMA_KEY 
+			//'Authorization': 'Bearer ' + 
 		}
 	}
 	/*	Salesforce guid-verification codes:
