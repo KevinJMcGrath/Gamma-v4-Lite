@@ -8,12 +8,21 @@
                 <i-col span=6 class="blue-shields"></i-col>
                 <i-col span=12 class="sym-index-col">
                     <p><span class="sym-text-alt">Symphony.</span> <br/>Collaboration Technology &amp; Solutions for Financial Services</p>
-                    <p style="font-size:1.8em;font-family: Graphik Medium">The world’s largest financial services network of over 535,000 industry users.</p>
+                </i-col>
+                <i-col span=6 class="blue-shields"></i-col>
+            </Row>
+            <Row type="flex" justify="center">                
+                <i-col span=16 class="sym-index-col">
+                    <p style="font-size:1.8em;font-family: Graphik Medium">Join the world's largest financial services network of over half a million verified users</p>
+                </i-col>
+                
+            </Row>
+            <Row type="flex" justify="center">
+                <i-col span=12 class="sym-index-col">
                     <div class="button-box" style="font-family: Graphik Medium">
                         <button class="button-style-1 button-style-start" style="" @click="handleGetStarted()">Get Started</button>
                     </div>
                 </i-col>
-                <i-col span=6 class="blue-shields"></i-col>
             </Row>
         </div>
         <div style="margin-top:20px;margin-bottom:100px;">
@@ -130,7 +139,7 @@ export default {
     .asset-3 {
         height: 400px;
         width: 100%;
-        background-image: url("../assets/images/1_5_dark_mode.png");
+        background-image: url("../assets/images/2_0_dark_mode.png");
         background-size: cover;
     }
 

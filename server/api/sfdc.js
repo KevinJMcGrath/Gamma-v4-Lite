@@ -77,20 +77,27 @@ router.post('/private-check', function(req, res, next) {
 
 	let key = req.body.phk
 	let phk_check = process.env.USE_PHK == 'TRUE'
+	const phk_array = process.env.PHK_CHECK_KEY.split(',')
 
 	if (phk_check)
 	{
-		console.log('Evaluating PHK QP...')
-		console.log('PHK submitted: ' + key)
-		console.log('PHK ref: ' + process.env.PHK_CHECK_KEY)
-		if (key === process.env.PHK_CHECK_KEY) {
+		 console.log('Evaluating PHK QP (phk.js)...')
+		 console.log('PHK submitted: ' + key)
+		 console.log('PHK ref: ' + process.env.PHK_CHECK_KEY)
+		 console.log('PHK Split: ' + phk_array)
+		 console.log('Is in array? ' + phk_array.includes(key))
+		
+
+		//if (key === process.env.PHK_CHECK_KEY) {
+		if (phk_array.includes(key.toLowerCase())) {
 			console.log('PHK QP accepted')
 			res.json({ success: true })
-		}
-		else {
+		} else {
 			console.log('PHK QP rejected')
 			res.json({ success: false })
 		}
+
+
 	} else {
 		console.log('Skipping PHK Check (ENV)...')
 		res.json({ success: true })
