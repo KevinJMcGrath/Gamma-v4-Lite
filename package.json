@@ -34,7 +34,7 @@
     "js-cookie": "^2.2.1",
     "jsforce": "^1.10.1",
     "moment": "^2.29.1",
-    "nuxt": "^2.14.6",
+    "nuxt": "^2.15.0",
     "nuxt-helmet": "^2.0.0",
     "redirect-ssl": "^2.0.0",
     "sanitize-html": "^2.1.0",
